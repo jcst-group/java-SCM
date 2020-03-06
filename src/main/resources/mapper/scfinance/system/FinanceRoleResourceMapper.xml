@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.scfinance.system.FinanceRoleResourceMapper">
+
+    <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.scfinance.system.FinanceResource">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="CODE" jdbcType="VARCHAR" property="code" />
+        <result column="NAME" jdbcType="VARCHAR" property="name" />
+        <result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+        <result column="URI" jdbcType="VARCHAR" property="uri" />
+        <result column="TYPE" jdbcType="SMALLINT" property="type" />
+        <result column="METHOD" jdbcType="VARCHAR" property="method" />
+        <result column="ICON" jdbcType="VARCHAR" property="icon" />
+        <result column="STATUS" jdbcType="SMALLINT" property="status" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <collection property="resourceRelList" column="ID" select="com.nongxin.terminal.dao.scfinance.system.FinanceResourceRelMapper.selectByResourceId"/>
+    </resultMap>
+
+
+
+
+    <!--<select id="getFinanceResourceByUid" parameterType="java.lang.Integer" resultType="com.nongxin.terminal.entity.scfinance.system.FinanceResource">-->
+    <select id="getFinanceResourceByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+        SELECT DISTINCT a.* FROM finance_resource a
+        INNER JOIN finance_role_resource b
+        ON a.ID = b.RESOURCE_ID
+        INNER JOIN finance_user_role c
+        ON b.ROLE_ID = c.ROLE_ID
+        WHERE c.USER_ID = #{uid,jdbcType=INTEGER}
+        <if test="type != null">
+            AND a.TYPE = #{type,jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

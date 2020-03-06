@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.finance.OrderContractMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.finance.OrderContract">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="VARCHAR" property="partyB" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="product" jdbcType="VARCHAR" property="product" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="total" jdbcType="DECIMAL" property="total" />
+    <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.finance.OrderContract">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="VARCHAR" property="partyB" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="product" jdbcType="VARCHAR" property="product" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="total" jdbcType="DECIMAL" property="total" />
+    <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
+    <result column="delivery_time" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+    <collection property="pictureInfos" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getOrderContractPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, party_a, party_b, sign_time, product, level, price, total, total_money, delivery_time, 
+    year_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_order_contract
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_order_contract
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.OrderContract" useGeneratedKeys="true">
+    insert into ddwb_order_contract (party_a, party_b, sign_time, 
+      product, level, price, 
+      total, total_money, delivery_time, 
+      year_id)
+    values (#{partyA,jdbcType=VARCHAR}, #{partyB,jdbcType=VARCHAR}, #{signTime,jdbcType=TIMESTAMP}, 
+      #{product,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{total,jdbcType=DECIMAL}, #{totalMoney,jdbcType=DECIMAL}, #{deliveryTime,jdbcType=TIMESTAMP}, 
+      #{yearId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.OrderContract" useGeneratedKeys="true">
+    insert into ddwb_order_contract
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        party_a,
+      </if>
+      <if test="partyB != null">
+        party_b,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="product != null">
+        product,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="totalMoney != null">
+        total_money,
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time,
+      </if>
+      <if test="yearId != null">
+        year_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        #{partyB,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMoney != null">
+        #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryTime != null">
+        #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yearId != null">
+        #{yearId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.finance.OrderContract">
+    update ddwb_order_contract
+    <set>
+      <if test="partyA != null">
+        party_a = #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        party_b = #{partyB,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="product != null">
+        product = #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMoney != null">
+        total_money = #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="deliveryTime != null">
+        delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yearId != null">
+        year_id = #{yearId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.finance.OrderContract">
+    update ddwb_order_contract
+    set party_a = #{partyA,jdbcType=VARCHAR},
+      party_b = #{partyB,jdbcType=VARCHAR},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      product = #{product,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      total = #{total,jdbcType=DECIMAL},
+      total_money = #{totalMoney,jdbcType=DECIMAL},
+      delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+      year_id = #{yearId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getOrderContract" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_order_contract
+    <where>
+      <if test="yearId != null">
+        and year_id = #{yearId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getBoardOrderContract" resultType="java.util.HashMap">
+    SELECT a.party_b partyB,a.`level`,a.total,a.price,DATE_FORMAT(a.delivery_time,'%Y-%m-%d') deliveryTime
+    FROM ddwb_order_contract a
+    INNER JOIN ddwb_contract_year b
+    ON a.year_id = b.id
+    WHERE substring(`year`,1,4) = YEAR(CURDATE())
+  </select>
+
+</mapper>

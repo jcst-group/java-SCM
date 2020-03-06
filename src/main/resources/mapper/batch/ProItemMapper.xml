@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.batch.ProItemMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.batch.ProItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="initpro_batch_id" jdbcType="INTEGER" property="initproBatchId" />
+    <result column="revocery_batch_id" jdbcType="INTEGER" property="revoceryBatchId" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_level" jdbcType="VARCHAR" property="proLevel" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="weight_count" jdbcType="DECIMAL" property="weightCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, initpro_batch_id, revocery_batch_id, pro_name, pro_level, unit, weight_count
+  </sql>
+  <select id="selectByinitproBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_pro_item
+    where initpro_batch_id = #{initproBatchId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_pro_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByProBathId" parameterType="java.lang.Integer">
+    delete from ddwb_pro_item
+    where initpro_batch_id = #{proBatchId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_pro_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.batch.ProItem" useGeneratedKeys="true">
+    insert into ddwb_pro_item (initpro_batch_id, revocery_batch_id, 
+      pro_name, pro_level, unit, 
+      weight_count)
+    values (#{initproBatchId,jdbcType=INTEGER}, #{revoceryBatchId,jdbcType=INTEGER}, 
+      #{proName,jdbcType=VARCHAR}, #{proLevel,jdbcType=VARCHAR}, #{unit,jdbcType=SMALLINT},
+      #{weightCount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.batch.ProItem" useGeneratedKeys="true">
+    insert into ddwb_pro_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="initproBatchId != null">
+        initpro_batch_id,
+      </if>
+      <if test="revoceryBatchId != null">
+        revocery_batch_id,
+      </if>
+      <if test="proName != null">
+        pro_name,
+      </if>
+      <if test="proLevel != null">
+        pro_level,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="weightCount != null">
+        weight_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="initproBatchId != null">
+        #{initproBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="revoceryBatchId != null">
+        #{revoceryBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="proName != null">
+        #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proLevel != null">
+        #{proLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="weightCount != null">
+        #{weightCount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.batch.ProItem">
+    update ddwb_pro_item
+    <set>
+      <if test="initproBatchId != null">
+        initpro_batch_id = #{initproBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="revoceryBatchId != null">
+        revocery_batch_id = #{revoceryBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="proName != null">
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proLevel != null">
+        pro_level = #{proLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="weightCount != null">
+        weight_count = #{weightCount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.batch.ProItem">
+    update ddwb_pro_item
+    set initpro_batch_id = #{initproBatchId,jdbcType=INTEGER},
+      revocery_batch_id = #{revoceryBatchId,jdbcType=INTEGER},
+      pro_name = #{proName,jdbcType=VARCHAR},
+      pro_level = #{proLevel,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=SMALLINT},
+      weight_count = #{weightCount,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.system.RoleResourceMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.system.RoleResource">
+    <result column="ROLE_ID" jdbcType="INTEGER" property="roleId" />
+    <result column="RESOURCE_ID" jdbcType="INTEGER" property="resourceId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.system.RoleResource">
+    insert into auth_role_resource (ROLE_ID, RESOURCE_ID)
+    values (#{roleId,jdbcType=INTEGER}, #{resourceId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.system.RoleResource">
+    insert into auth_role_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="resourceId != null">
+        RESOURCE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteByRoleId" parameterType="java.lang.Integer">
+    delete from auth_role_resource where ROLE_ID = #{roleId.jdbcType=INTEGER}
+  </delete>
+
+  <insert id="addRoleResource">
+    INSERT INTO auth_role_resource (ROLE_ID, RESOURCE_ID) VALUES
+    <foreach collection="list" item="item" separator=",">
+      (#{roleId,jdbcType=INTEGER},#{item.id,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+</mapper>

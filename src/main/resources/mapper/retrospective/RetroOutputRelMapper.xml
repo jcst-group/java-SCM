@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.retrospective.RetroOutputRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.retrospective.RetroOutputRel">
+    <result column="relation_id" jdbcType="INTEGER" property="relationId" />
+    <result column="relation_type" jdbcType="SMALLINT" property="relationType" />
+    <result column="residual_output" jdbcType="DECIMAL" property="residualOutput" />
+  </resultMap>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.retrospective.RetroOutputRel">
+    insert into ddwb_retro_output_rel (relation_id, relation_type, residual_output
+      )
+    values (#{relationId,jdbcType=INTEGER}, #{relationType,jdbcType=SMALLINT}, #{residualOutput,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.retrospective.RetroOutputRel">
+    insert into ddwb_retro_output_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="relationId != null">
+        relation_id,
+      </if>
+      <if test="relationType != null">
+        relation_type,
+      </if>
+      <if test="residualOutput != null">
+        residual_output,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="relationId != null">
+        #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="relationType != null">
+        #{relationType,jdbcType=SMALLINT},
+      </if>
+      <if test="residualOutput != null">
+        #{residualOutput,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectByRelationId" resultMap="BaseResultMap">
+    select * from ddwb_retro_output_rel where
+    relation_id = #{relationId,jdbcType=INTEGER} and relation_type = #{relationType,jdbcType=SMALLINT}
+  </select>
+
+  <update id="update" parameterType="com.nongxin.terminal.entity.retrospective.RetroOutputRel">
+    update ddwb_retro_output_rel
+    <set>
+      <if test="relationId != null">
+        relation_id = #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="relationType != null">
+        relation_type = #{relationType,jdbcType=SMALLINT},
+      </if>
+      <if test="residualOutput != null">
+        residual_output = #{residualOutput,jdbcType=DECIMAL},
+      </if>
+    </set>
+  </update>
+
+  <delete id="deleteByRelationId">
+    delete from ddwb_retro_output_rel where
+    relation_id = #{relationId,jdbcType=INTEGER} and relation_type = #{relationType,jdbcType=SMALLINT}
+  </delete>
+
+</mapper>

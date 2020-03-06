@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.plant.MaterialActMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.plant.MaterialAct">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="material_name" jdbcType="VARCHAR" property="materialName" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="pre_unit_price" jdbcType="DECIMAL" property="preUnitPrice" />
+    <result column="pre_unit_count" jdbcType="DECIMAL" property="preUnitCount" />
+    <result column="pre_cal" jdbcType="DECIMAL" property="preCal" />
+    <result column="act_cal" jdbcType="DECIMAL" property="actCal" />
+    <result column="act_unit_price" jdbcType="DECIMAL" property="actUnitPrice" />
+    <result column="act_unit_count" jdbcType="DECIMAL" property="actUnitCount" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, material_name, company, pre_unit_price, pre_unit_count, pre_cal, act_cal, act_unit_price, 
+    act_unit_count, order_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_material_act
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_material_act
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.MaterialAct" useGeneratedKeys="true">
+    insert into ddwb_material_act (material_name, company, pre_unit_price, 
+      pre_unit_count, pre_cal, act_cal, 
+      act_unit_price, act_unit_count, order_id
+      )
+    values (#{materialName,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, #{preUnitPrice,jdbcType=DECIMAL}, 
+      #{preUnitCount,jdbcType=DECIMAL}, #{preCal,jdbcType=DECIMAL}, #{actCal,jdbcType=DECIMAL}, 
+      #{actUnitPrice,jdbcType=DECIMAL}, #{actUnitCount,jdbcType=DECIMAL}, #{orderId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.MaterialAct" useGeneratedKeys="true">
+    insert into ddwb_material_act
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="materialName != null">
+        material_name,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="preUnitPrice != null">
+        pre_unit_price,
+      </if>
+      <if test="preUnitCount != null">
+        pre_unit_count,
+      </if>
+      <if test="preCal != null">
+        pre_cal,
+      </if>
+      <if test="actCal != null">
+        act_cal,
+      </if>
+      <if test="actUnitPrice != null">
+        act_unit_price,
+      </if>
+      <if test="actUnitCount != null">
+        act_unit_count,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="materialName != null">
+        #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="preUnitPrice != null">
+        #{preUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="preUnitCount != null">
+        #{preUnitCount,jdbcType=DECIMAL},
+      </if>
+      <if test="preCal != null">
+        #{preCal,jdbcType=DECIMAL},
+      </if>
+      <if test="actCal != null">
+        #{actCal,jdbcType=DECIMAL},
+      </if>
+      <if test="actUnitPrice != null">
+        #{actUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="actUnitCount != null">
+        #{actUnitCount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.plant.MaterialAct">
+    update ddwb_material_act
+    <set>
+      <if test="materialName != null">
+        material_name = #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="preUnitPrice != null">
+        pre_unit_price = #{preUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="preUnitCount != null">
+        pre_unit_count = #{preUnitCount,jdbcType=DECIMAL},
+      </if>
+      <if test="preCal != null">
+        pre_cal = #{preCal,jdbcType=DECIMAL},
+      </if>
+      <if test="actCal != null">
+        act_cal = #{actCal,jdbcType=DECIMAL},
+      </if>
+      <if test="actUnitPrice != null">
+        act_unit_price = #{actUnitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="actUnitCount != null">
+        act_unit_count = #{actUnitCount,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.plant.MaterialAct">
+    update ddwb_material_act
+    set material_name = #{materialName,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      pre_unit_price = #{preUnitPrice,jdbcType=DECIMAL},
+      pre_unit_count = #{preUnitCount,jdbcType=DECIMAL},
+      pre_cal = #{preCal,jdbcType=DECIMAL},
+      act_cal = #{actCal,jdbcType=DECIMAL},
+      act_unit_price = #{actUnitPrice,jdbcType=DECIMAL},
+      act_unit_count = #{actUnitCount,jdbcType=DECIMAL},
+      order_id = #{orderId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_material_act
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+  <select id="budgetMaterialAct" resultMap="BaseResultMap">
+    SELECT a.material_name,a.company,pre_unit_price,SUM(pre_unit_count) AS pre_unit_count,SUM(pre_cal) AS pre_cal FROM ddwb_material_act a
+    INNER JOIN ddwb_work_order b
+    ON a.order_id = b.id
+    INNER JOIN ddwb_crop_batch c
+    ON b.crop_batch_id = c.id
+    WHERE c.id IN
+    <foreach collection="batchIds" open="(" separator="," close=")" item="batchId">
+      #{batchId}
+    </foreach>
+    AND b.farming_id = #{farmingId,jdbcType=INTEGER}
+    GROUP BY b.farming_id,a.material_name
+  </select>
+
+  <select id="getBusinessMaterialAct" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+    SELECT a.material_name AS materialName,SUM(a.act_cal) AS cost FROM ddwb_material_act a
+    INNER JOIN ddwb_work_order b
+    ON a.order_id = b.id
+    WHERE b.crop_batch_id = #{batchId,jdbcType=INTEGER}
+    GROUP BY a.material_name
+    HAVING cost IS NOT NULL
+  </select>
+
+</mapper>

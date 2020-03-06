@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.retrospective.RetroCodeInfoMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.retrospective.RetroCodeInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="init_id" jdbcType="INTEGER" property="initId" />
+    <result column="reco_id" jdbcType="INTEGER" property="recoId" />
+    <result column="net_weight" jdbcType="DECIMAL" property="netWeight" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="specifications" jdbcType="VARCHAR" property="specifications" />
+    <result column="qc" jdbcType="VARCHAR" property="qc" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="execute_standard" jdbcType="VARCHAR" property="executeStandard" />
+    <result column="provenance" jdbcType="VARCHAR" property="provenance" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, init_id, reco_id, net_weight, unit, specifications, qc, remarks, type, execute_standard, 
+    provenance
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_retro_code_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_retro_code_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.retrospective.RetroCodeInfo" useGeneratedKeys="true">
+    insert into ddwb_retro_code_info (init_id, reco_id, net_weight, 
+      unit, specifications, qc, 
+      remarks, type, execute_standard, 
+      provenance)
+    values (#{initId,jdbcType=INTEGER}, #{recoId,jdbcType=INTEGER}, #{netWeight,jdbcType=DECIMAL}, 
+      #{unit,jdbcType=SMALLINT}, #{specifications,jdbcType=VARCHAR}, #{qc,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT}, #{executeStandard,jdbcType=VARCHAR}, 
+      #{provenance,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.retrospective.RetroCodeInfo" useGeneratedKeys="true">
+    insert into ddwb_retro_code_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="initId != null">
+        init_id,
+      </if>
+      <if test="recoId != null">
+        reco_id,
+      </if>
+      <if test="netWeight != null">
+        net_weight,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="specifications != null">
+        specifications,
+      </if>
+      <if test="qc != null">
+        qc,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="executeStandard != null">
+        execute_standard,
+      </if>
+      <if test="provenance != null">
+        provenance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="initId != null">
+        #{initId,jdbcType=INTEGER},
+      </if>
+      <if test="recoId != null">
+        #{recoId,jdbcType=INTEGER},
+      </if>
+      <if test="netWeight != null">
+        #{netWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="specifications != null">
+        #{specifications,jdbcType=VARCHAR},
+      </if>
+      <if test="qc != null">
+        #{qc,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="executeStandard != null">
+        #{executeStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="provenance != null">
+        #{provenance,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.retrospective.RetroCodeInfo">
+    update ddwb_retro_code_info
+    <set>
+      <if test="initId != null">
+        init_id = #{initId,jdbcType=INTEGER},
+      </if>
+      <if test="recoId != null">
+        reco_id = #{recoId,jdbcType=INTEGER},
+      </if>
+      <if test="netWeight != null">
+        net_weight = #{netWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="specifications != null">
+        specifications = #{specifications,jdbcType=VARCHAR},
+      </if>
+      <if test="qc != null">
+        qc = #{qc,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="executeStandard != null">
+        execute_standard = #{executeStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="provenance != null">
+        provenance = #{provenance,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.retrospective.RetroCodeInfo">
+    update ddwb_retro_code_info
+    set init_id = #{initId,jdbcType=INTEGER},
+      reco_id = #{recoId,jdbcType=INTEGER},
+      net_weight = #{netWeight,jdbcType=DECIMAL},
+      unit = #{unit,jdbcType=SMALLINT},
+      specifications = #{specifications,jdbcType=VARCHAR},
+      qc = #{qc,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      type = #{type,jdbcType=SMALLINT},
+      execute_standard = #{executeStandard,jdbcType=VARCHAR},
+      provenance = #{provenance,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

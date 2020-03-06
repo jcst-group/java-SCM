@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.product.ProLevelRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.product.ProLevelRel">
+    <id column="products_id" jdbcType="INTEGER" property="productsId" />
+    <result column="level_id" jdbcType="INTEGER" property="levelId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    products_id, level_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_products_level_rel
+    where products_id = #{productsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_products_level_rel
+    where products_id = #{productsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.product.ProLevelRel">
+    insert into ddwb_products_level_rel (products_id, level_id)
+    values (#{productsId,jdbcType=INTEGER}, #{levelId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.product.ProLevelRel">
+    insert into ddwb_products_level_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productsId != null">
+        products_id,
+      </if>
+      <if test="levelId != null">
+        level_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productsId != null">
+        #{productsId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null">
+        #{levelId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.product.ProLevelRel">
+    update ddwb_products_level_rel
+    <set>
+      <if test="levelId != null">
+        level_id = #{levelId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where products_id = #{productsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.product.ProLevelRel">
+    update ddwb_products_level_rel
+    set level_id = #{levelId,jdbcType=INTEGER}
+    where products_id = #{productsId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.traceability.TraceAreaCountMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.traceability.TraceAreaCount">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="retro_code" jdbcType="VARCHAR" property="retroCode" />
+    <result column="area_count" jdbcType="INTEGER" property="areaCount" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="region_id" jdbcType="VARCHAR" property="regionId" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="city_id" jdbcType="VARCHAR" property="cityId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, retro_code, area_count, region, region_id, city, city_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_trace_area_count
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_trace_area_count
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.traceability.TraceAreaCount" useGeneratedKeys="true">
+    insert into ddwb_trace_area_count (retro_code, area_count, region, 
+      region_id, city, city_id
+      )
+    values (#{retroCode,jdbcType=VARCHAR}, 1, #{region,jdbcType=VARCHAR},
+      #{regionId,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.traceability.TraceAreaCount" useGeneratedKeys="true">
+    insert into ddwb_trace_area_count
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="retroCode != null">
+        retro_code,
+      </if>
+      <if test="areaCount != null">
+        area_count,
+      </if>
+      <if test="region != null">
+        region,
+      </if>
+      <if test="regionId != null">
+        region_id,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="cityId != null">
+        city_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="retroCode != null">
+        #{retroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCount != null">
+        #{areaCount,jdbcType=INTEGER},
+      </if>
+      <if test="region != null">
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null">
+        #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.traceability.TraceAreaCount">
+    update ddwb_trace_area_count
+    <set>
+      <if test="retroCode != null">
+        retro_code = #{retroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCount != null">
+        area_count = #{areaCount,jdbcType=INTEGER},
+      </if>
+      <if test="region != null">
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="regionId != null">
+        region_id = #{regionId,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null">
+        city_id = #{cityId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.traceability.TraceAreaCount">
+    update ddwb_trace_area_count
+    set retro_code = #{retroCode,jdbcType=VARCHAR},
+      area_count = #{areaCount,jdbcType=INTEGER},
+      region = #{region,jdbcType=VARCHAR},
+      region_id = #{regionId,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateCount" parameterType="com.nongxin.terminal.entity.traceability.TraceAreaCount">
+    update ddwb_trace_area_count set area_count=area_count+1 where retro_code=#{retroCode,jdbcType=VARCHAR} AND city_id=#{cityId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getCountByCityId"  parameterType="com.nongxin.terminal.entity.traceability.TraceAreaCount" resultType="java.lang.Integer">
+    select count(city_id) from ddwb_trace_area_count where retro_code=#{retroCode,jdbcType=VARCHAR} AND city_id=#{cityId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getAreaCountByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from ddwb_trace_area_count where retro_code=#{retroCode,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

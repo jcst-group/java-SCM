@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.finance.LaborDispatchMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.finance.LaborDispatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="VARCHAR" property="partyB" />
+    <result column="total" jdbcType="DECIMAL" property="total" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+    <result column="dispatch_time" jdbcType="TIMESTAMP" property="dispatchTime" />
+    <result column="dispatch_month" jdbcType="DECIMAL" property="dispatchMonth" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.finance.LaborDispatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="VARCHAR" property="partyB" />
+    <result column="total" jdbcType="DECIMAL" property="total" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+    <result column="dispatch_time" jdbcType="TIMESTAMP" property="dispatchTime" />
+    <result column="dispatch_month" jdbcType="DECIMAL" property="dispatchMonth" />
+    <collection property="pictureInfos" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getLaborDispatchPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, party_a, party_b, total, price, sign_time, year_id, dispatch_time, dispatch_month
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_labor_dispatch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_labor_dispatch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.LaborDispatch" useGeneratedKeys="true">
+    insert into ddwb_labor_dispatch (party_a, party_b, total, 
+      price, sign_time, year_id, 
+      dispatch_time, dispatch_month)
+    values (#{partyA,jdbcType=VARCHAR}, #{partyB,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}, 
+      #{price,jdbcType=DECIMAL}, #{signTime,jdbcType=TIMESTAMP}, #{yearId,jdbcType=INTEGER}, 
+      #{dispatchTime,jdbcType=TIMESTAMP}, #{dispatchMonth,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.LaborDispatch" useGeneratedKeys="true">
+    insert into ddwb_labor_dispatch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        party_a,
+      </if>
+      <if test="partyB != null">
+        party_b,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="yearId != null">
+        year_id,
+      </if>
+      <if test="dispatchTime != null">
+        dispatch_time,
+      </if>
+      <if test="dispatchMonth != null">
+        dispatch_month,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        #{partyB,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yearId != null">
+        #{yearId,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchTime != null">
+        #{dispatchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dispatchMonth != null">
+        #{dispatchMonth,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.finance.LaborDispatch">
+    update ddwb_labor_dispatch
+    <set>
+      <if test="partyA != null">
+        party_a = #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        party_b = #{partyB,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yearId != null">
+        year_id = #{yearId,jdbcType=INTEGER},
+      </if>
+      <if test="dispatchTime != null">
+        dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dispatchMonth != null">
+        dispatch_month = #{dispatchMonth,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.finance.LaborDispatch">
+    update ddwb_labor_dispatch
+    set party_a = #{partyA,jdbcType=VARCHAR},
+      party_b = #{partyB,jdbcType=VARCHAR},
+      total = #{total,jdbcType=DECIMAL},
+      price = #{price,jdbcType=DECIMAL},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      year_id = #{yearId,jdbcType=INTEGER},
+      dispatch_time = #{dispatchTime,jdbcType=TIMESTAMP},
+      dispatch_month = #{dispatchMonth,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getLaborDispatch" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_labor_dispatch
+    <where>
+      <if test="yearId != null">
+        and year_id = #{yearId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getBoardLaborDispatch" resultType="java.util.HashMap">
+    SELECT CONVERT(SUM(a.total*a.price*a.dispatch_month),DECIMAL(18,4)) totalCost
+    FROM ddwb_labor_dispatch a
+    INNER JOIN ddwb_contract_year b
+    ON a.year_id = b.id
+    WHERE substring(`year`,1,4) = YEAR(CURDATE())
+  </select>
+
+</mapper>

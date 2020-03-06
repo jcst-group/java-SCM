@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.testing.RecDetRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.testing.RecDetRel">
+    <result column="rec_detection_id" jdbcType="INTEGER" property="recDetectionId" />
+    <result column="recovery_id" jdbcType="INTEGER" property="recoveryId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.testing.RecDetRel">
+    insert into ddwb_rec_det_rel (rec_detection_id, recovery_id)
+    values (#{recDetectionId,jdbcType=INTEGER}, #{recoveryId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.testing.RecDetRel">
+    insert into ddwb_rec_det_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recDetectionId != null">
+        rec_detection_id,
+      </if>
+      <if test="recoveryId != null">
+        recovery_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recDetectionId != null">
+        #{recDetectionId,jdbcType=INTEGER},
+      </if>
+      <if test="recoveryId != null">
+        #{recoveryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteByRecDetectionId" parameterType="java.lang.Integer">
+    delete from ddwb_rec_det_rel where rec_detection_id = #{recDetectionId,jdbcType=INTEGER}
+  </delete>
+
+</mapper>

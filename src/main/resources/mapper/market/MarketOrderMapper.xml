@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.market.MarketOrderMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.market.MarketOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="contract_date" jdbcType="DATE" property="contractDate" />
+    <result column="contract_code" jdbcType="VARCHAR" property="contractCode" />
+    <result column="send_date" jdbcType="TIMESTAMP" property="sendDate" />
+    <result column="specis" jdbcType="VARCHAR" property="specis" />
+    <result column="sale_amount" jdbcType="INTEGER" property="saleAmount" />
+    <result column="sale_price" jdbcType="DECIMAL" property="salePrice" />
+    <result column="sale_sum" jdbcType="DECIMAL" property="saleSum" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="save_one" jdbcType="DECIMAL" property="saveOne" />
+    <result column="save_two" jdbcType="DECIMAL" property="saveTwo" />
+    <result column="char_one" jdbcType="VARCHAR" property="charOne" />
+    <result column="char_two" jdbcType="VARCHAR" property="charTwo" />
+    <result column="id_one" jdbcType="INTEGER" property="idOne" />
+    <result column="id_two" jdbcType="INTEGER" property="idTwo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, customer_name, contract_date, contract_code, send_date, specis, sale_amount, 
+    sale_price, sale_sum, comment, save_one, save_two, char_one, char_two, id_one, id_two
+  </sql>
+  <select id="selectByExample" parameterType="com.nongxin.terminal.entity.market.MarketOrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ddwb_market_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_market_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_market_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.market.MarketOrder" useGeneratedKeys="true">
+    insert into ddwb_market_order (customer_name, contract_date, contract_code, 
+      send_date, specis, sale_amount, 
+      sale_price, sale_sum, comment, 
+      save_one, save_two, char_one, 
+      char_two, id_one, id_two
+      )
+    values (#{customerName,jdbcType=VARCHAR}, #{contractDate,jdbcType=DATE}, #{contractCode,jdbcType=VARCHAR}, 
+      #{sendDate,jdbcType=TIMESTAMP}, #{specis,jdbcType=VARCHAR}, #{saleAmount,jdbcType=INTEGER}, 
+      #{salePrice,jdbcType=DECIMAL}, #{saleSum,jdbcType=DECIMAL}, #{comment,jdbcType=VARCHAR}, 
+      #{saveOne,jdbcType=DECIMAL}, #{saveTwo,jdbcType=DECIMAL}, #{charOne,jdbcType=VARCHAR}, 
+      #{charTwo,jdbcType=VARCHAR}, #{idOne,jdbcType=INTEGER}, #{idTwo,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.market.MarketOrder" useGeneratedKeys="true">
+    insert into ddwb_market_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="contractDate != null">
+        contract_date,
+      </if>
+      <if test="contractCode != null">
+        contract_code,
+      </if>
+      <if test="sendDate != null">
+        send_date,
+      </if>
+      <if test="specis != null">
+        specis,
+      </if>
+      <if test="saleAmount != null">
+        sale_amount,
+      </if>
+      <if test="salePrice != null">
+        sale_price,
+      </if>
+      <if test="saleSum != null">
+        sale_sum,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="saveOne != null">
+        save_one,
+      </if>
+      <if test="saveTwo != null">
+        save_two,
+      </if>
+      <if test="charOne != null">
+        char_one,
+      </if>
+      <if test="charTwo != null">
+        char_two,
+      </if>
+      <if test="idOne != null">
+        id_one,
+      </if>
+      <if test="idTwo != null">
+        id_two,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractDate != null">
+        #{contractDate,jdbcType=DATE},
+      </if>
+      <if test="contractCode != null">
+        #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null">
+        #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="specis != null">
+        #{specis,jdbcType=VARCHAR},
+      </if>
+      <if test="saleAmount != null">
+        #{saleAmount,jdbcType=INTEGER},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleSum != null">
+        #{saleSum,jdbcType=DECIMAL},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="saveOne != null">
+        #{saveOne,jdbcType=DECIMAL},
+      </if>
+      <if test="saveTwo != null">
+        #{saveTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="charOne != null">
+        #{charOne,jdbcType=VARCHAR},
+      </if>
+      <if test="charTwo != null">
+        #{charTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="idOne != null">
+        #{idOne,jdbcType=INTEGER},
+      </if>
+      <if test="idTwo != null">
+        #{idTwo,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ddwb_market_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.customerName != null">
+        customer_name = #{record.customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractDate != null">
+        contract_date = #{record.contractDate,jdbcType=DATE},
+      </if>
+      <if test="record.contractCode != null">
+        contract_code = #{record.contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendDate != null">
+        send_date = #{record.sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.specis != null">
+        specis = #{record.specis,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleAmount != null">
+        sale_amount = #{record.saleAmount,jdbcType=INTEGER},
+      </if>
+      <if test="record.salePrice != null">
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saleSum != null">
+        sale_sum = #{record.saleSum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.comment != null">
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saveOne != null">
+        save_one = #{record.saveOne,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saveTwo != null">
+        save_two = #{record.saveTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="record.charOne != null">
+        char_one = #{record.charOne,jdbcType=VARCHAR},
+      </if>
+      <if test="record.charTwo != null">
+        char_two = #{record.charTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idOne != null">
+        id_one = #{record.idOne,jdbcType=INTEGER},
+      </if>
+      <if test="record.idTwo != null">
+        id_two = #{record.idTwo,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ddwb_market_order
+    set id = #{record.id,jdbcType=INTEGER},
+      customer_name = #{record.customerName,jdbcType=VARCHAR},
+      contract_date = #{record.contractDate,jdbcType=DATE},
+      contract_code = #{record.contractCode,jdbcType=VARCHAR},
+      send_date = #{record.sendDate,jdbcType=TIMESTAMP},
+      specis = #{record.specis,jdbcType=VARCHAR},
+      sale_amount = #{record.saleAmount,jdbcType=INTEGER},
+      sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      sale_sum = #{record.saleSum,jdbcType=DECIMAL},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      save_one = #{record.saveOne,jdbcType=DECIMAL},
+      save_two = #{record.saveTwo,jdbcType=DECIMAL},
+      char_one = #{record.charOne,jdbcType=VARCHAR},
+      char_two = #{record.charTwo,jdbcType=VARCHAR},
+      id_one = #{record.idOne,jdbcType=INTEGER},
+      id_two = #{record.idTwo,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.market.MarketOrder">
+    update ddwb_market_order
+    <set>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractDate != null">
+        contract_date = #{contractDate,jdbcType=DATE},
+      </if>
+      <if test="contractCode != null">
+        contract_code = #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="sendDate != null">
+        send_date = #{sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="specis != null">
+        specis = #{specis,jdbcType=VARCHAR},
+      </if>
+      <if test="saleAmount != null">
+        sale_amount = #{saleAmount,jdbcType=INTEGER},
+      </if>
+      <if test="salePrice != null">
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleSum != null">
+        sale_sum = #{saleSum,jdbcType=DECIMAL},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="saveOne != null">
+        save_one = #{saveOne,jdbcType=DECIMAL},
+      </if>
+      <if test="saveTwo != null">
+        save_two = #{saveTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="charOne != null">
+        char_one = #{charOne,jdbcType=VARCHAR},
+      </if>
+      <if test="charTwo != null">
+        char_two = #{charTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="idOne != null">
+        id_one = #{idOne,jdbcType=INTEGER},
+      </if>
+      <if test="idTwo != null">
+        id_two = #{idTwo,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.market.MarketOrder">
+    update ddwb_market_order
+    set customer_name = #{customerName,jdbcType=VARCHAR},
+      contract_date = #{contractDate,jdbcType=DATE},
+      contract_code = #{contractCode,jdbcType=VARCHAR},
+      send_date = #{sendDate,jdbcType=TIMESTAMP},
+      specis = #{specis,jdbcType=VARCHAR},
+      sale_amount = #{saleAmount,jdbcType=INTEGER},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      sale_sum = #{saleSum,jdbcType=DECIMAL},
+      comment = #{comment,jdbcType=VARCHAR},
+      save_one = #{saveOne,jdbcType=DECIMAL},
+      save_two = #{saveTwo,jdbcType=DECIMAL},
+      char_one = #{charOne,jdbcType=VARCHAR},
+      char_two = #{charTwo,jdbcType=VARCHAR},
+      id_one = #{idOne,jdbcType=INTEGER},
+      id_two = #{idTwo,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

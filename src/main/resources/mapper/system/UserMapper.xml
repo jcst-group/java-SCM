@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.system.UserMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.system.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="identify_code" jdbcType="VARCHAR" property="identifyCode" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATE_WHERE" jdbcType="TINYINT" property="createWhere" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.system.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="identify_code" jdbcType="VARCHAR" property="identifyCode" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATE_WHERE" jdbcType="TINYINT" property="createWhere" />
+    <association property="headPic" column="uid" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getUserHeadPic"/>
+    <association property="hukouPic" column="uid" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getUserHuKOuPic"/>
+    <association property="identifyCodePic" column="uid" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getIdentifyCodePic"/>
+    <collection property="roleList" column="uid" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleByUid"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.system.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <collection property="roleList" column="uid" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleByUid"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap5" type="com.nongxin.terminal.entity.system.User">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <association property="headPic" column="uid" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getUserHeadPic"/>
+    <collection property="roleList" column="uid" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleByUid"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.vo.lookboard.BaseUserVo">
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <collection property="roleList" column="uid" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleNotAdmin"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap6" type="java.util.HashMap">
+    <result column="role_type" javaType="com.nongxin.terminal.util.enumUtil.system.RoleTypeEnum" property="roleType"/>
+    <result column="user_count" jdbcType="INTEGER" property="userCount"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    uid, username, password, salt, real_name,phone, identify_code, email, sex,
+    status, CREATE_TIME, UPDATE_TIME, CREATE_WHERE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from auth_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from auth_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.system.User">
+    insert into auth_user (uid, username, password, 
+      salt, real_name,
+      phone, identify_code, email, 
+      sex, status, CREATE_TIME, 
+      UPDATE_TIME, CREATE_WHERE)
+    values (#{uid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR}, #{identifyCode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}, #{createWhere,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="uid" keyProperty="uid" useGeneratedKeys="true" parameterType="com.nongxin.terminal.entity.system.User">
+    insert into auth_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="identifyCode != null">
+        identify_code,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+
+        CREATE_TIME,
+
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="createWhere != null">
+        CREATE_WHERE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="identifyCode != null">
+        #{identifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+
+      current_timestamp,
+
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createWhere != null">
+        #{createWhere,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.system.User">
+    update auth_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="identifyCode != null">
+        identify_code = #{identifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createWhere != null">
+        CREATE_WHERE = #{createWhere,jdbcType=TINYINT},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.system.User">
+    update auth_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      identify_code = #{identifyCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=SMALLINT},
+      status = #{status,jdbcType=SMALLINT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      CREATE_WHERE = #{createWhere,jdbcType=TINYINT}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+
+  <sql id="sql_where">
+    <where>
+      <if test="username != null">
+        and position(#{username,jdbcType=VARCHAR} in username)
+      </if>
+      <if test="realName != null">
+        and position(#{realName,jdbcType=VARCHAR} in real_name)
+      </if>
+      <if test="phone != null">
+        and position(#{phone,jdbcType=VARCHAR} in phone)
+      </if>
+      <if test="roleId != null">
+        and ROLE_ID = #{roleId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getUserList" parameterType="com.nongxin.terminal.entity.system.User" resultMap="BaseResultMap2">
+    SELECT DISTINCT a.* FROM auth_user a
+    LEFT JOIN auth_user_role b
+    ON a.uid = b.USER_ID
+    <include refid="sql_where" />
+    order by uid desc
+  </select>
+
+  <select id="getAllUser" resultMap="BaseResultMap">
+    select uid, username,real_name
+    from auth_user
+  </select>
+
+  <select id="getUserAndRole" resultMap="BaseResultMap3">
+    select uid, username,real_name,phone
+    from auth_user
+    <where>
+      <if test="realName != null">
+        and position(#{realName,jdbcType=VARCHAR} in real_name)
+      </if>
+    </where>
+  </select>
+
+  <select id="getUserByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from auth_user
+    where (username = #{username,jdbcType=VARCHAR} or phone = #{username,jdbcType=VARCHAR})
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <update id="updateUserStatus" parameterType="java.lang.Integer">
+    update auth_user set status=
+    (case status when 1 then 2
+    when 2 then 1 end) WHERE uid = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getUserByBaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap5">
+    SELECT a.uid,a.real_name,phone FROM auth_user a
+    INNER JOIN ddwb_base_user_rel b
+    ON a.uid = b.user_id
+    WHERE b.base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getIdAndName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select  uid, real_name
+    from auth_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getUserAndRoleByUserName" parameterType="java.lang.String" resultMap="BaseResultMap3">
+    select uid, username, real_name,phone,sex
+    from auth_user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getBaseUser" parameterType="java.lang.Integer" resultMap="BaseResultMap4">
+    select uid,real_name from ddwb_base_user_rel a
+    left join auth_user b on a.user_id = b.uid
+    where a.base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getFarmer" resultMap="BaseResultMap">
+    SELECT DISTINCT a.uid,a.real_name,a.phone FROM auth_user a
+    INNER JOIN auth_user_role b
+    ON a.uid = b.USER_ID
+    INNER JOIN auth_role c
+    ON b.ROLE_ID = c.ID
+    WHERE c.TYPE = #{type,jdbcType=SMALLINT}
+    <if test="realName != null">
+      and position (#{realName,jdbcType=VARCHAR} in a.real_name)
+    </if>
+  </select>
+
+  <select id="checkUser" resultMap="BaseResultMap">
+    select uid,username
+    from auth_user
+    <where>
+      <if test="username != null">
+        and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="phone != null">
+        and phone = #{phone,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="getUserAndHeadPic" resultMap="BaseResultMap5">
+    select uid,real_name from auth_user where uid = #{uid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getUserCount" resultType="java.util.HashMap">
+    SELECT COUNT(uid) userCount,(SELECT manage_area FROM ddwb_company_info) manageArea FROM auth_user
+  </select>
+
+  <select id="getRoleAndUserCount" resultMap="BaseResultMap6">
+    SELECT a.TYPE role_type,COUNT(DISTINCT c.uid) user_count FROM auth_role a
+    LEFT JOIN auth_user_role b
+    ON a.ID = b.ROLE_ID
+    LEFT JOIN auth_user c
+    ON b.USER_ID = c.uid
+    GROUP BY a.TYPE
+  </select>
+
+  <select id="getOrderExecutor" resultMap="BaseResultMap">
+    SELECT DISTINCT g.uid,g.real_name
+    FROM `ddwb_work_order` a
+    INNER JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    INNER JOIN ddwb_base_info c
+    ON b.base_id = c.id
+	INNER JOIN ddwb_order_role_rel e
+	ON e.work_order_id = a.id
+	INNER JOIN(
+		SELECT a.ROLE_ID,b.base_id,b.user_id FROM auth_user_role a
+		INNER JOIN ddwb_base_user_rel b
+		ON a.USER_ID = b.user_id
+	) f ON f.ROLE_ID = e.role_id
+	INNER JOIN auth_user g
+	ON f.user_id = g.uid
+	WHERE c.id = f.base_id AND a.id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

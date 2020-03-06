@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.base.BaseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.base.BaseInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_code" jdbcType="VARCHAR" property="baseCode" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="category" jdbcType="SMALLINT" property="category" />
+    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
+    <result column="base_type" jdbcType="SMALLINT" property="baseType" />
+    <result column="front_stubble" jdbcType="VARCHAR" property="frontStubble" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="altitude" jdbcType="DECIMAL" property="altitude" />
+    <result column="survey" jdbcType="VARCHAR" property="survey" />
+    <result column="soil_type" jdbcType="SMALLINT" property="soilType" />
+    <result column="position" jdbcType="SMALLINT" property="position" />
+    <result column="slope" jdbcType="DECIMAL" property="slope" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.base.BaseInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_code" jdbcType="VARCHAR" property="baseCode" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="category" jdbcType="SMALLINT" property="category" />
+    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
+    <result column="base_type" jdbcType="SMALLINT" property="baseType" />
+    <result column="front_stubble" jdbcType="VARCHAR" property="frontStubble" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="altitude" jdbcType="DECIMAL" property="altitude" />
+    <result column="survey" jdbcType="VARCHAR" property="survey" />
+    <result column="soil_type" jdbcType="SMALLINT" property="soilType" />
+    <result column="position" jdbcType="SMALLINT" property="position" />
+    <result column="slope" jdbcType="DECIMAL" property="slope" />
+    <association property="basePic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getBasePic"/>
+    <association property="soilPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSoilPic"/>
+    <association property="airPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getAirPic"/>
+    <association property="waterPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getWaterPic"/>
+    <association property="address" column="id" select="com.nongxin.terminal.dao.address.AddressMapper.getBaseAddress"/>
+    <collection property="baseTestingVoList" column="id" select="com.nongxin.terminal.dao.base.BaseTestingMapper.selectByBaseId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.base.BaseInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_code" jdbcType="VARCHAR" property="baseCode" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="category" jdbcType="SMALLINT" property="category" />
+    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
+    <result column="base_type" jdbcType="SMALLINT" property="baseType" />
+    <result column="front_stubble" jdbcType="VARCHAR" property="frontStubble" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="altitude" jdbcType="DECIMAL" property="altitude" />
+    <result column="survey" jdbcType="VARCHAR" property="survey" />
+    <result column="soil_type" jdbcType="SMALLINT" property="soilType" />
+    <result column="position" jdbcType="SMALLINT" property="position" />
+    <result column="slope" jdbcType="DECIMAL" property="slope" />
+    <association property="address" column="id" select="com.nongxin.terminal.dao.address.AddressMapper.getBaseAddress"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap6" type="com.nongxin.terminal.entity.base.BaseInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="survey" jdbcType="VARCHAR" property="survey" />
+    <association property="address" column="id" select="com.nongxin.terminal.dao.address.AddressMapper.getBaseAddress"/>
+    <association property="basePic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getBasePic"/>
+    <collection property="userList" column="id" select="com.nongxin.terminal.dao.system.UserMapper.getUserByBaseId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.vo.lookboard.BaseInfoVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="category" jdbcType="SMALLINT" property="category" />
+    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
+    <result column="base_type" jdbcType="SMALLINT" property="baseType" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <association property="basePic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getBasePic"/>
+    <association property="soilPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSoilPic"/>
+    <association property="airPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getAirPic"/>
+    <association property="waterPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getWaterPic"/>
+    <association property="address" column="id" select="com.nongxin.terminal.dao.address.AddressMapper.getBaseAddress"/>
+    <collection property="baseUser" column="id" select="com.nongxin.terminal.dao.system.UserMapper.getBaseUser"/>
+    <collection property="lotList" column="id" select="com.nongxin.terminal.dao.base.LotMapper.getLotListInBoard"/>
+    <collection property="baseTestingVoList" column="id" select="com.nongxin.terminal.dao.base.BaseTestingMapper.selectByBaseId"/>
+    <collection property="cropBatchList" column="id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.getBatchByBaseId"/>
+    <collection property="videoEquipmentList" column="id" select="com.nongxin.terminal.dao.envmonitor.VideoEquipmentMapper.getVideoEquipByBaseId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap5" type="com.nongxin.terminal.vo.lookboard.BaseLotInfoVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="base_type" jdbcType="SMALLINT" property="baseType" />
+    <collection property="street" column="id" select="com.nongxin.terminal.dao.address.AddressMapper.getStreetAddress"/>
+    <collection property="cropBatchList" column="id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.getBatchByBaseId"/>
+  </resultMap>
+
+  <resultMap id="BaseTreeMap" type="com.nongxin.terminal.vo.TreeNodeVo">
+    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="base_name" jdbcType="VARCHAR" property="name"/>
+    <collection property="children" column="id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.selectByBaseId"/>
+  </resultMap>
+
+  <resultMap id="SelectResultMap" type="com.nongxin.terminal.vo.envmonitor.BaseVo">
+    <result column="id" jdbcType="INTEGER" property="id"/>
+    <result column="baseName" jdbcType="VARCHAR" property="baseName"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, base_code, base_name, area_code, category, acreage, base_type, front_stubble, 
+    longitude, latitude, altitude, survey, soil_type, position, slope
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_base_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_base_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.base.BaseInfo" useGeneratedKeys="true">
+    insert into ddwb_base_info (base_code, base_name, area_code, 
+      category, acreage, base_type, 
+      front_stubble, longitude, latitude, 
+      altitude, survey, soil_type, 
+      position, slope)
+    values (#{baseCode,jdbcType=VARCHAR}, #{baseName,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, 
+      #{category,jdbcType=SMALLINT}, #{acreage,jdbcType=DECIMAL}, #{baseType,jdbcType=SMALLINT}, 
+      #{frontStubble,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
+      #{altitude,jdbcType=DECIMAL}, #{survey,jdbcType=VARCHAR}, #{soilType,jdbcType=SMALLINT}, 
+      #{position,jdbcType=INTEGER}, #{slope,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.base.BaseInfo" useGeneratedKeys="true">
+    insert into ddwb_base_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="baseCode != null">
+        base_code,
+      </if>
+      <if test="baseName != null">
+        base_name,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="acreage != null">
+        acreage,
+      </if>
+      <if test="baseType != null">
+        base_type,
+      </if>
+      <if test="frontStubble != null">
+        front_stubble,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="altitude != null">
+        altitude,
+      </if>
+      <if test="survey != null">
+        survey,
+      </if>
+      <if test="soilType != null">
+        soil_type,
+      </if>
+      <if test="position != null">
+        position,
+      </if>
+      <if test="slope != null">
+        slope,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="baseCode != null">
+        #{baseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="baseName != null">
+        #{baseName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=SMALLINT},
+      </if>
+      <if test="acreage != null">
+        #{acreage,jdbcType=DECIMAL},
+      </if>
+      <if test="baseType != null">
+        #{baseType,jdbcType=SMALLINT},
+      </if>
+      <if test="frontStubble != null">
+        #{frontStubble,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="altitude != null">
+        #{altitude,jdbcType=DECIMAL},
+      </if>
+      <if test="survey != null">
+        #{survey,jdbcType=VARCHAR},
+      </if>
+      <if test="soilType != null">
+        #{soilType,jdbcType=SMALLINT},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=INTEGER},
+      </if>
+      <if test="slope != null">
+        #{slope,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.base.BaseInfo">
+    update ddwb_base_info
+    <set>
+      <if test="baseCode != null">
+        base_code = #{baseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="baseName != null">
+        base_name = #{baseName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=SMALLINT},
+      </if>
+      <if test="acreage != null">
+        acreage = #{acreage,jdbcType=DECIMAL},
+      </if>
+      <if test="baseType != null">
+        base_type = #{baseType,jdbcType=SMALLINT},
+      </if>
+      <if test="frontStubble != null">
+        front_stubble = #{frontStubble,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="altitude != null">
+        altitude = #{altitude,jdbcType=DECIMAL},
+      </if>
+      <if test="survey != null">
+        survey = #{survey,jdbcType=VARCHAR},
+      </if>
+      <if test="soilType != null">
+        soil_type = #{soilType,jdbcType=SMALLINT},
+      </if>
+      <if test="position != null">
+        position = #{position,jdbcType=INTEGER},
+      </if>
+      <if test="slope != null">
+        slope = #{slope,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.base.BaseInfo">
+    update ddwb_base_info
+    set base_code = #{baseCode,jdbcType=VARCHAR},
+      base_name = #{baseName,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      category = #{category,jdbcType=SMALLINT},
+      acreage = #{acreage,jdbcType=DECIMAL},
+      base_type = #{baseType,jdbcType=SMALLINT},
+      front_stubble = #{frontStubble,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      altitude = #{altitude,jdbcType=DECIMAL},
+      survey = #{survey,jdbcType=VARCHAR},
+      soil_type = #{soilType,jdbcType=SMALLINT},
+      position = #{position,jdbcType=INTEGER},
+      slope = #{slope,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateAcreage">
+    UPDATE ddwb_base_info SET acreage = (SELECT SUM(lot_acreage) FROM ddwb_lot WHERE base_id = #{baseId}) WHERE id = #{baseId}
+  </update>
+
+    <sql id="sql_where">
+    <where>
+      <if test="baseCode != null">
+        and base_code = #{baseCode,jdbcType=VARCHAR}
+      </if>
+      <if test="baseName != null">
+        and position(#{baseName,jdbcType=VARCHAR} in base_name)
+      </if>
+      <if test="category != null">
+        and category = #{category,jdbcType=SMALLINT}
+      </if>
+      <if test="baseType != null">
+        and base_type = #{baseType,jdbcType=SMALLINT}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getBaseInfoList" parameterType="com.nongxin.terminal.entity.base.BaseInfo" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_base_info
+    <include refid="sql_where" />
+    order by id desc
+  </select>
+
+  <select id="getAllBaseInfo" resultMap="BaseResultMap">
+    select id, base_name
+    from ddwb_base_info
+    <where>
+      <if test="category != null">
+        and category = #{category,jdbcType=SMALLINT}
+      </if>
+      <if test="baseType != null">
+        and base_type = #{baseType,jdbcType=SMALLINT}
+      </if>
+      <if test="baseName != null">
+        and position(#{baseName,jdbcType=VARCHAR} in base_name)
+      </if>
+    </where>
+  </select>
+
+  <select id="getBaseByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    id, base_name
+    from ddwb_base_info
+    <if test="baseType!=null">
+      where baseType = #{base_type,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getIdAndName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,base_name
+    from ddwb_base_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseWithoutUser" resultMap="BaseResultMap">
+    SELECT a.id,a.base_name FROM ddwb_base_info a
+    LEFT JOIN ddwb_base_user_rel b
+    ON a.id = b.base_id
+    WHERE b.user_id is null
+  </select>
+
+  <select id="getBaseById" parameterType="java.lang.Integer" resultMap="BaseResultMap6">
+    select id,survey
+    from ddwb_base_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseByUid" parameterType="java.lang.Integer" resultType="java.util.Map">
+    SELECT a.id,a.base_name baseName FROM ddwb_base_info a
+    INNER JOIN ddwb_base_user_rel b
+    ON b.base_id = a.id
+    WHERE b.user_id = #{uid,jdbcType=INTEGER}
+  </select>
+
+  <!--看板基地-->
+  <select id="getBaseInfoById" parameterType="java.lang.Integer" resultMap="BaseResultMap4">
+    select * from ddwb_base_info where id =#{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseLotInfoById" parameterType="java.lang.Integer" resultMap="BaseResultMap5">
+    select id,base_name,base_type from ddwb_base_info where id =#{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseName" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select base_name from ddwb_base_info where id =#{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseTreeByUid" parameterType="java.lang.Integer" resultMap="BaseTreeMap">
+    SELECT a.id,a.base_name FROM ddwb_base_info a
+    INNER JOIN ddwb_base_user_rel b
+    ON b.base_id = a.id
+    WHERE b.user_id = #{uid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseEquipment" resultMap="SelectResultMap">
+	select b.id,b.base_name as baseName from ddwb_equipment a
+	left join ddwb_base_info b on a.base_id = b.id
+  </select>
+
+  <select id="getBaseByUidAndEqui" parameterType="java.lang.Integer" resultType="java.util.Map">
+    SELECT a.id,a.base_name baseName FROM ddwb_base_info a
+    INNER JOIN ddwb_base_user_rel b
+    ON b.base_id = a.id
+	INNER JOIN ddwb_equipment c
+	ON a.id = c.base_id
+    WHERE b.user_id = #{uid,jdbcType=INTEGER}
+  </select>
+
+</mapper>

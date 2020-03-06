@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.plant.FarmingBatchRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.plant.FarmingBatchRel">
+    <result column="farming_id" jdbcType="INTEGER" property="farmingId" />
+    <result column="batch_id" jdbcType="INTEGER" property="batchId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.plant.FarmingBatchRel">
+    insert into ddwb_farming_batch_rel (farming_id, batch_id)
+    values (#{farmingId,jdbcType=INTEGER}, #{batchId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.plant.FarmingBatchRel">
+    insert into ddwb_farming_batch_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="farmingId != null">
+        farming_id,
+      </if>
+      <if test="batchId != null">
+        batch_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="farmingId != null">
+        #{farmingId,jdbcType=INTEGER},
+      </if>
+      <if test="batchId != null">
+        #{batchId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="delete" parameterType="com.nongxin.terminal.entity.plant.FarmingBatchRel">
+    delete  from  ddwb_farming_batch_rel where farming_id = #{farmingId,jdbcType=INTEGER} and batch_id = #{batchId,jdbcType=INTEGER}
+  </delete>
+
+</mapper>

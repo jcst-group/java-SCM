@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.market.MarketPriceMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.market.MarketPrice">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="breed_id" jdbcType="INTEGER" property="breedId" />
+    <result column="from_type" jdbcType="INTEGER" property="fromType" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="spec_id" jdbcType="INTEGER" property="specId" />
+    <result column="date_type" jdbcType="INTEGER" property="dateType" />
+    <result column="price_date" jdbcType="TIMESTAMP" property="priceDate" />
+    <result column="price_value" jdbcType="DECIMAL" property="priceValue" />
+  </resultMap>
+
+  <resultMap id="DataResultMap" type="com.nongxin.terminal.entity.market.MarketPriceVo">
+    <result column="price_date" jdbcType="TIMESTAMP" property="priceDate" />
+    <result column="price_value" jdbcType="DECIMAL" property="priceValue" />
+  </resultMap>
+
+  <select id="getDataByParams" resultMap="DataResultMap">
+    select price_date, price_value from ddwb_market_price
+    where 1=1
+    <if test="breedId!= null">
+      and breed_id = #{breedId,jdbcType=INTEGER}
+    </if>
+    <if test="fromType!=null">
+      and from_type = #{fromType,jdbcType=INTEGER}
+    </if>
+    <if test="areaId!=null">
+      and area_id = #{areaId,jdbcType=INTEGER}
+    </if>
+    <if test="specId!=null">
+      and spec_id = #{specId,jdbcType=INTEGER}
+    </if>
+    <if test="dateType!=null">
+      and date_type = #{dateType,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null and endTime != null">
+      and price_date >= #{startTime,jdbcType=TIMESTAMP}
+      and #{endTime,jdbcType=TIMESTAMP} >= price_date
+    </if>
+    ORDER BY price_date asc
+  </select>
+
+
+  <sql id="Base_Column_List">
+    id, breed_id, from_type, area_id, spec_id, date_type, price_date, price_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_market_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_market_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.market.MarketPrice" useGeneratedKeys="true">
+    insert into ddwb_market_price (breed_id, from_type, area_id, 
+      spec_id, date_type, price_date, 
+      price_value)
+    values (#{breedId,jdbcType=INTEGER}, #{fromType,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER}, 
+      #{specId,jdbcType=INTEGER}, #{dateType,jdbcType=INTEGER}, #{priceDate,jdbcType=TIMESTAMP}, 
+      #{priceValue,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.market.MarketPrice" useGeneratedKeys="true">
+    insert into ddwb_market_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="breedId != null">
+        breed_id,
+      </if>
+      <if test="fromType != null">
+        from_type,
+      </if>
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="specId != null">
+        spec_id,
+      </if>
+      <if test="dateType != null">
+        date_type,
+      </if>
+      <if test="priceDate != null">
+        price_date,
+      </if>
+      <if test="priceValue != null">
+        price_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="breedId != null">
+        #{breedId,jdbcType=INTEGER},
+      </if>
+      <if test="fromType != null">
+        #{fromType,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="specId != null">
+        #{specId,jdbcType=INTEGER},
+      </if>
+      <if test="dateType != null">
+        #{dateType,jdbcType=INTEGER},
+      </if>
+      <if test="priceDate != null">
+        #{priceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="priceValue != null">
+        #{priceValue,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.market.MarketPrice">
+    update ddwb_market_price
+    <set>
+      <if test="breedId != null">
+        breed_id = #{breedId,jdbcType=INTEGER},
+      </if>
+      <if test="fromType != null">
+        from_type = #{fromType,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null">
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="specId != null">
+        spec_id = #{specId,jdbcType=INTEGER},
+      </if>
+      <if test="dateType != null">
+        date_type = #{dateType,jdbcType=INTEGER},
+      </if>
+      <if test="priceDate != null">
+        price_date = #{priceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="priceValue != null">
+        price_value = #{priceValue,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.market.MarketPrice">
+    update ddwb_market_price
+    set breed_id = #{breedId,jdbcType=INTEGER},
+      from_type = #{fromType,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      spec_id = #{specId,jdbcType=INTEGER},
+      date_type = #{dateType,jdbcType=INTEGER},
+      price_date = #{priceDate,jdbcType=TIMESTAMP},
+      price_value = #{priceValue,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

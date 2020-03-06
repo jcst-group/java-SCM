@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.illness.TreatmentPlanMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.illness.TreatmentPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ill_id" jdbcType="INTEGER" property="illId" />
+    <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.illness.TreatmentPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="ill_id" jdbcType="INTEGER" property="illId" />
+    <result column="plan_name" jdbcType="VARCHAR" property="planName" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getTreatmentPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, ill_id, plan_name, method
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_treatment_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_treatment_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.illness.TreatmentPlan" useGeneratedKeys="true">
+    insert into ddwb_treatment_plan (ill_id, plan_name, method
+      )
+    values (#{illId,jdbcType=INTEGER}, #{planName,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.illness.TreatmentPlan" useGeneratedKeys="true">
+    insert into ddwb_treatment_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="illId != null">
+        ill_id,
+      </if>
+      <if test="planName != null">
+        plan_name,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="illId != null">
+        #{illId,jdbcType=INTEGER},
+      </if>
+      <if test="planName != null">
+        #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.illness.TreatmentPlan">
+    update ddwb_treatment_plan
+    <set>
+      <if test="illId != null">
+        ill_id = #{illId,jdbcType=INTEGER},
+      </if>
+      <if test="planName != null">
+        plan_name = #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.illness.TreatmentPlan">
+    update ddwb_treatment_plan
+    set ill_id = #{illId,jdbcType=INTEGER},
+      plan_name = #{planName,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByIllId" parameterType="com.nongxin.terminal.entity.illness.TreatmentPlan" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_treatment_plan
+    where ill_id = #{illId,jdbcType=INTEGER}
+    <if test="planName != null">
+      and position(#{planName,jdbcType=VARCHAR} in plan_name)
+    </if>
+  </select>
+
+  <select id="selectByPlanName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_treatment_plan
+    where plan_name = #{planName,jdbcType=VARCHAR} and ill_id = #{illId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

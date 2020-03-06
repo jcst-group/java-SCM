@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.recovery.RecoveryBatchMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.recovery.RecoveryBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="recovery_code" jdbcType="VARCHAR" property="recoveryCode" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="crop_batch_id" jdbcType="INTEGER" property="cropBatchId" />
+    <result column="harvesting_time" jdbcType="TIMESTAMP" property="harvestingTime" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="harvested_id" jdbcType="INTEGER" property="harvestedId" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.recovery.RecoveryBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="recovery_code" jdbcType="VARCHAR" property="recoveryCode" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="crop_batch_id" jdbcType="INTEGER" property="cropBatchId" />
+    <result column="harvesting_time" jdbcType="TIMESTAMP" property="harvestingTime" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="harvested_id" jdbcType="INTEGER" property="harvestedId" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+    <association property="harvestedProduct" column="harvested_id" select="com.nongxin.terminal.dao.crop.HarvestedProductMapper.getIdAndName"/>
+    <association property="cropBatch" column="crop_batch_id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.getIdAndNameById"/>
+    <collection property="recoveryLotList" column="id" select="com.nongxin.terminal.dao.recovery.RecoveryLotMapper.getRecoveryLotByRecoveryBatchId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.vo.recovery.RecoveryVo">
+    <result column="id" jdbcType="INTEGER" property="batchId" />
+    <association property="crop" javaType="com.nongxin.terminal.entity.crop.Crop">
+      <result column="crop_id" jdbcType="INTEGER" property="id" />
+      <result column="crop_name" jdbcType="INTEGER" property="cropName" />
+    </association>
+    <collection property="harvestedProductList" column="crop_id" select="com.nongxin.terminal.dao.crop.HarvestedProductMapper.getHarvestedByCropId"/>
+    <collection property="lotList" column="id" select="com.nongxin.terminal.dao.base.LotMapper.getLotByBatchId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.vo.recovery.BaseRecoveryVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="recovery_code" jdbcType="VARCHAR" property="recoveryCode" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="batch_name" jdbcType="VARCHAR" property="batchName" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap5" type="java.util.HashMap">
+    <result column="provenance" jdbcType="VARCHAR" property="provenance" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="unit" javaType="com.nongxin.terminal.util.enumUtil.common.UnitEnum" property="unit" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap6" type="com.nongxin.terminal.vo.recovery.RetroRecovery">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="detection_id" jdbcType="INTEGER" property="detectionId" />
+    <result column="recovery_code" jdbcType="VARCHAR" property="recoveryCode" />
+    <result column="harvesting_time" jdbcType="TIMESTAMP" property="harvestingTime" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <association property="detectionPic" column="detection_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getRecDetectionPic"/>
+    <association property="detectionResultPic" column="detection_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getRecDetectionResultPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, recovery_code, crop_id, crop_batch_id, harvesting_time, yield, unit, harvested_id,status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_recovery_batch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_recovery_batch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.recovery.RecoveryBatch" useGeneratedKeys="true">
+    insert into ddwb_recovery_batch (recovery_code, crop_id, crop_batch_id, 
+      harvesting_time, yield, unit, 
+      harvested_id,status)
+    values (#{recoveryCode,jdbcType=VARCHAR}, #{cropId,jdbcType=INTEGER}, #{cropBatchId,jdbcType=INTEGER}, 
+      #{harvestingTime,jdbcType=TIMESTAMP}, #{yield,jdbcType=DECIMAL}, #{unit,jdbcType=SMALLINT},
+      #{harvestedId,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.recovery.RecoveryBatch" useGeneratedKeys="true">
+    insert into ddwb_recovery_batch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recoveryCode != null">
+        recovery_code,
+      </if>
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="cropBatchId != null">
+        crop_batch_id,
+      </if>
+      <if test="harvestingTime != null">
+        harvesting_time,
+      </if>
+      <if test="yield != null">
+        yield,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="harvestedId != null">
+        harvested_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recoveryCode != null">
+        #{recoveryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="cropBatchId != null">
+        #{cropBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="harvestingTime != null">
+        #{harvestingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yield != null">
+        #{yield,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="harvestedId != null">
+        #{harvestedId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.recovery.RecoveryBatch">
+    update ddwb_recovery_batch
+    <set>
+      <if test="recoveryCode != null">
+        recovery_code = #{recoveryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="cropBatchId != null">
+        crop_batch_id = #{cropBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="harvestingTime != null">
+        harvesting_time = #{harvestingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yield != null">
+        yield = #{yield,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="harvestedId != null">
+        harvested_id = #{harvestedId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.recovery.RecoveryBatch">
+    update ddwb_recovery_batch
+    set recovery_code = #{recoveryCode,jdbcType=VARCHAR},
+      crop_id = #{cropId,jdbcType=INTEGER},
+      crop_batch_id = #{cropBatchId,jdbcType=INTEGER},
+      harvesting_time = #{harvestingTime,jdbcType=TIMESTAMP},
+      yield = #{yield,jdbcType=DECIMAL},
+      unit = #{unit,jdbcType=SMALLINT},
+      harvested_id = #{harvestedId,jdbcType=INTEGER},
+      status = #{status,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getRecoveryBatch" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_recovery_batch
+    <where>
+      <if test="batchId != null">
+        and crop_batch_id = #{batchId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null">
+        and harvesting_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and harvesting_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    order by harvesting_time desc,id desc
+  </select>
+
+  <select id="getRecoveryVo" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    select a.id,a.crop_id,b.crop_name FROM ddwb_crop_batch a
+    INNER JOIN ddwb_crop b
+    ON a.crop_id = b.id
+    WHERE a.id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRecoveryByCropId" resultType="java.util.HashMap">
+    SELECT a.id,a.recovery_code recoveryCode,b.batch_name batchName FROM ddwb_recovery_batch a
+    LEFT JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    WHERE a.crop_id = #{cropId,jdbcType=INTEGER}
+    <if test="condition != null">
+      and (position(#{condition,jdbcType=VARCHAR} in a.recovery_code) OR position(#{condition,jdbcType=VARCHAR} in b.batch_name))
+    </if>
+  </select>
+
+  <select id="getRecoveryByPlanId" resultMap="BaseResultMap4">
+    SELECT a.id,a.recovery_code,a.yield,a.unit,c.base_name,b.batch_name FROM `ddwb_recovery_batch` a
+    LEFT JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    LEFT JOIN ddwb_base_info c
+    ON b.base_id = c.id
+    WHERE b.plan_id = #{planId,jdbcType=INTEGER}
+    <if test="harvestId != null">
+      AND a.harvested_id = #{harvestId,jdbcType=INTEGER}
+    </if>
+    <if test="baseId != null">
+      and c.id = #{baseId,jdbcType=INTEGER}
+    </if>
+    <if test="batchName != null">
+      and position(#{batchName,jdbcType=VARCHAR} in b.batch_name)
+    </if>
+  </select>
+
+  <select id="getRecoveryByInitialProId" resultMap="BaseResultMap4">
+     SELECT a.id,a.recovery_code,a.yield,a.unit,c.base_name,b.batch_name FROM `ddwb_recovery_batch` a
+     LEFT JOIN ddwb_crop_batch b
+     ON a.crop_batch_id = b.id
+     LEFT JOIN ddwb_base_info c
+     ON b.base_id = c.id
+     INNER JOIN ddwb_initpro_batch_rel d
+     ON a.id = d.recove_batch_id
+     WHERE d.init_pro_id = #{initialProId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRecoveryByRecDet" resultMap="BaseResultMap4">
+     SELECT a.id,a.recovery_code,a.yield,a.unit,c.base_name,b.batch_name FROM `ddwb_recovery_batch` a
+     LEFT JOIN ddwb_crop_batch b
+     ON a.crop_batch_id = b.id
+     LEFT JOIN ddwb_base_info c
+     ON b.base_id = c.id
+     INNER JOIN ddwb_rec_det_rel d
+     ON a.id = d.recovery_id
+     WHERE d.rec_detection_id = #{recDetId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRecoveryByOutput" resultType="java.util.HashMap">
+    SELECT a.id,a.recovery_code batchCode,c.batch_name relationName FROM ddwb_recovery_batch a
+    LEFT JOIN (SELECT relation_id,residual_output FROM ddwb_retro_output_rel WHERE relation_type = 1) b
+    ON a.id = b.relation_id
+	LEFT JOIN ddwb_crop_batch c
+	ON a.crop_batch_id = c.id
+    WHERE (b.residual_output IS NULL OR b.residual_output != 0)
+    <if test="condition != null">
+      and (position(#{condition,jdbcType=VARCHAR} in a.recovery_code) OR position(#{condition,jdbcType=VARCHAR} in c.batch_name))
+    </if>
+  </select>
+
+  <select id="getProvenanceById" parameterType="java.lang.Integer" resultMap="BaseResultMap5">
+    SELECT a.provenance,c.yield,c.unit FROM ddwb_planting_plan a
+    INNER JOIN ddwb_crop_batch b
+    ON a.id = b.plan_id
+    INNER JOIN ddwb_recovery_batch c
+    ON b.id = c.crop_batch_id
+    WHERE c.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--看板-->
+  <select id="getRecovertBatchId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select id from ddwb_recovery_batch where crop_batch_id = #{cropBatchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRecoveryByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap6">
+    SELECT c.id,c.harvesting_time,c.recovery_code,e.base_name,g.id detection_id
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+    LEFT JOIN ddwb_crop_batch d
+    ON c.crop_batch_id = d.id
+    LEFT JOIN ddwb_base_info e
+    ON d.base_id = e.id
+    LEFT JOIN ddwb_rec_det_rel f
+    ON c.id = f.recovery_id
+    LEFT JOIN ddwb_recovery_detection g
+    ON f.rec_detection_id = g.id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+    ORDER BY g.detection_time DESC
+	LIMIT 1
+  </select>
+
+  <select id="selectByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select <include refid="Base_Column_List" />
+    from ddwb_recovery_batch where crop_batch_id = #{cropBatchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getAllRecovery" resultType="java.util.HashMap">
+    SELECT a.id,a.recovery_code,b.batch_name FROM ddwb_recovery_batch a
+    INNER JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    <where>
+      <if test="recoveryCode != null">
+        and position( #{recoveryCode,jdbcType=VARCHAR} in a.recovery_code)
+      </if>
+      <if test="batchName != null">
+        and position( #{batchName,jdbcType=VARCHAR} in b.batch_name)
+      </if>
+    </where>
+  </select>
+
+</mapper>

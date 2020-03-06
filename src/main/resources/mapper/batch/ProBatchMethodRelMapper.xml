@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.batch.ProBatchMethodRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.batch.ProBatchMethodRel">
+    <result column="pro_method_id" jdbcType="INTEGER" property="proMethodId" />
+    <result column="pro_batch_id" jdbcType="INTEGER" property="proBatchId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.batch.ProBatchMethodRel">
+    insert into ddwb_pro_batch_method_rel (pro_method_id, pro_batch_id)
+    values (#{proMethodId,jdbcType=INTEGER}, #{proBatchId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.batch.ProBatchMethodRel">
+    insert into ddwb_pro_batch_method_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proMethodId != null">
+        pro_method_id,
+      </if>
+      <if test="proBatchId != null">
+        pro_batch_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proMethodId != null">
+        #{proMethodId,jdbcType=INTEGER},
+      </if>
+      <if test="proBatchId != null">
+        #{proBatchId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByProBatchId" parameterType="java.lang.Integer">
+    delete from ddwb_pro_batch_method_rel where pro_batch_id = #{proBatchId,jdbcType=INTEGER}
+  </delete>
+  <select id="selectByinitproBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    pro_batch_id,pro_method_id
+    from ddwb_pro_batch_method_rel
+    where pro_batch_id = #{initproBatchId,jdbcType=INTEGER}
+  </select>
+</mapper>

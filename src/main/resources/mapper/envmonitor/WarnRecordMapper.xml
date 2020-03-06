@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.envmonitor.WarnRecordMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.envmonitor.WarnRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="warn_time" jdbcType="TIMESTAMP" property="warnTime" />
+    <result column="item" jdbcType="INTEGER" property="item" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="type" jdbcType="VARCHAR" property="type"/>
+    <collection property="contrastVo" column="{item=item,equipmentId=equipment_id}" select="com.nongxin.terminal.dao.envmonitor.WarnEnvMapper.getWarnEnvByItem"/>
+  </resultMap>
+
+  <resultMap id="AppEnvRecordResultMap" type="com.nongxin.terminal.vo.app.AppEnvRecordVo">
+      <result column="warn_time" jdbcType="TIMESTAMP" property="warnTime"/>
+      <result column="base_id" jdbcType="INTEGER" property="baseId"/>
+      <association property="warnRecord" column="warn_time" select="com.nongxin.terminal.dao.envmonitor.WarnRecordMapper.getRecordByTime"/>
+      <collection property="baseName" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getBaseName"></collection>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.vo.envmonitor.WarnRecordVo">
+    <result column="warn_time" jdbcType="TIMESTAMP" property="warnTime"/>
+    <result column="base_id" jdbcType="INTEGER" property="baseId"/>
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId"/>
+    <association property="warnRecord" column="warn_time" select="com.nongxin.terminal.dao.envmonitor.WarnRecordMapper.getRecordByTime"/>
+    <collection property="baseName" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getBaseName"></collection>
+    <collection property="equipmentName" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.EquipmentMapper.getEquipmentName"></collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, content, equipment_id, value,unit,type, warn_time,item
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_warn_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_warn_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.WarnRecord" useGeneratedKeys="true">
+    insert into ddwb_warn_record (content, equipment_id, value, unit,type
+      warn_time,item)
+    values (#{content,jdbcType=VARCHAR}, #{equipmentId,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}
+      #{warnTime,jdbcType=TIMESTAMP},#{item,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.WarnRecord" useGeneratedKeys="true">
+    insert into ddwb_warn_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="content != null">
+        content,
+      </if>
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="warnTime != null">
+        warn_time,
+      </if>
+      <if test="item != null">
+        item,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+
+      <if test="warnTime != null">
+        #{warnTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item != null">
+        #{item,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.envmonitor.WarnRecord">
+    update ddwb_warn_record
+    <set>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="warnTime != null">
+        warn_time = #{warnTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="item != null">
+        item = #{item,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.envmonitor.WarnRecord">
+    update ddwb_warn_record
+    set content = #{content,jdbcType=VARCHAR},
+      equipment_id = #{equipmentId,jdbcType=INTEGER},
+      value = #{value,jdbcType=VARCHAR},
+      warn_time = #{warnTime,jdbcType=TIMESTAMP},
+      item = #{item,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getWarnRecordByTime" resultMap="AppEnvRecordResultMap">
+    select a.warn_time,b.base_id from ddwb_warn_record a
+    left join ddwb_equipment b on a.equipment_id = b.id
+    where 1=1
+    <if test="typeId==1"> <!--今天-->
+      and to_days(a.warn_time) = to_days(now())
+    </if>
+    <if test="typeId==2"> <!--本周-->
+      and YEARWEEK(date_format(a.warn_time,'%Y-%m-%d' )) = YEARWEEK(now())
+    </if>
+    <if test="typeId==3"> <!--本月-->
+      and DATE_FORMAT(a.warn_time, '%Y%m' ) = DATE_FORMAT(CURDATE( ), '%Y%m' )
+    </if>
+    <if test="baseId!=null">
+      and b.base_id = #{baseId,jdbcType=INTEGER}
+    </if>
+    group by a.warn_time
+    order by a.warn_time desc
+  </select>
+
+  <select id="getRecordByTime"  resultMap="BaseResultMap">
+    select a.* from ddwb_warn_record a
+    left join ddwb_equipment b on a.equipment_id = b.id
+    where 1=1
+      and a.warn_time = #{time,jdbcType=TIMESTAMP}
+  </select>
+
+  <!--后台 监测数据异常-->
+  <select id="getRecordList" resultMap="BaseResultMap2">
+    select a.warn_time,b.base_id,a.equipment_id from ddwb_warn_record a
+    left join ddwb_equipment b on a.equipment_id = b.id
+    where 1=1
+    <if test="equipmentId!= null">
+      and a.equipment_id = #{equipmentId,jdbcType=INTEGER}
+    </if>
+    <if test="baseId!=null">
+      and b.base_id = #{baseId,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null and endTime != null">
+      and a.warn_time >= #{startTime,jdbcType=TIMESTAMP}
+      and date_add(#{endTime,jdbcType=TIMESTAMP},interval 1 day) > a.warn_time
+    </if>
+    group by a.warn_time
+    order by a.warn_time desc
+  </select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.base.BaseTestingMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.base.BaseTesting">
+    <id column="env_standards_id" jdbcType="INTEGER" property="envStandardsId" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+  </resultMap>
+
+  <resultMap id="BaseTestingVo" type="com.nongxin.terminal.vo.base.BaseTestingVo">
+    <result column="item_name" jdbcType="SMALLINT" property="itemName" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+    <result column="env_standards_id" jdbcType="INTEGER" property="envStandardsId" />
+  </resultMap>
+
+
+  <resultMap id="BaseTestingAvg" type="com.nongxin.terminal.vo.lookboard.BaseTestingAvg">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+    <result column="max_value" jdbcType="DECIMAL" property="max_value" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    env_standards_id, base_id, value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_base_testing
+    where env_standards_id = #{envStandardsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_base_testing
+    where env_standards_id = #{envStandardsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.base.BaseTesting">
+    insert into ddwb_base_testing (env_standards_id, base_id, value
+      )
+    values (#{envStandardsId,jdbcType=INTEGER}, #{baseId,jdbcType=INTEGER}, #{value,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.base.BaseTesting">
+    insert into ddwb_base_testing
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="envStandardsId != null">
+        env_standards_id,
+      </if>
+      <if test="baseId != null">
+        base_id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="envStandardsId != null">
+        #{envStandardsId,jdbcType=INTEGER},
+      </if>
+      <if test="baseId != null">
+        #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.base.BaseTesting">
+    update ddwb_base_testing
+    <set>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where env_standards_id = #{envStandardsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.base.BaseTesting">
+    update ddwb_base_testing
+    set base_id = #{baseId,jdbcType=INTEGER},
+      value = #{value,jdbcType=DECIMAL}
+    where env_standards_id = #{envStandardsId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByBaseId" parameterType="java.lang.Integer" resultMap="BaseTestingVo">
+    SELECT a.*,b.item,b.item_name FROM `ddwb_base_testing` a
+    INNER JOIN ddwb_env_standards b
+    ON a.env_standards_id = b.id
+    WHERE base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+  <insert id="addBaseTesting">
+    insert into ddwb_base_testing (env_standards_id, base_id, value)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.envStandardsId,jdbcType=INTEGER},#{baseId,jdbcType=INTEGER},#{item.value,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <delete id="deleteByBaseId" parameterType="java.lang.Integer">
+    delete from ddwb_base_testing
+    where base_id = #{baseId,jdbcType=INTEGER}
+  </delete>
+
+<!--看板土壤金属平均值-->
+  <select id="getAllTestingAvg" resultMap="BaseTestingAvg" >
+    SELECT
+        AVG(a.value) as value ,b.item,b.id ,b.max_value as max_value
+    FROM
+        ddwb_base_testing a
+        LEFT JOIN ddwb_env_standards b ON a.env_standards_id = b.id
+    WHERE b.item_name = 3
+    GROUP BY
+        a.env_standards_id
+  </select>
+</mapper>

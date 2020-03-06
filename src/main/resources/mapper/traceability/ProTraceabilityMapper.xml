@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.traceability.ProTraceabilityMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.traceability.ProTraceability">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pinyin_code" jdbcType="VARCHAR" property="pinyinCode" />
+    <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    <result column="crop_code" jdbcType="VARCHAR" property="cropCode" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="edible_value" jdbcType="VARCHAR" property="edibleValue" />
+    <result column="medicinal_value" jdbcType="VARCHAR" property="medicinalValue" />
+    <result column="batch_id" jdbcType="INTEGER" property="batchId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.traceability.ProTraceability">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pinyin_code" jdbcType="VARCHAR" property="pinyinCode" />
+    <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    <result column="crop_code" jdbcType="VARCHAR" property="cropCode" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="edible_value" jdbcType="VARCHAR" property="edibleValue" />
+    <result column="medicinal_value" jdbcType="VARCHAR" property="medicinalValue" />
+    <result column="batch_id" jdbcType="INTEGER" property="batchId" />
+    <collection property="cropPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getProCropPic"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.vo.traceability.PictureVo">
+    <association property="soilPic" column="base_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSoilPic"/>
+    <association property="airPic" column="base_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getAirPic"/>
+    <association property="waterPic" column="base_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getWaterPic"/>
+    <association property="seedDetectionPic" column="seed_detection_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSeedDetectionResultPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, pinyin_code, crop_name, crop_code, `describe`, edible_value, medicinal_value, batch_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_pro_traceability
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_pro_traceability
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.traceability.ProTraceability" useGeneratedKeys="true">
+    insert into ddwb_pro_traceability (pinyin_code, crop_name, crop_code, 
+      `describe`, edible_value, medicinal_value,
+      batch_id)
+    values (#{pinyinCode,jdbcType=VARCHAR}, #{cropName,jdbcType=VARCHAR}, #{cropCode,jdbcType=VARCHAR}, 
+      #{describe,jdbcType=VARCHAR}, #{edibleValue,jdbcType=VARCHAR}, #{medicinalValue,jdbcType=VARCHAR}, 
+      #{batchId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.traceability.ProTraceability" useGeneratedKeys="true">
+    insert into ddwb_pro_traceability
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pinyinCode != null">
+        pinyin_code,
+      </if>
+      <if test="cropName != null">
+        crop_name,
+      </if>
+      <if test="cropCode != null">
+        crop_code,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+      <if test="edibleValue != null">
+        edible_value,
+      </if>
+      <if test="medicinalValue != null">
+        medicinal_value,
+      </if>
+      <if test="batchId != null">
+        batch_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pinyinCode != null">
+        #{pinyinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropName != null">
+        #{cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropCode != null">
+        #{cropCode,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="edibleValue != null">
+        #{edibleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="medicinalValue != null">
+        #{medicinalValue,jdbcType=VARCHAR},
+      </if>
+      <if test="batchId != null">
+        #{batchId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.traceability.ProTraceability">
+    update ddwb_pro_traceability
+    <set>
+      <if test="pinyinCode != null">
+        pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropName != null">
+        crop_name = #{cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropCode != null">
+        crop_code = #{cropCode,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="edibleValue != null">
+        edible_value = #{edibleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="medicinalValue != null">
+        medicinal_value = #{medicinalValue,jdbcType=VARCHAR},
+      </if>
+      <if test="batchId != null">
+        batch_id = #{batchId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.traceability.ProTraceability">
+    update ddwb_pro_traceability
+    set pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+      crop_name = #{cropName,jdbcType=VARCHAR},
+      crop_code = #{cropCode,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      edible_value = #{edibleValue,jdbcType=VARCHAR},
+      medicinal_value = #{medicinalValue,jdbcType=VARCHAR},
+      batch_id = #{batchId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_pro_traceability
+    where batch_id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBatchAndBase" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+    SELECT a.id,a.batch_name batchName,DATE_FORMAT(a.start_time, '%Y-%m-%d') startTime,DATE_FORMAT(a.end_time, '%Y-%m-%d') endTime,b.provenance,c.id baseId,c.base_name baseName,c.longitude,c.latitude
+    from ddwb_crop_batch a
+    LEFT JOIN ddwb_planting_plan b
+    ON a.plan_id = b.id
+    LEFT JOIN ddwb_base_info c
+    ON a.base_id = c.id
+    where a.id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap2">
+    SELECT d.* FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+    LEFT JOIN ddwb_pro_traceability d
+    ON c.crop_batch_id = d.batch_id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getBatchAndBaseByRetroCode" parameterType="java.lang.String" resultType="java.util.HashMap">
+    SELECT d.id,d.batch_name batchName,DATE_FORMAT(d.start_time, '%Y-%m-%d') startTime,DATE_FORMAT(d.end_time, '%Y-%m-%d') endTime,e.provenance,f.id baseId,f.base_name baseName,f.longitude,f.latitude
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+    LEFT JOIN  ddwb_crop_batch d
+    ON d.id = c.crop_batch_id
+    LEFT JOIN ddwb_planting_plan e
+    ON d.plan_id = e.id
+    LEFT JOIN ddwb_base_info f
+    ON d.base_id = f.id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getDetectionPicByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    SELECT a.base_id,b.id seed_detection_id FROM ddwb_crop_batch a
+    LEFT JOIN ddwb_seed_detection b
+    ON a.seed_batch_id = b.seed_batch_id
+    WHERE a.id = #{batchId,jdbcType = INTEGER}
+	ORDER BY b.detection_time DESC
+	LIMIT 1
+  </select>
+
+</mapper>

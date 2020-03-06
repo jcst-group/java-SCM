@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.envmonitor.EnvMonitorMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.envmonitor.EnvMonitor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="air_temperature" jdbcType="DECIMAL" property="airTemperature" />
+    <result column="air_humidity" jdbcType="DECIMAL" property="airHumidity" />
+    <result column="air_pressure" jdbcType="DECIMAL" property="airPressure" />
+    <result column="wind_speed" jdbcType="DECIMAL" property="windSpeed" />
+    <result column="wind_direction" jdbcType="DECIMAL" property="windDirection" />
+    <result column="rainfall" jdbcType="DECIMAL" property="rainfall" />
+    <result column="ill_intensity" jdbcType="DECIMAL" property="illIntensity" />
+    <result column="CO2_value" jdbcType="DECIMAL" property="co2Value" />
+    <result column="PM2_5_value" jdbcType="DECIMAL" property="pm25Value" />
+    <result column="PM10_value" jdbcType="DECIMAL" property="pm10Value" />
+    <result column="soil_temperature" jdbcType="DECIMAL" property="soilTemperature" />
+    <result column="soil_humidity" jdbcType="DECIMAL" property="soilHumidity" />
+    <result column="soil_ph" jdbcType="DECIMAL" property="soilPh" />
+    <result column="soil_ec" jdbcType="DECIMAL" property="soilEc" />
+    <result column="soil_s" jdbcType="DECIMAL" property="soilS" />
+    <result column="monitor_time" jdbcType="TIMESTAMP" property="monitorTime" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="factory_id" jdbcType="INTEGER" property="factoryId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.envmonitor.EnvMonitor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="air_temperature" jdbcType="DECIMAL" property="airTemperature" />
+    <result column="air_humidity" jdbcType="DECIMAL" property="airHumidity" />
+    <result column="air_pressure" jdbcType="DECIMAL" property="airPressure" />
+    <result column="wind_speed" jdbcType="DECIMAL" property="windSpeed" />
+    <result column="wind_direction" jdbcType="DECIMAL" property="windDirection" />
+    <result column="rainfall" jdbcType="DECIMAL" property="rainfall" />
+    <result column="ill_intensity" jdbcType="DECIMAL" property="illIntensity" />
+    <result column="CO2_value" jdbcType="DECIMAL" property="co2Value" />
+    <result column="PM2_5_value" jdbcType="DECIMAL" property="pm25Value" />
+    <result column="PM10_value" jdbcType="DECIMAL" property="pm10Value" />
+    <result column="soil_temperature" jdbcType="DECIMAL" property="soilTemperature" />
+    <result column="soil_humidity" jdbcType="DECIMAL" property="soilHumidity" />
+    <result column="soil_ph" jdbcType="DECIMAL" property="soilPh" />
+    <result column="soil_ec" jdbcType="DECIMAL" property="soilEc" />
+    <result column="soil_s" jdbcType="DECIMAL" property="soilS" />
+    <result column="monitor_time" jdbcType="TIMESTAMP" property="monitorTime" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="factory_id" jdbcType="INTEGER" property="factoryId" />
+    <result column="longitude" jdbcType="DECIMAL" property="lng" />
+    <result column="latitude" jdbcType="DECIMAL" property="lat" />
+    <collection property="equipment" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.EquipmentMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="AppEnvResultMap" type="com.nongxin.terminal.vo.app.AppNorEnvMonitor">
+    <result column="air_temperature" jdbcType="FLOAT" property="airTemperature" />
+    <result column="air_humidity" jdbcType="FLOAT" property="airHumidity" />
+    <result column="air_pressure" jdbcType="FLOAT" property="airPressure" />
+    <result column="wind_speed" jdbcType="FLOAT" property="windSpeed" />
+    <result column="wind_direction" jdbcType="FLOAT" property="windDirection" />
+    <result column="rainfall" jdbcType="FLOAT" property="rainfall" />
+    <result column="ill_intensity" jdbcType="FLOAT" property="illIntensity" />
+    <result column="CO2_value" jdbcType="FLOAT" property="co2Value" />
+    <result column="PM2_5_value" jdbcType="FLOAT" property="pm25Value" />
+    <result column="PM10_value" jdbcType="FLOAT" property="pm10Value" />
+    <result column="soil_temperature" jdbcType="FLOAT" property="soilTemperature" />
+    <result column="soil_humidity" jdbcType="FLOAT" property="soilHumidity" />
+    <result column="soil_ph" jdbcType="FLOAT" property="soilPh" />
+    <result column="soil_ec" jdbcType="FLOAT" property="soilEc" />
+    <result column="soil_s" jdbcType="FLOAT" property="soilS" />
+    <result column="monitor_time" jdbcType="TIMESTAMP" property="monitorTime" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="factory_id" jdbcType="INTEGER" property="factoryId" />
+    <association property="warnRecordList" column="monitor_time" select="com.nongxin.terminal.dao.envmonitor.WarnRecordMapper.getRecordByTime"/>
+    <collection property="warnEnv" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.WarnEnvMapper.getWarnEnvByEquipmentId"/>
+  </resultMap>
+
+  <resultMap id="MonitorVoMap" type="com.nongxin.terminal.vo.zishan.MonitorVo">
+    <result column="createdAt" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+  </resultMap>
+
+  <resultMap id="RainVoMap" type="com.nongxin.terminal.vo.zishan.RainVo">
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <collection property="day" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.EnvMonitorMapper.getRainDataDay"/>
+    <collection property="month" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.EnvMonitorMapper.getRainDataMonth"/>
+    <collection property="year" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.EnvMonitorMapper.getRainDataYear"/>
+  </resultMap>
+
+  <resultMap id="RainSpecialVoMap" type="com.nongxin.terminal.vo.zishan.RainSpecialVo">
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+  </resultMap>
+
+  <resultMap id="WsdVoMap" type="com.nongxin.terminal.vo.zishan.WsdVo">
+    <result column="wind_speed" jdbcType="DECIMAL" property="speed" />
+    <result column="wind_direction" jdbcType="DECIMAL" property="direct" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, air_temperature, air_humidity, air_pressure, wind_speed, wind_direction, rainfall, 
+    ill_intensity, CO2_value, PM2_5_value, PM10_value, soil_temperature, soil_humidity, 
+    soil_ph, soil_ec, soil_s, monitor_time, equipment_id, factory_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_env_monitor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_env_monitor
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitor" useGeneratedKeys="true">
+    insert into ddwb_env_monitor (air_temperature, air_humidity, air_pressure, 
+      wind_speed, wind_direction, rainfall, 
+      ill_intensity, CO2_value, PM2_5_value, 
+      PM10_value, soil_temperature, soil_humidity, 
+      soil_ph, soil_ec, soil_s, 
+      monitor_time, equipment_id, factory_id
+      )
+    values (#{airTemperature,jdbcType=DECIMAL}, #{airHumidity,jdbcType=DECIMAL}, #{airPressure,jdbcType=DECIMAL}, 
+      #{windSpeed,jdbcType=DECIMAL}, #{windDirection,jdbcType=DECIMAL}, #{rainfall,jdbcType=DECIMAL}, 
+      #{illIntensity,jdbcType=DECIMAL}, #{co2Value,jdbcType=DECIMAL}, #{pm25Value,jdbcType=DECIMAL}, 
+      #{pm10Value,jdbcType=DECIMAL}, #{soilTemperature,jdbcType=DECIMAL}, #{soilHumidity,jdbcType=DECIMAL}, 
+      #{soilPh,jdbcType=DECIMAL}, #{soilEc,jdbcType=DECIMAL}, #{soilS,jdbcType=DECIMAL}, 
+      #{monitorTime,jdbcType=TIMESTAMP}, #{equipmentId,jdbcType=INTEGER}, #{factoryId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitor" useGeneratedKeys="true">
+    insert into ddwb_env_monitor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="airTemperature != null">
+        air_temperature,
+      </if>
+      <if test="airHumidity != null">
+        air_humidity,
+      </if>
+      <if test="airPressure != null">
+        air_pressure,
+      </if>
+      <if test="windSpeed != null">
+        wind_speed,
+      </if>
+      <if test="windDirection != null">
+        wind_direction,
+      </if>
+      <if test="rainfall != null">
+        rainfall,
+      </if>
+      <if test="illIntensity != null">
+        ill_intensity,
+      </if>
+      <if test="co2Value != null">
+        CO2_value,
+      </if>
+      <if test="pm25Value != null">
+        PM2_5_value,
+      </if>
+      <if test="pm10Value != null">
+        PM10_value,
+      </if>
+      <if test="soilTemperature != null">
+        soil_temperature,
+      </if>
+      <if test="soilHumidity != null">
+        soil_humidity,
+      </if>
+      <if test="soilPh != null">
+        soil_ph,
+      </if>
+      <if test="soilEc != null">
+        soil_ec,
+      </if>
+      <if test="soilS != null">
+        soil_s,
+      </if>
+      <if test="monitorTime != null">
+        monitor_time,
+      </if>
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="factoryId != null">
+        factory_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="airTemperature != null">
+        #{airTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="airHumidity != null">
+        #{airHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="airPressure != null">
+        #{airPressure,jdbcType=DECIMAL},
+      </if>
+      <if test="windSpeed != null">
+        #{windSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="windDirection != null">
+        #{windDirection,jdbcType=DECIMAL},
+      </if>
+      <if test="rainfall != null">
+        #{rainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="illIntensity != null">
+        #{illIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="co2Value != null">
+        #{co2Value,jdbcType=DECIMAL},
+      </if>
+      <if test="pm25Value != null">
+        #{pm25Value,jdbcType=DECIMAL},
+      </if>
+      <if test="pm10Value != null">
+        #{pm10Value,jdbcType=DECIMAL},
+      </if>
+      <if test="soilTemperature != null">
+        #{soilTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="soilHumidity != null">
+        #{soilHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="soilPh != null">
+        #{soilPh,jdbcType=DECIMAL},
+      </if>
+      <if test="soilEc != null">
+        #{soilEc,jdbcType=DECIMAL},
+      </if>
+      <if test="soilS != null">
+        #{soilS,jdbcType=DECIMAL},
+      </if>
+      <if test="monitorTime != null">
+        #{monitorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="factoryId != null">
+        #{factoryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitor">
+    update ddwb_env_monitor
+    <set>
+      <if test="airTemperature != null">
+        air_temperature = #{airTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="airHumidity != null">
+        air_humidity = #{airHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="airPressure != null">
+        air_pressure = #{airPressure,jdbcType=DECIMAL},
+      </if>
+      <if test="windSpeed != null">
+        wind_speed = #{windSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="windDirection != null">
+        wind_direction = #{windDirection,jdbcType=DECIMAL},
+      </if>
+      <if test="rainfall != null">
+        rainfall = #{rainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="illIntensity != null">
+        ill_intensity = #{illIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="co2Value != null">
+        CO2_value = #{co2Value,jdbcType=DECIMAL},
+      </if>
+      <if test="pm25Value != null">
+        PM2_5_value = #{pm25Value,jdbcType=DECIMAL},
+      </if>
+      <if test="pm10Value != null">
+        PM10_value = #{pm10Value,jdbcType=DECIMAL},
+      </if>
+      <if test="soilTemperature != null">
+        soil_temperature = #{soilTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="soilHumidity != null">
+        soil_humidity = #{soilHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="soilPh != null">
+        soil_ph = #{soilPh,jdbcType=DECIMAL},
+      </if>
+      <if test="soilEc != null">
+        soil_ec = #{soilEc,jdbcType=DECIMAL},
+      </if>
+      <if test="soilS != null">
+        soil_s = #{soilS,jdbcType=DECIMAL},
+      </if>
+      <if test="monitorTime != null">
+        monitor_time = #{monitorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="factoryId != null">
+        factory_id = #{factoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitor">
+    update ddwb_env_monitor
+    set air_temperature = #{airTemperature,jdbcType=DECIMAL},
+      air_humidity = #{airHumidity,jdbcType=DECIMAL},
+      air_pressure = #{airPressure,jdbcType=DECIMAL},
+      wind_speed = #{windSpeed,jdbcType=DECIMAL},
+      wind_direction = #{windDirection,jdbcType=DECIMAL},
+      rainfall = #{rainfall,jdbcType=DECIMAL},
+      ill_intensity = #{illIntensity,jdbcType=DECIMAL},
+      CO2_value = #{co2Value,jdbcType=DECIMAL},
+      PM2_5_value = #{pm25Value,jdbcType=DECIMAL},
+      PM10_value = #{pm10Value,jdbcType=DECIMAL},
+      soil_temperature = #{soilTemperature,jdbcType=DECIMAL},
+      soil_humidity = #{soilHumidity,jdbcType=DECIMAL},
+      soil_ph = #{soilPh,jdbcType=DECIMAL},
+      soil_ec = #{soilEc,jdbcType=DECIMAL},
+      soil_s = #{soilS,jdbcType=DECIMAL},
+      monitor_time = #{monitorTime,jdbcType=TIMESTAMP},
+      equipment_id = #{equipmentId,jdbcType=INTEGER},
+      factory_id = #{factoryId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByEquipIdAndMeasureTime" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitor" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ddwb_env_monitor env where 1=1
+    <if test="equipmentId != null">
+      and equipment_id = #{equipmentId,jdbcType=INTEGER}
+    </if>
+    <if test="monitorTime != null">
+      and monitor_time = #{monitorTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="getLastMonitor" resultMap="BaseResultMap2">
+        SELECT
+        a.*,d.longitude,d.latitude
+        FROM
+        ddwb_env_monitor a,
+        ( SELECT max( monitor_time ) AS time ,equipment_id FROM ddwb_env_monitor
+        where air_temperature is not null and soil_ph is not null GROUP BY equipment_id ) b
+				left join ddwb_equipment c on c.id = b.equipment_id
+				left join ddwb_base_info d on d.id = c.base_id
+        WHERE
+        a.monitor_time = b.time
+        order by equipment_id asc
+  </select>
+
+  <select id="getLastMonitor2" resultMap="BaseResultMap2">
+        SELECT
+        a.*,d.longitude,d.latitude
+        FROM
+        ddwb_env_monitor a,
+        ( SELECT max( monitor_time ) AS time ,equipment_id FROM ddwb_env_monitor
+        where air_temperature is not null and soil_ph is not null GROUP BY equipment_id ) b
+				left join ddwb_equipment c on c.id = b.equipment_id
+				left join ddwb_base_info d on d.id = c.base_id
+        WHERE
+        a.monitor_time = b.time and b.equipment_id = #{equipmentId,jdbcType=INTEGER}
+        order by equipment_id asc
+  </select>
+
+  <select id="getTodayEnv" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      SELECT
+        a.*
+      FROM
+          ddwb_env_monitor a,
+          ddwb_equipment b
+      WHERE
+          a.equipment_id = b.id
+          AND b.base_id = #{baseId,jdbcType=INTEGER}
+          AND position( date_format( now( ), '%Y-%m-%d' ) IN a.monitor_time )
+      ORDER BY
+          a.monitor_time ASC;
+  </select>
+
+  <select id="getEnvMonitorByEveryDayAvg" resultType="com.nongxin.terminal.vo.app.EnvDayAvg">
+    select
+    AVG(air_temperature) as airTemperatureAvg,
+    AVG(air_humidity) as airHumidityAvg,
+    AVG(air_pressure) as airPressureAvg,
+    AVG(wind_speed) as windSpeedAvg,
+    AVG(wind_direction) as windDirectionAvg,
+    AVG(rainfall) as rainfallAvg,
+    AVG(ill_intensity) as illIntensityAvg,
+    AVG(CO2_value) as co2ValueAvg,
+    AVG(PM2_5_value) as pm25ValueAvg,
+    AVG(PM10_value) as pm10ValueAvg,
+    AVG(soil_temperature) as soilTemperatureAvg,
+    AVG(soil_humidity) as soilHumidityAvg,
+    AVG(soil_ph) as soilPhAvg,
+    AVG(soil_ec) as soilEcAvg,
+    AVG(soil_s) as soilSAvg
+    from ddwb_env_monitor where to_days(monitor_time) = to_days(now()) and equipment_id = #{equipmentId,jdbcType=VARCHAR};
+  </select>
+
+  <select id="getEnvMonitorList" resultMap="BaseResultMap2">
+    select a.* from ddwb_env_monitor a
+    left join ddwb_equipment b on a.equipment_id = b.id
+    where 1=1
+    <if test="equipmentId!= null">
+      and a.equipment_id = #{equipmentId,jdbcType=INTEGER}
+    </if>
+    <if test="baseId!=null">
+      and b.base_id = #{baseId,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null and endTime != null">
+      and a.monitor_time >= #{startTime,jdbcType=TIMESTAMP}
+      and date_add(#{endTime,jdbcType=TIMESTAMP},interval 1 day) > a.monitor_time
+    </if>
+    ORDER BY a.monitor_time desc
+  </select>
+
+  <select id="getEnvChart" resultMap="BaseResultMap">
+    select a.* from ddwb_env_monitor a
+    left join ddwb_equipment b on a.equipment_id = b.id
+    where 1=1
+    <if test="equipmentId!= null">
+      and a.equipment_id = #{equipmentId,jdbcType=INTEGER}
+    </if>
+    <if test="baseId!=null">
+      and b.base_id = #{baseId,jdbcType=INTEGER}
+    </if>
+    <if test="startTime != null and endTime != null">
+      and a.monitor_time >= #{startTime,jdbcType=TIMESTAMP}
+      and date_add(#{endTime,jdbcType=TIMESTAMP},interval 1 day) > a.monitor_time
+    </if>
+    ORDER BY a.monitor_time asc
+  </select>
+
+  <select id="getEnvInfo" resultMap="AppEnvResultMap">
+    select a.* from ddwb_env_monitor a
+    left join ddwb_equipment b on a.equipment_id = b.id
+    <where>
+      <if test="baseId!=null">
+        b.base_id = #{baseId,jdbcType=INTEGER}
+      </if>
+      <if test="time!=null">
+        and a.monitor_time = #{time,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(id) from ddwb_env_monitor where equipment_id = #{equipmentId,jdbcType=INTEGER}
+    and monitor_time between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+  </select>
+
+  <!--紫杉-->
+  <select id="getAtmosphereData" resultMap="MonitorVoMap">
+    select
+    <if test="type ==1">
+      air_temperature as value,monitor_time as createdAt
+    </if>
+    <if test="type ==2">
+      air_pressure as value,monitor_time as createdAt
+    </if>
+    <if test="type ==3">
+      air_humidity as value,monitor_time as createdAt
+    </if>
+    <if test="type ==4">
+      PM2_5_value as value,monitor_time as createdAt
+    </if>
+    <if test="type ==5">
+      CO2_value as value,monitor_time as createdAt
+    </if>
+    from ddwb_env_monitor
+    where monitor_time &gt;=(NOW() - interval 24 hour) and equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getSoilData" resultMap="MonitorVoMap">
+    select
+    <if test="type ==1">
+      soil_temperature as value,monitor_time as createdAt
+    </if>
+    <if test="type ==2">
+      soil_humidity as value,monitor_time as createdAt
+    </if>
+    <if test="type ==3">
+      soil_ph as value,monitor_time as createdAt
+    </if>
+    <if test="type ==4">
+      soil_ec as value,monitor_time as createdAt
+    </if>
+    <if test="type ==5">
+      ill_intensity as value,monitor_time as createdAt
+    </if>
+    from ddwb_env_monitor
+    where monitor_time &gt;=(NOW() - interval 24 hour) and equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRainData" resultMap="RainVoMap">
+    select equipment_id from ddwb_env_monitor where equipment_id = #{equipmentId,jdbcType=INTEGER} limit 1
+  </select>
+
+  <!--t1.HOUR date,-->
+  <!--获取当天的降雨量-->
+  <select id="getRainDataDay" resultType="java.lang.String">
+  SELECT
+	format(t2.rValue,2) as value
+    FROM
+	(
+    SELECT
+	DATE_FORMAT( @cdate := DATE_ADD( @cdate, INTERVAL - 1 HOUR ), '%H' ) HOUR
+    FROM
+	( SELECT @cdate := DATE_ADD( DATE_FORMAT( NOW( ), '%y-%m-%d %H' ), INTERVAL + 1 HOUR ) FROM ddwb_env_monitor ) t0
+	LIMIT 24
+	) t1
+
+	LEFT JOIN ( SELECT DATE_FORMAT( monitor_time, '%H') HOUR ,
+	sum(rainfall) as rValue from ddwb_env_monitor WHERE
+	TO_DAYS(monitor_time) =TO_DAYS(NOW()) and equipment_id = #{equipmentId,jdbcType=INTEGER} GROUP BY HOUR(monitor_time)) t2 ON t1.HOUR = t2.HOUR
+    GROUP BY
+	t1.HOUR
+    ORDER BY
+	t1.HOUR asc
+  </select>
+
+  <!--获取本月的降雨量-->
+  <select id="getRainDataMonth" resultType="java.lang.String">
+          select b.value from
+      (
+      SELECT 1 AS d UNION ALL
+			SELECT 2 AS d UNION ALL
+			SELECT 3 AS d UNION ALL
+			SELECT 4 AS d UNION ALL
+			SELECT 5 AS d UNION ALL
+			SELECT 6 AS d UNION ALL
+			SELECT 7 AS d UNION ALL
+			SELECT 8 AS d UNION ALL
+			SELECT 9 AS d UNION ALL
+			SELECT 10 AS d  UNION ALL
+			SELECT 11 AS d  UNION ALL
+			SELECT 12  AS d UNION ALL
+			SELECT 13 AS d  UNION ALL
+			SELECT 14 AS d  UNION ALL
+			SELECT 15 AS d  UNION ALL
+			SELECT 16 AS d  UNION ALL
+			SELECT 17 AS d  UNION ALL
+			SELECT 18 AS d UNION ALL
+			SELECT 19 AS d UNION ALL
+			SELECT 20 AS d UNION ALL
+			SELECT 21 AS d UNION ALL
+			SELECT 22 AS d UNION ALL
+			SELECT 23 AS d UNION ALL
+			SELECT 24 AS d UNION ALL
+			SELECT 25 AS d UNION ALL
+			SELECT 26 AS d UNION ALL
+			SELECT 27 AS d UNION ALL
+			SELECT 28 AS d UNION ALL
+			SELECT 29 AS d UNION ALL
+			SELECT 30 AS d UNION ALL
+			SELECT 31 AS d
+      )a
+      left join
+      (SELECT sum(rainfall) as value,DAY(monitor_time) as d from ddwb_env_monitor
+      where equipment_id=#{equipmentId,jdbcType=INTEGER} and MONTH(monitor_time) = MONTH(CURRENT_DATE)
+      GROUP BY DAY(monitor_time)) b
+      on a.d = b.d
+			order by a.d asc
+  </select>
+
+  <!--获取一年每个月的降雨量-->
+  <select id="getRainDataYear" resultType="java.lang.String">
+      select b.value from
+      (
+      SELECT CONCAT('1') AS date UNION
+      SELECT CONCAT('2') AS date UNION
+      SELECT CONCAT('3') AS date UNION
+      SELECT CONCAT('4') AS date UNION
+      SELECT CONCAT('5') AS date UNION
+      SELECT CONCAT('6') AS date UNION
+      SELECT CONCAT('7') AS date UNION
+      SELECT CONCAT('8') AS date UNION
+      SELECT CONCAT('9') AS date UNION
+      SELECT CONCAT('10') AS date UNION
+      SELECT CONCAT('11') AS date UNION
+      SELECT CONCAT('12') AS date
+      )a
+      left join
+      (SELECT sum(rainfall) as value,MONTH(monitor_time) as m from ddwb_env_monitor
+      where equipment_id=#{equipmentId,jdbcType=INTEGER}
+      GROUP BY MONTH(monitor_time)) b
+      on a.date = b.m
+  </select>
+
+  <select id="getWSpeedDay" resultMap="WsdVoMap">
+    select wind_speed,wind_direction from ddwb_env_monitor
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+    and  TO_DAYS(monitor_time) = TO_DAYS(CURRENT_DATE)
+    and wind_speed is not null and wind_direction is not null
+  </select>
+
+  <select id="getWSpeedMonth" resultMap="WsdVoMap">
+    select wind_speed,wind_direction from ddwb_env_monitor
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+    and  MONTH(monitor_time) = MONTH(CURRENT_DATE)
+    and wind_speed is not null and wind_direction is not null
+  </select>
+
+  <select id="getWSpeedYear" resultMap="WsdVoMap">
+        select wind_speed,wind_direction from ddwb_env_monitor
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+    and  YEAR(monitor_time) = YEAR(CURRENT_DATE)
+    and wind_speed is not null and wind_direction is not null
+  </select>
+
+</mapper>

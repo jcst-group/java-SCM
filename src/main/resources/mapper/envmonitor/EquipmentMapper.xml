@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.envmonitor.EquipmentMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.envmonitor.Equipment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="equipment_id" jdbcType="VARCHAR" property="equipmentId" />
+    <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="equipment_address" jdbcType="VARCHAR" property="equipmentAddress" />
+    <result column="factory_id" jdbcType="INTEGER" property="factoryId" />
+    <result column="lng" jdbcType="DECIMAL" property="lng" />
+    <result column="lat" jdbcType="DECIMAL" property="lat" />
+    <collection property="baseName" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getBaseName"/>
+  </resultMap>
+
+  <resultMap id="EquipmentLngMap" type="com.nongxin.terminal.vo.lookboard.EquipmentLngVo">
+    <result column="base_id" jdbcType="INTEGER" property="baseId"/>
+    <result column="id" jdbcType="VARCHAR" property="equipmentId" />
+    <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
+    <result column="longitude" jdbcType="DECIMAL" property="lng" />
+    <result column="latitude" jdbcType="DECIMAL" property="lat" />
+    <result column="base_name" jdbcType="DECIMAL" property="baseName" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, equipment_id, equipment_name, create_time, base_id, equipment_address, factory_id, 
+    lng, lat
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_equipment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_equipment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.Equipment" useGeneratedKeys="true">
+    insert into ddwb_equipment (equipment_id, equipment_name, create_time, 
+      base_id, equipment_address, factory_id, 
+      lng, lat)
+    values (#{equipmentId,jdbcType=VARCHAR}, #{equipmentName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{baseId,jdbcType=INTEGER}, #{equipmentAddress,jdbcType=VARCHAR}, #{factoryId,jdbcType=INTEGER}, 
+      #{lng,jdbcType=DECIMAL}, #{lat,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.Equipment" useGeneratedKeys="true">
+    insert into ddwb_equipment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="equipmentName != null">
+        equipment_name,
+      </if>
+        create_time,
+      <if test="baseId != null">
+        base_id,
+      </if>
+      <if test="equipmentAddress != null">
+        equipment_address,
+      </if>
+      <if test="factoryId != null">
+        factory_id,
+      </if>
+      <if test="lng != null">
+        lng,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentName != null">
+        #{equipmentName,jdbcType=VARCHAR},
+      </if>
+        now(),
+      <if test="baseId != null">
+        #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentAddress != null">
+        #{equipmentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="factoryId != null">
+        #{factoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lng != null">
+        #{lng,jdbcType=DECIMAL},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.envmonitor.Equipment">
+    update ddwb_equipment
+    <set>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentName != null">
+        equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="equipmentAddress != null">
+        equipment_address = #{equipmentAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="factoryId != null">
+        factory_id = #{factoryId,jdbcType=INTEGER},
+      </if>
+      <if test="lng != null">
+        lng = #{lng,jdbcType=DECIMAL},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.envmonitor.Equipment">
+    update ddwb_equipment
+    set equipment_id = #{equipmentId,jdbcType=VARCHAR},
+      equipment_name = #{equipmentName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      base_id = #{baseId,jdbcType=INTEGER},
+      equipment_address = #{equipmentAddress,jdbcType=VARCHAR},
+      factory_id = #{factoryId,jdbcType=INTEGER},
+      lng = #{lng,jdbcType=DECIMAL},
+      lat = #{lat,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByEquipmentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_equipment
+    where equipment_id = #{equipmentId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByEquipmentIdAndFactoryId" parameterType="com.nongxin.terminal.entity.envmonitor.Equipment" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_equipment
+    where equipment_id = #{equipmentId,jdbcType=VARCHAR}
+    and factory_id = #{factoryId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getEquipmentList" parameterType="com.nongxin.terminal.entity.envmonitor.Equipment" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_equipment
+    where 1=1
+    <if test="equipmentId != null and equipmentId !=''">
+      and position(#{equipmentId,jdbcType=VARCHAR} in equipment_id)
+    </if>
+    <if test="equipmentName != null and equipmentName !=''">
+      and position(#{equipmentName,jdbcType=VARCHAR} in equipment_name)
+    </if>
+  </select>
+
+  <select id="getFactoryId" resultType="java.lang.Integer">
+    select factory_id from ddwb_equipment where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getEquipmentIdAndNameList" resultMap="BaseResultMap">
+      select id,equipment_id,equipment_name from ddwb_equipment
+  </select>
+
+  <select id="checkId" resultMap="BaseResultMap">
+      select equipment_id,equipment_name from ddwb_equipment
+    <where>
+      <if test="equipmentId != null">
+        and equipment_id = #{equipmentId,jdbcType=VARCHAR}
+      </if>
+      <if test="equipmentName != null">
+        or equipment_name = #{equipmentName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="getEquipmentName" parameterType="java.lang.Integer" resultType="java.lang.String">
+    select equipment_name from ddwb_equipment where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseName" resultType="java.lang.String">
+    select b.base_name as baseName from ddwb_equipment a
+    left join ddwb_base_info b on a.base_id = b.id
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getBaseEquipmentByUid" resultType="java.lang.Integer">
+    SELECT COUNT(c.id) FROM ddwb_base_info a
+    INNER JOIN ddwb_base_user_rel b
+    ON b.base_id = a.id
+    INNER JOIN ddwb_equipment c
+    ON a.id = c.base_id
+    WHERE b.user_id = #{uid}
+  </select>
+
+  <select id="getEquipmentLng" resultMap="EquipmentLngMap">
+    select a.base_id,a.id,a.equipment_name,b.longitude,b.latitude,b.base_name from ddwb_equipment a
+    left join ddwb_base_info b on a.base_id = b.id
+  </select>
+</mapper>

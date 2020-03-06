@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.testing.SeedDetectionMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.testing.SeedDetection">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="seed_batch_id" jdbcType="INTEGER" property="seedBatchId" />
+    <result column="detection_time" jdbcType="TIMESTAMP" property="detectionTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.testing.SeedDetection">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="seed_batch_id" jdbcType="INTEGER" property="seedBatchId" />
+    <result column="detection_time" jdbcType="TIMESTAMP" property="detectionTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+    <association property="seedBatch" column="seed_batch_id" select="com.nongxin.terminal.dao.batch.SeedBatchMapper.getIdAndCodeById"/>
+    <association property="detectionPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSeedDetectionPic"/>
+    <association property="detectionResultPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSeedDetectionResultPic"/>
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="baseInfo" javaType="com.nongxin.terminal.entity.base.BaseInfo">
+      <id column="base_id" jdbcType="INTEGER" property="id" />
+      <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    </association>
+    <association property="cropBatch" column="batch_id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.getIdAndNameById"/>
+    <collection property="detectionVoList" column="id" select="com.nongxin.terminal.dao.testing.DetectionRelMapper.getSeedDetectionVo"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.testing.SeedDetection">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="detection_time" jdbcType="TIMESTAMP" property="detectionTime" />
+    <association property="detectionPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSeedDetectionPic"/>
+    <association property="detectionResultPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSeedDetectionResultPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, crop_id, seed_batch_id, detection_time,user_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_seed_detection
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_seed_detection
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.testing.SeedDetection" useGeneratedKeys="true">
+    insert into ddwb_seed_detection (crop_id, seed_batch_id, detection_time,user_id
+      )
+    values (#{cropId,jdbcType=INTEGER}, #{seedBatchId,jdbcType=INTEGER}, #{detectionTime,jdbcType=TIMESTAMP},#{userId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.testing.SeedDetection" useGeneratedKeys="true">
+    insert into ddwb_seed_detection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="seedBatchId != null">
+        seed_batch_id,
+      </if>
+      <if test="detectionTime != null">
+        detection_time,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="seedBatchId != null">
+        #{seedBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="detectionTime != null">
+        #{detectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.testing.SeedDetection">
+    update ddwb_seed_detection
+    <set>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="seedBatchId != null">
+        seed_batch_id = #{seedBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="detectionTime != null">
+        detection_time = #{detectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.testing.SeedDetection">
+    update ddwb_seed_detection
+    set crop_id = #{cropId,jdbcType=INTEGER},
+      seed_batch_id = #{seedBatchId,jdbcType=INTEGER},
+      detection_time = #{detectionTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getSeedDetection" resultMap="BaseResultMap2">
+    SELECT a.*,e.id base_id,e.base_name,d.id batch_id FROM ddwb_seed_detection a
+    INNER JOIN ddwb_seed_batch b
+    ON a.seed_batch_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.recovery_id = c.id
+    LEFT JOIN ddwb_crop_batch d
+    ON c.crop_batch_id = d.id
+    LEFT JOIN ddwb_base_info e
+    ON d.base_id = e.id
+    <where>
+      <if test="startTime != null">
+        and a.detection_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and a.detection_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="baseId != null">
+        and e.id = #{baseId}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectBySeedBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    select id,detection_time
+    from ddwb_seed_detection
+    where seed_batch_id = #{seedBatchId,jdbcType=INTEGER}
+    ORDER BY detection_time desc
+	LIMIT 1
+  </select>
+
+</mapper>

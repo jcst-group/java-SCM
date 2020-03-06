@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.envmonitor.EnvMonitorDayAvgMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.envmonitor.EnvMonitorDayAvg">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="avg_air_temperature" jdbcType="DECIMAL" property="avgAirTemperature" />
+    <result column="avg_air_humidity" jdbcType="DECIMAL" property="avgAirHumidity" />
+    <result column="avg_air_pressure" jdbcType="DECIMAL" property="avgAirPressure" />
+    <result column="avg_wind_speed" jdbcType="DECIMAL" property="avgWindSpeed" />
+    <result column="avg_wind_direction" jdbcType="DECIMAL" property="avgWindDirection" />
+    <result column="avg_rainfall" jdbcType="DECIMAL" property="avgRainfall" />
+    <result column="avg_ill_intensity" jdbcType="DECIMAL" property="avgIllIntensity" />
+    <result column="avg_CO2_value" jdbcType="DECIMAL" property="avgCo2Value" />
+    <result column="avg_PM2_5_value" jdbcType="DECIMAL" property="avgPm25Value" />
+    <result column="avg_PM10_value" jdbcType="DECIMAL" property="avgPm10Value" />
+    <result column="avg_soil_temperature" jdbcType="DECIMAL" property="avgSoilTemperature" />
+    <result column="avg_soil_humidity" jdbcType="DECIMAL" property="avgSoilHumidity" />
+    <result column="avg_soil_ph" jdbcType="DECIMAL" property="avgSoilPh" />
+    <result column="avg_soil_ec" jdbcType="DECIMAL" property="avgSoilEc" />
+    <result column="avg_soil_s" jdbcType="DECIMAL" property="avgSoilS" />
+    <result column="monitor_time" jdbcType="DATE" property="monitorTime" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="factory_id" jdbcType="INTEGER" property="factoryId" />
+  </resultMap>
+
+  <resultMap id="WeekResultMap" type="com.nongxin.terminal.entity.envmonitor.EnvMonitor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="avg_air_temperature" jdbcType="DECIMAL" property="airTemperature" />
+    <result column="avg_air_humidity" jdbcType="DECIMAL" property="airHumidity" />
+    <result column="avg_air_pressure" jdbcType="DECIMAL" property="airPressure" />
+    <result column="avg_wind_speed" jdbcType="DECIMAL" property="windSpeed" />
+    <result column="avg_wind_direction" jdbcType="DECIMAL" property="windDirection" />
+    <result column="avg_rainfall" jdbcType="DECIMAL" property="rainfall" />
+    <result column="avg_ill_intensity" jdbcType="DECIMAL" property="illIntensity" />
+    <result column="avg_CO2_value" jdbcType="DECIMAL" property="co2Value" />
+    <result column="avg_PM2_5_value" jdbcType="DECIMAL" property="pm25Value" />
+    <result column="avg_PM10_value" jdbcType="DECIMAL" property="pm10Value" />
+    <result column="avg_soil_temperature" jdbcType="DECIMAL" property="soilTemperature" />
+    <result column="avg_soil_humidity" jdbcType="DECIMAL" property="soilHumidity" />
+    <result column="avg_soil_ph" jdbcType="DECIMAL" property="soilPh" />
+    <result column="avg_soil_ec" jdbcType="DECIMAL" property="soilEc" />
+    <result column="avg_soil_s" jdbcType="DECIMAL" property="soilS" />
+    <result column="monitor_time" jdbcType="TIMESTAMP" property="monitorTime" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="factory_id" jdbcType="INTEGER" property="factoryId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, avg_air_temperature, avg_air_humidity, avg_air_pressure, avg_wind_speed, avg_wind_direction, 
+    avg_rainfall, avg_ill_intensity, avg_CO2_value, avg_PM2_5_value, avg_PM10_value, 
+    avg_soil_temperature, avg_soil_humidity, avg_soil_ph, avg_soil_ec, avg_soil_s, monitor_time, 
+    equipment_id, factory_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_env_dayavg
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_env_dayavg
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitorDayAvg" useGeneratedKeys="true">
+    insert into ddwb_env_dayavg (avg_air_temperature, avg_air_humidity, 
+      avg_air_pressure, avg_wind_speed, avg_wind_direction, 
+      avg_rainfall, avg_ill_intensity, avg_CO2_value, 
+      avg_PM2_5_value, avg_PM10_value, avg_soil_temperature, 
+      avg_soil_humidity, avg_soil_ph, avg_soil_ec, 
+      avg_soil_s, monitor_time, equipment_id, 
+      factory_id)
+    values (#{avgAirTemperature,jdbcType=DECIMAL}, #{avgAirHumidity,jdbcType=DECIMAL}, 
+      #{avgAirPressure,jdbcType=DECIMAL}, #{avgWindSpeed,jdbcType=DECIMAL}, #{avgWindDirection,jdbcType=DECIMAL}, 
+      #{avgRainfall,jdbcType=DECIMAL}, #{avgIllIntensity,jdbcType=DECIMAL}, #{avgCo2Value,jdbcType=DECIMAL}, 
+      #{avgPm25Value,jdbcType=DECIMAL}, #{avgPm10Value,jdbcType=DECIMAL}, #{avgSoilTemperature,jdbcType=DECIMAL}, 
+      #{avgSoilHumidity,jdbcType=DECIMAL}, #{avgSoilPh,jdbcType=DECIMAL}, #{avgSoilEc,jdbcType=DECIMAL}, 
+      #{avgSoilS,jdbcType=DECIMAL}, #{monitorTime,jdbcType=DATE}, #{equipmentId,jdbcType=INTEGER}, 
+      #{factoryId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitorDayAvg" useGeneratedKeys="true">
+    insert into ddwb_env_dayavg
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="avgAirTemperature != null">
+        avg_air_temperature,
+      </if>
+      <if test="avgAirHumidity != null">
+        avg_air_humidity,
+      </if>
+      <if test="avgAirPressure != null">
+        avg_air_pressure,
+      </if>
+      <if test="avgWindSpeed != null">
+        avg_wind_speed,
+      </if>
+      <if test="avgWindDirection != null">
+        avg_wind_direction,
+      </if>
+      <if test="avgRainfall != null">
+        avg_rainfall,
+      </if>
+      <if test="avgIllIntensity != null">
+        avg_ill_intensity,
+      </if>
+      <if test="avgCo2Value != null">
+        avg_CO2_value,
+      </if>
+      <if test="avgPm25Value != null">
+        avg_PM2_5_value,
+      </if>
+      <if test="avgPm10Value != null">
+        avg_PM10_value,
+      </if>
+      <if test="avgSoilTemperature != null">
+        avg_soil_temperature,
+      </if>
+      <if test="avgSoilHumidity != null">
+        avg_soil_humidity,
+      </if>
+      <if test="avgSoilPh != null">
+        avg_soil_ph,
+      </if>
+      <if test="avgSoilEc != null">
+        avg_soil_ec,
+      </if>
+      <if test="avgSoilS != null">
+        avg_soil_s,
+      </if>
+
+        monitor_time,
+
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="factoryId != null">
+        factory_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="avgAirTemperature != null">
+        #{avgAirTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="avgAirHumidity != null">
+        #{avgAirHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="avgAirPressure != null">
+        #{avgAirPressure,jdbcType=DECIMAL},
+      </if>
+      <if test="avgWindSpeed != null">
+        #{avgWindSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="avgWindDirection != null">
+        #{avgWindDirection,jdbcType=DECIMAL},
+      </if>
+      <if test="avgRainfall != null">
+        #{avgRainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="avgIllIntensity != null">
+        #{avgIllIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="avgCo2Value != null">
+        #{avgCo2Value,jdbcType=DECIMAL},
+      </if>
+      <if test="avgPm25Value != null">
+        #{avgPm25Value,jdbcType=DECIMAL},
+      </if>
+      <if test="avgPm10Value != null">
+        #{avgPm10Value,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilTemperature != null">
+        #{avgSoilTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilHumidity != null">
+        #{avgSoilHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilPh != null">
+        #{avgSoilPh,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilEc != null">
+        #{avgSoilEc,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilS != null">
+        #{avgSoilS,jdbcType=DECIMAL},
+      </if>
+        now(),
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="factoryId != null">
+        #{factoryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitorDayAvg">
+    update ddwb_env_dayavg
+    <set>
+      <if test="avgAirTemperature != null">
+        avg_air_temperature = #{avgAirTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="avgAirHumidity != null">
+        avg_air_humidity = #{avgAirHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="avgAirPressure != null">
+        avg_air_pressure = #{avgAirPressure,jdbcType=DECIMAL},
+      </if>
+      <if test="avgWindSpeed != null">
+        avg_wind_speed = #{avgWindSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="avgWindDirection != null">
+        avg_wind_direction = #{avgWindDirection,jdbcType=DECIMAL},
+      </if>
+      <if test="avgRainfall != null">
+        avg_rainfall = #{avgRainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="avgIllIntensity != null">
+        avg_ill_intensity = #{avgIllIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="avgCo2Value != null">
+        avg_CO2_value = #{avgCo2Value,jdbcType=DECIMAL},
+      </if>
+      <if test="avgPm25Value != null">
+        avg_PM2_5_value = #{avgPm25Value,jdbcType=DECIMAL},
+      </if>
+      <if test="avgPm10Value != null">
+        avg_PM10_value = #{avgPm10Value,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilTemperature != null">
+        avg_soil_temperature = #{avgSoilTemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilHumidity != null">
+        avg_soil_humidity = #{avgSoilHumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilPh != null">
+        avg_soil_ph = #{avgSoilPh,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilEc != null">
+        avg_soil_ec = #{avgSoilEc,jdbcType=DECIMAL},
+      </if>
+      <if test="avgSoilS != null">
+        avg_soil_s = #{avgSoilS,jdbcType=DECIMAL},
+      </if>
+      <if test="monitorTime != null">
+        monitor_time = #{monitorTime,jdbcType=DATE},
+      </if>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="factoryId != null">
+        factory_id = #{factoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.envmonitor.EnvMonitorDayAvg">
+    update ddwb_env_dayavg
+    set avg_air_temperature = #{avgAirTemperature,jdbcType=DECIMAL},
+      avg_air_humidity = #{avgAirHumidity,jdbcType=DECIMAL},
+      avg_air_pressure = #{avgAirPressure,jdbcType=DECIMAL},
+      avg_wind_speed = #{avgWindSpeed,jdbcType=DECIMAL},
+      avg_wind_direction = #{avgWindDirection,jdbcType=DECIMAL},
+      avg_rainfall = #{avgRainfall,jdbcType=DECIMAL},
+      avg_ill_intensity = #{avgIllIntensity,jdbcType=DECIMAL},
+      avg_CO2_value = #{avgCo2Value,jdbcType=DECIMAL},
+      avg_PM2_5_value = #{avgPm25Value,jdbcType=DECIMAL},
+      avg_PM10_value = #{avgPm10Value,jdbcType=DECIMAL},
+      avg_soil_temperature = #{avgSoilTemperature,jdbcType=DECIMAL},
+      avg_soil_humidity = #{avgSoilHumidity,jdbcType=DECIMAL},
+      avg_soil_ph = #{avgSoilPh,jdbcType=DECIMAL},
+      avg_soil_ec = #{avgSoilEc,jdbcType=DECIMAL},
+      avg_soil_s = #{avgSoilS,jdbcType=DECIMAL},
+      monitor_time = #{monitorTime,jdbcType=DATE},
+      equipment_id = #{equipmentId,jdbcType=INTEGER},
+      factory_id = #{factoryId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getWeekEnv" resultMap="WeekResultMap">
+    SELECT
+        a.*
+    FROM
+        ddwb_env_dayavg a
+        LEFT JOIN ddwb_equipment b ON a.equipment_id = b.id
+    WHERE
+        DATE_SUB( CURRENT_DATE, INTERVAL 7 DAY ) &lt;= date( monitor_time )
+    AND b.base_id = #{baseId,jdbcType=INTEGER}
+    ORDER BY a.monitor_time
+  </select>
+
+  <select id="getMonthEnv" resultMap="WeekResultMap">
+    SELECT
+        a.*
+    FROM
+        ddwb_env_dayavg a
+        LEFT JOIN ddwb_equipment b ON a.equipment_id = b.id
+    WHERE
+        DATE_SUB( CURRENT_DATE, INTERVAL 30 DAY ) &lt;= date( monitor_time )
+        AND b.base_id = #{baseId,jdbcType=INTEGER}
+    ORDER BY a.monitor_time
+  </select>
+</mapper>

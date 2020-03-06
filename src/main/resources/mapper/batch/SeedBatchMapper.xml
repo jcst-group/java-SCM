@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.batch.SeedBatchMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.batch.SeedBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="self_species" jdbcType="SMALLINT" property="selfSpecies" />
+    <result column="seed_code" jdbcType="VARCHAR" property="seedCode" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="registration_time" jdbcType="TIMESTAMP" property="registrationTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="recovery_id" jdbcType="INTEGER" property="recoveryId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.batch.SeedBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="self_species" jdbcType="SMALLINT" property="selfSpecies" />
+    <result column="seed_code" jdbcType="VARCHAR" property="seedCode" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="registration_time" jdbcType="TIMESTAMP" property="registrationTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="recovery_id" jdbcType="INTEGER" property="recoveryId" />
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+    <association property="cropBatch" column="recovery_id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.selectByRecoveryId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.batch.SeedBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="seed_code" jdbcType="VARCHAR" property="seedCode" />
+    <result column="supplier" jdbcType="VARCHAR" property="supplier" />
+    <result column="registration_time" jdbcType="TIMESTAMP" property="registrationTime" />
+    <association property="seedDetection" column="id" select="com.nongxin.terminal.dao.testing.SeedDetectionMapper.selectBySeedBatchId"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, type, self_species, seed_code, crop_id, supplier, registration_time, remark,recovery_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_seed_batch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_seed_batch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.batch.SeedBatch" useGeneratedKeys="true">
+    insert into ddwb_seed_batch (type, self_species, seed_code, 
+      crop_id, supplier, registration_time, 
+      remark,recovery_id)
+    values (#{type,jdbcType=SMALLINT}, #{selfSpecies,jdbcType=SMALLINT}, #{seedCode,jdbcType=VARCHAR}, 
+      #{cropId,jdbcType=INTEGER}, #{supplier,jdbcType=VARCHAR}, #{registrationTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR},#{recoveryId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.batch.SeedBatch" useGeneratedKeys="true">
+    insert into ddwb_seed_batch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="type != null">
+        type,
+      </if>
+      <if test="selfSpecies != null">
+        self_species,
+      </if>
+      <if test="seedCode != null">
+        seed_code,
+      </if>
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="supplier != null">
+        supplier,
+      </if>
+      <if test="registrationTime != null">
+        registration_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="recoveryId != null">
+        recovery_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="selfSpecies != null">
+        #{selfSpecies,jdbcType=SMALLINT},
+      </if>
+      <if test="seedCode != null">
+        #{seedCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationTime != null">
+        #{registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryId != null">
+        #{recoveryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.batch.SeedBatch">
+    update ddwb_seed_batch
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="selfSpecies != null">
+        self_species = #{selfSpecies,jdbcType=SMALLINT},
+      </if>
+      <if test="seedCode != null">
+        seed_code = #{seedCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="supplier != null">
+        supplier = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationTime != null">
+        registration_time = #{registrationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="recoveryId != null">
+        recovery_id = #{recoveryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.batch.SeedBatch">
+    update ddwb_seed_batch
+    set type = #{type,jdbcType=SMALLINT},
+      self_species = #{selfSpecies,jdbcType=SMALLINT},
+      seed_code = #{seedCode,jdbcType=VARCHAR},
+      crop_id = #{cropId,jdbcType=INTEGER},
+      supplier = #{supplier,jdbcType=VARCHAR},
+      registration_time = #{registrationTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      recovery_id = #{recoveryId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getSeedList" resultMap="BaseResultMap2">
+    SELECT a.*,b.crop_name FROM ddwb_seed_batch a
+    INNER JOIN ddwb_crop b
+    ON a.crop_id = b.id
+    <where>
+      <if test="cropName != null">
+        and position(#{cropName,jdbcType=VARCHAR} in b.crop_name)
+      </if>
+      <if test="supplier != null">
+        and position(#{supplier,jdbcType=VARCHAR} in a.supplier)
+      </if>
+    </where>
+    order by registration_time desc
+  </select>
+
+  <select id="getAllSeed" resultMap="BaseResultMap">
+    select id,seed_code from ddwb_seed_batch
+    <where>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getIdAndCodeById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,seed_code from ddwb_seed_batch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap3">
+    SELECT e.id,e.seed_code,e.supplier,e.registration_time
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+	LEFT JOIN ddwb_crop_batch d
+	ON c.crop_batch_id = d.id
+	LEFT JOIN ddwb_seed_batch e
+	ON d.seed_batch_id = e.id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getSeedAndBatch" resultType="java.util.HashMap">
+    SELECT a.id,a.seed_code seedCode,c.batch_name batchName FROM ddwb_seed_batch a
+    LEFT JOIN ddwb_recovery_batch b
+    ON b.id = a.recovery_id
+    LEFT JOIN ddwb_crop_batch c
+    ON b.crop_batch_id = c.id
+    WHERE a.crop_id = #{cropId,jdbcType=INTEGER}
+    <if test="condition != null">
+      AND ( position(#{condition,jdbcType=VARCHAR} in a.seed_code) OR position(#{condition,jdbcType=VARCHAR} in c.batch_name) )
+    </if>
+  </select>
+
+</mapper>

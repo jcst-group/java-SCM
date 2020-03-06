@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.system.AppResourceMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.system.AppResource">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+    <result column="URI" jdbcType="VARCHAR" property="uri" />
+    <result column="TYPE" jdbcType="SMALLINT" property="type" />
+    <result column="METHOD" jdbcType="VARCHAR" property="method" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="STATUS" jdbcType="SMALLINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.system.AppResource">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PARENT_ID" jdbcType="INTEGER" property="parentId" />
+    <result column="URI" jdbcType="VARCHAR" property="uri" />
+    <result column="TYPE" jdbcType="SMALLINT" property="type" />
+    <result column="METHOD" jdbcType="VARCHAR" property="method" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="STATUS" jdbcType="SMALLINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <collection property="appResourceRelList" column="ID" select="com.nongxin.terminal.dao.system.AppResourceRelMapper.selectByResourceId"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, CODE, NAME, PARENT_ID, URI, TYPE, METHOD, ICON, STATUS, CREATE_TIME, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from auth_app_resource
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from auth_app_resource
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.nongxin.terminal.entity.system.AppResource" useGeneratedKeys="true">
+    insert into auth_app_resource (CODE, NAME, PARENT_ID, 
+      URI, TYPE, METHOD, 
+      ICON, STATUS, CREATE_TIME, 
+      UPDATE_TIME)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{uri,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT}, #{method,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.nongxin.terminal.entity.system.AppResource" useGeneratedKeys="true">
+    insert into auth_app_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="uri != null">
+        URI,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="method != null">
+        METHOD,
+      </if>
+      <if test="icon != null">
+        ICON,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.system.AppResource">
+    update auth_app_resource
+    <set>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="uri != null">
+        URI = #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="method != null">
+        METHOD = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.system.AppResource">
+    update auth_app_resource
+    set CODE = #{code,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=INTEGER},
+      URI = #{uri,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=SMALLINT},
+      METHOD = #{method,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=SMALLINT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAppResourceByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    SELECT DISTINCT a.* FROM auth_app_resource a
+    INNER JOIN auth_role_app_resource b
+    ON a.ID = b.RESOURCE_ID
+    INNER JOIN auth_user_role c
+    ON b.ROLE_ID = c.ROLE_ID
+    WHERE c.USER_ID = #{uid,jdbcType=INTEGER}
+    <if test="type != null">
+      AND a.TYPE = #{type,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getAppResourceByRoleId" resultMap="BaseResultMap">
+    SELECT a.* FROM auth_app_resource a
+    left JOIN auth_role_app_resource b
+    ON a.ID = b.RESOURCE_ID
+    <if test = 'roleType != "1" '>
+      WHERE b.ROLE_ID = #{roleId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getAppResourceList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from auth_app_resource
+    <if test="type != null">
+      where TYPE = #{type,jdbcType=INTEGER}
+    </if>
+  </select>
+
+</mapper>

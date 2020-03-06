@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.common.UnitMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.common.Unit">
+    <id column="value" jdbcType="INTEGER" property="value" />
+    <result column="display_name" jdbcType="VARCHAR" property="displayName" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    value, display_name, code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_unit
+    where value = #{value,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_unit
+    where value = #{value,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.common.Unit">
+    insert into ddwb_unit (value, display_name, code
+      )
+    values (#{value,jdbcType=INTEGER}, #{displayName,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="value" keyProperty="value" useGeneratedKeys="true" parameterType="com.nongxin.terminal.entity.common.Unit">
+    insert into ddwb_unit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="value != null">
+        value,
+      </if>
+      <if test="displayName != null">
+        display_name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="value != null">
+        #{value,jdbcType=INTEGER},
+      </if>
+      <if test="displayName != null">
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.common.Unit">
+    update ddwb_unit
+    <set>
+      <if test="displayName != null">
+        display_name = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where value = #{value,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.common.Unit">
+    update ddwb_unit
+    set display_name = #{displayName,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR}
+    where value = #{value,jdbcType=INTEGER}
+  </update>
+
+  <select id="getUnit" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_unit
+    <where>
+      <if test="displayName != null">
+        and position(#{displayName} in display_name)
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByDisplayName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_unit where display_name = #{displayName}
+  </select>
+
+</mapper>

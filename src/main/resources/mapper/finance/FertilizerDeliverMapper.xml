@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.finance.FertilizerDeliverMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.finance.FertilizerDeliver">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fertilizer_id" jdbcType="INTEGER" property="fertilizerId" />
+    <result column="pay_num" jdbcType="DECIMAL" property="payNum" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, fertilizer_id, pay_num, pay_time, price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_fertilizer_deliver
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_fertilizer_deliver
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.FertilizerDeliver" useGeneratedKeys="true">
+    insert into ddwb_fertilizer_deliver (fertilizer_id, pay_num, pay_time, 
+      price)
+    values (#{fertilizerId,jdbcType=INTEGER}, #{payNum,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{price,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.FertilizerDeliver" useGeneratedKeys="true">
+    insert into ddwb_fertilizer_deliver
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fertilizerId != null">
+        fertilizer_id,
+      </if>
+      <if test="payNum != null">
+        pay_num,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fertilizerId != null">
+        #{fertilizerId,jdbcType=INTEGER},
+      </if>
+      <if test="payNum != null">
+        #{payNum,jdbcType=DECIMAL},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.finance.FertilizerDeliver">
+    update ddwb_fertilizer_deliver
+    <set>
+      <if test="fertilizerId != null">
+        fertilizer_id = #{fertilizerId,jdbcType=INTEGER},
+      </if>
+      <if test="payNum != null">
+        pay_num = #{payNum,jdbcType=DECIMAL},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.finance.FertilizerDeliver">
+    update ddwb_fertilizer_deliver
+    set fertilizer_id = #{fertilizerId,jdbcType=INTEGER},
+      pay_num = #{payNum,jdbcType=DECIMAL},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getFertilizerDeliver" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_fertilizer_deliver
+    where fertilizer_id = #{fertilizerId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getCount" resultType="java.math.BigDecimal">
+    SELECT SUM(pay_num) FROM `ddwb_fertilizer_deliver` WHERE fertilizer_id = #{fertilizerId,jdbcType=INTEGER}
+    <if test="id != null">
+      and id != #{id,jdbcType=INTEGER}
+    </if>
+  </select>
+
+</mapper>

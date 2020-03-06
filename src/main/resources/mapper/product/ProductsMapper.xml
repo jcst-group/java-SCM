@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.product.ProductsMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.product.Products">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="products_name" jdbcType="VARCHAR" property="productsName" />
+    <result column="products_type" jdbcType="SMALLINT" property="productsType" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.product.Products">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="products_name" jdbcType="VARCHAR" property="productsName" />
+    <result column="products_type" jdbcType="SMALLINT" property="productsType" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <collection property="levelList" column="id" select="com.nongxin.terminal.dao.product.LevelMapper.getLevelByProductId"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, crop_id, products_name, products_type, `describe`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_products
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_products
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.product.Products" useGeneratedKeys="true">
+    insert into ddwb_products (crop_id, products_name, products_type, 
+      `describe`)
+    values (#{cropId,jdbcType=INTEGER}, #{productsName,jdbcType=VARCHAR}, #{productsType,jdbcType=SMALLINT},
+      #{describe,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.product.Products" useGeneratedKeys="true">
+    insert into ddwb_products
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="productsName != null">
+        products_name,
+      </if>
+      <if test="productsType != null">
+        products_type,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="productsName != null">
+        #{productsName,jdbcType=VARCHAR},
+      </if>
+      <if test="productsType != null">
+        #{productsType,jdbcType=SMALLINT},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.product.Products">
+    update ddwb_products
+    <set>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="productsName != null">
+        products_name = #{productsName,jdbcType=VARCHAR},
+      </if>
+      <if test="productsType != null">
+        products_type = #{productsType,jdbcType=SMALLINT},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.product.Products">
+    update ddwb_products
+    set crop_id = #{cropId,jdbcType=INTEGER},
+      products_name = #{productsName,jdbcType=VARCHAR},
+      products_type = #{productsType,jdbcType=SMALLINT},
+      `describe` = #{describe,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getProductsByCropId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_products
+    where crop_id = #{cropId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

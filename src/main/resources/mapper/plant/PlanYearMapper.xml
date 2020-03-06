@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.plant.PlanYearMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.plant.PlanYear">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="year" jdbcType="SMALLINT" property="year" />
+    <result column="plan_id" jdbcType="INTEGER" property="planId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.plant.PlanYear">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="year" jdbcType="SMALLINT" property="year" />
+    <result column="plan_id" jdbcType="INTEGER" property="planId" />
+    <collection property="farmingList" column="id" select="com.nongxin.terminal.dao.plant.FarmingMapper.selectByPlanYearId"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, year, plan_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_plan_year
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_plan_year
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.PlanYear" useGeneratedKeys="true">
+    insert into ddwb_plan_year (year, plan_id)
+    values (#{year,jdbcType=SMALLINT}, #{planId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.PlanYear" useGeneratedKeys="true">
+    insert into ddwb_plan_year
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="year != null">
+        year,
+      </if>
+      <if test="planId != null">
+        plan_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="year != null">
+        #{year,jdbcType=SMALLINT},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.plant.PlanYear">
+    update ddwb_plan_year
+    <set>
+      <if test="year != null">
+        year = #{year,jdbcType=SMALLINT},
+      </if>
+      <if test="planId != null">
+        plan_id = #{planId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.plant.PlanYear">
+    update ddwb_plan_year
+    set year = #{year,jdbcType=SMALLINT},
+      plan_id = #{planId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getPlanYearByPlanId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_plan_year
+    where plan_id = #{planId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByPlanId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_plan_year
+    where plan_id = #{planId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getLastYearByPlanId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select year
+    from ddwb_plan_year
+    where plan_id = #{planId,jdbcType=INTEGER}
+    ORDER BY `year` DESC LIMIT 1
+  </select>
+
+</mapper>

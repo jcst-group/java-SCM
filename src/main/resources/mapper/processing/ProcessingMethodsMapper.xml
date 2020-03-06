@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.processing.ProcessingMethodsMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.processing.ProcessingMethods">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="processing_name" jdbcType="VARCHAR" property="processingName" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="methods" jdbcType="VARCHAR" property="methods" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.processing.ProcessingMethods">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="processing_name" jdbcType="VARCHAR" property="processingName" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="methods" jdbcType="VARCHAR" property="methods" />
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, processing_name, crop_id, methods
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_processing_methods
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_processing_methods
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.processing.ProcessingMethods" useGeneratedKeys="true">
+    insert into ddwb_processing_methods (processing_name, crop_id, methods
+      )
+    values (#{processingName,jdbcType=VARCHAR}, #{cropId,jdbcType=INTEGER}, #{methods,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.processing.ProcessingMethods" useGeneratedKeys="true">
+    insert into ddwb_processing_methods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="processingName != null">
+        processing_name,
+      </if>
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="methods != null">
+        methods,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="processingName != null">
+        #{processingName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="methods != null">
+        #{methods,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.processing.ProcessingMethods">
+    update ddwb_processing_methods
+    <set>
+      <if test="processingName != null">
+        processing_name = #{processingName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="methods != null">
+        methods = #{methods,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.processing.ProcessingMethods">
+    update ddwb_processing_methods
+    set processing_name = #{processingName,jdbcType=VARCHAR},
+      crop_id = #{cropId,jdbcType=INTEGER},
+      methods = #{methods,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getProcessingMethods" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_processing_methods
+    <where>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getAllProcessingMethods" resultMap="BaseResultMap">
+    select id, processing_name
+    from ddwb_processing_methods
+  </select>
+
+  <select id="selectByCropId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, processing_name
+    from ddwb_processing_methods
+    where crop_id = #{cropId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByInitPro" resultMap="BaseResultMap">
+    SELECT a.id,a.processing_name FROM ddwb_processing_methods a
+    INNER JOIN ddwb_pro_batch_method_rel b
+    ON a.id = b.pro_method_id
+    WHERE b.pro_batch_id = #{initProId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

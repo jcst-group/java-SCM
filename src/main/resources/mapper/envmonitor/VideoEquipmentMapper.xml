@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.envmonitor.VideoEquipmentMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.envmonitor.VideoEquipment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="video_name" jdbcType="VARCHAR" property="videoName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.envmonitor.VideoEquipment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="video_name" jdbcType="VARCHAR" property="videoName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <collection property="videoChannel" column="id" select="com.nongxin.terminal.dao.envmonitor.VideoChannelMapper.getChannelBySerialId"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, serial_number, video_name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_video_equipment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_video_equipment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.VideoEquipment" useGeneratedKeys="true">
+    insert into ddwb_video_equipment (serial_number, video_name, create_time
+      )
+    values (#{serialNumber,jdbcType=VARCHAR}, #{videoName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.VideoEquipment" useGeneratedKeys="true">
+    insert into ddwb_video_equipment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="videoName != null">
+        video_name,
+      </if>
+        create_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="videoName != null">
+        #{videoName,jdbcType=VARCHAR},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.envmonitor.VideoEquipment">
+    update ddwb_video_equipment
+    <set>
+      <if test="serialNumber != null">
+        serial_number = #{serialNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="videoName != null">
+        video_name = #{videoName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.envmonitor.VideoEquipment">
+    update ddwb_video_equipment
+    set serial_number = #{serialNumber,jdbcType=VARCHAR},
+      video_name = #{videoName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getList" resultMap="BaseResultMap2">
+    select * from ddwb_video_equipment
+    where 1=1
+    <if test="serialNumber!=null">
+      and position(#{serialNumber,jdbcType=VARCHAR} in serial_number)
+    </if>
+    <if test="videoName">
+      and position(#{videoName,jdbcType=VARCHAR} in video_name)
+    </if>
+  </select>
+
+
+  <select id="getVideoEquipByBaseId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select DISTINCT b.* from ddwb_video_channel a
+    left join ddwb_video_equipment b on a.serial_id = b.id
+    where base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="checkSerialNumber" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from ddwb_video_equipment where serial_number = #{serialNumber,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.finance.BasePurchaseMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.finance.BasePurchase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="INTEGER" property="partyB" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="pay_pro" jdbcType="VARCHAR" property="payPro" />
+    <result column="pay_acreage" jdbcType="DECIMAL" property="payAcreage" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.finance.BasePurchase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="INTEGER" property="partyB" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="pay_pro" jdbcType="VARCHAR" property="payPro" />
+    <result column="pay_acreage" jdbcType="DECIMAL" property="payAcreage" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+    <association property="baseInfo" column="party_b" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getIdAndName"/>
+    <collection property="pictureInfos" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getBasePurchasePic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, party_a, party_b, sign_time, pay_pro, pay_acreage, pay_time, price, year_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_base_purchase
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_base_purchase
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.BasePurchase" useGeneratedKeys="true">
+    insert into ddwb_base_purchase (party_a, party_b, sign_time, 
+      pay_pro, pay_acreage, pay_time, 
+      price, year_id)
+    values (#{partyA,jdbcType=VARCHAR}, #{partyB,jdbcType=INTEGER}, #{signTime,jdbcType=TIMESTAMP}, 
+      #{payPro,jdbcType=VARCHAR}, #{payAcreage,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{price,jdbcType=DECIMAL}, #{yearId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.BasePurchase" useGeneratedKeys="true">
+    insert into ddwb_base_purchase
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        party_a,
+      </if>
+      <if test="partyB != null">
+        party_b,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="payPro != null">
+        pay_pro,
+      </if>
+      <if test="payAcreage != null">
+        pay_acreage,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="yearId != null">
+        year_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        #{partyB,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payPro != null">
+        #{payPro,jdbcType=VARCHAR},
+      </if>
+      <if test="payAcreage != null">
+        #{payAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="yearId != null">
+        #{yearId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.finance.BasePurchase">
+    update ddwb_base_purchase
+    <set>
+      <if test="partyA != null">
+        party_a = #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        party_b = #{partyB,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payPro != null">
+        pay_pro = #{payPro,jdbcType=VARCHAR},
+      </if>
+      <if test="payAcreage != null">
+        pay_acreage = #{payAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+
+      price = #{price,jdbcType=DECIMAL},
+
+      <if test="yearId != null">
+        year_id = #{yearId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.finance.BasePurchase">
+    update ddwb_base_purchase
+    set party_a = #{partyA,jdbcType=VARCHAR},
+      party_b = #{partyB,jdbcType=INTEGER},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      pay_pro = #{payPro,jdbcType=VARCHAR},
+      pay_acreage = #{payAcreage,jdbcType=DECIMAL},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL},
+      year_id = #{yearId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getBasePurchase" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_base_purchase
+    <where>
+      <if test="yearId != null">
+        and year_id = #{yearId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getAcreageSum" resultType="java.math.BigDecimal">
+    SELECT SUM(pay_acreage) acreage FROM ddwb_base_purchase a
+    INNER JOIN ddwb_contract_year b
+    ON a.year_id = b.id
+    WHERE substring(`year`,1,4) = YEAR(CURDATE())
+    <if test="baseId != null">
+      AND party_b = #{baseId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+</mapper>

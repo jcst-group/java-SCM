@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.traceability.TraceCountMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.traceability.TraceCount">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="retro_code" jdbcType="VARCHAR" property="retroCode" />
+    <result column="total_count" jdbcType="INTEGER" property="totalCount" />
+    <result column="first_time" jdbcType="TIMESTAMP" property="firstTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, retro_code, total_count, first_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_trace_count
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_trace_count
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.traceability.TraceCount" useGeneratedKeys="true">
+    insert into ddwb_trace_count (retro_code, total_count, first_time
+      )
+    values (#{retroCode,jdbcType=VARCHAR}, 1, now()
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.traceability.TraceCount" useGeneratedKeys="true">
+    insert into ddwb_trace_count
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="retroCode != null">
+        retro_code,
+      </if>
+      <if test="totalCount != null">
+        total_count,
+      </if>
+      <if test="firstTime != null">
+        first_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="retroCode != null">
+        #{retroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null">
+        #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="firstTime != null">
+        #{firstTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.traceability.TraceCount">
+    update ddwb_trace_count
+    <set>
+      <if test="retroCode != null">
+        retro_code = #{retroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null">
+        total_count = #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="firstTime != null">
+        first_time = #{firstTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.traceability.TraceCount">
+    update ddwb_trace_count
+    set retro_code = #{retroCode,jdbcType=VARCHAR},
+      total_count = #{totalCount,jdbcType=INTEGER},
+      first_time = #{firstTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateCount" parameterType="java.lang.String" >
+    update ddwb_trace_count set total_count=total_count+1 where retro_code = #{retroCode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getCountByRetroCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(retro_code) from ddwb_trace_count where retro_code=#{retroCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getTotalByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from ddwb_trace_count where retro_code=#{retroCode,jdbcType=VARCHAR}
+  </select>
+</mapper>

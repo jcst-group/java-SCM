@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.crop.CropMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.crop.Crop">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pinyin_code" jdbcType="VARCHAR" property="pinyinCode" />
+    <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    <result column="crop_code" jdbcType="VARCHAR" property="cropCode" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="edible_value" jdbcType="VARCHAR" property="edibleValue" />
+    <result column="medicinal_value" jdbcType="VARCHAR" property="medicinalValue" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.crop.Crop">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pinyin_code" jdbcType="VARCHAR" property="pinyinCode" />
+    <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    <result column="crop_code" jdbcType="VARCHAR" property="cropCode" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="edible_value" jdbcType="VARCHAR" property="edibleValue" />
+    <result column="medicinal_value" jdbcType="VARCHAR" property="medicinalValue" />
+    <association property="cropPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getCropPic"/>
+    <association property="ediblePic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getEdiblePic"/>
+    <association property="medicinalPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getMedicinalPic"/>
+    <collection property="harvestedProductList" column="id" select="com.nongxin.terminal.dao.crop.HarvestedProductMapper.getHarvestedByCropId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.crop.Crop">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pinyin_code" jdbcType="VARCHAR" property="pinyinCode" />
+    <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    <result column="crop_code" jdbcType="VARCHAR" property="cropCode" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <result column="edible_value" jdbcType="VARCHAR" property="edibleValue" />
+    <result column="medicinal_value" jdbcType="VARCHAR" property="medicinalValue" />
+    <association property="cropPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getCropPic"/>
+    <association property="ediblePic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getEdiblePic"/>
+    <association property="medicinalPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getMedicinalPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, pinyin_code, crop_name, crop_code, `describe`, edible_value, medicinal_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_crop
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_crop
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.crop.Crop" useGeneratedKeys="true">
+    insert into ddwb_crop (pinyin_code, crop_name, crop_code,
+      `describe`, edible_value
+      medicinal_value)
+    values (#{pinyinCode,jdbcType=VARCHAR}, #{cropName,jdbcType=VARCHAR}, #{cropCode,jdbcType=VARCHAR},
+      #{describe,jdbcType=VARCHAR}, #{edibleValue,jdbcType=VARCHAR},
+      #{medicinalValue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.crop.Crop" useGeneratedKeys="true">
+    insert into ddwb_crop
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pinyinCode != null">
+        pinyin_code,
+      </if>
+      <if test="cropName != null">
+        crop_name,
+      </if>
+      <if test="cropCode != null">
+        crop_code,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+      <if test="edibleValue != null">
+        edible_value,
+      </if>
+      <if test="medicinalValue != null">
+        medicinal_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pinyinCode != null">
+        #{pinyinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropName != null">
+        #{cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropCode != null">
+        #{cropCode,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="edibleValue != null">
+        #{edibleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="medicinalValue != null">
+        #{medicinalValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.crop.Crop">
+    update ddwb_crop
+    <set>
+      <if test="pinyinCode != null">
+        pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cropName != null">
+        crop_name = #{cropName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropCode != null">
+        crop_code = #{cropCode,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="edibleValue != null">
+        edible_value = #{edibleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="medicinalValue != null">
+        medicinal_value = #{medicinalValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.crop.Crop">
+    update ddwb_crop
+    set pinyin_code = #{pinyinCode,jdbcType=VARCHAR},
+      crop_name = #{cropName,jdbcType=VARCHAR},
+      crop_code = #{cropCode,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      edible_value = #{edibleValue,jdbcType=VARCHAR},
+      medicinal_value = #{medicinalValue,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getCropList" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_crop
+    order by id desc
+  </select>
+
+  <select id="getAllCropList" resultMap="BaseResultMap">
+    select id,crop_name
+    from ddwb_crop
+  </select>
+
+  <select id="getIdAndNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, crop_name
+    from ddwb_crop
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    SELECT a.id,a.pinyin_code, a.crop_name, a.crop_code, a.`describe`, a.edible_value, a.medicinal_value FROM ddwb_crop a
+    INNER JOIN ddwb_crop_batch b
+    ON a.id = b.crop_id
+    WHERE b.id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap3">
+    SELECT d.id,d.pinyin_code, d.crop_name, d.crop_code, d.`describe`, d.edible_value, d.medicinal_value
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+	LEFT JOIN ddwb_crop d
+	ON c.crop_id = d.id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

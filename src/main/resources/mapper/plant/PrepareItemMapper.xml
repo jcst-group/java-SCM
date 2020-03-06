@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.plant.PrepareItemMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.plant.PrepareItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_batch_id" jdbcType="INTEGER" property="cropBatchId" />
+    <result column="farming_item_id" jdbcType="INTEGER" property="farmingItemId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="min_person" jdbcType="SMALLINT" property="minPerson" />
+    <result column="material_name" jdbcType="VARCHAR" property="materialName" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="budget_costs" jdbcType="DECIMAL" property="budgetCosts" />
+    <result column="inplace_time" jdbcType="TIMESTAMP" property="inplaceTime" />
+    <result column="work_order_id" jdbcType="INTEGER" property="workOrderId"/>
+    <result column="type" jdbcType="SMALLINT" property="type" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.plant.PrepareItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_batch_id" jdbcType="INTEGER" property="cropBatchId" />
+    <result column="farming_item_id" jdbcType="INTEGER" property="farmingItemId" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="min_person" jdbcType="SMALLINT" property="minPerson" />
+    <result column="material_name" jdbcType="VARCHAR" property="materialName" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="budget_costs" jdbcType="DECIMAL" property="budgetCosts" />
+    <result column="inplace_time" jdbcType="TIMESTAMP" property="inplaceTime" />
+    <result column="work_order_id" jdbcType="INTEGER" property="workOrderId"/>
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <association property="farmingItem" column="farming_item_id" select="com.nongxin.terminal.dao.plant.FarmingItemMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.vo.workorder.BudgetVo">
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="cost_sum" jdbcType="DECIMAL" property="costSum" />
+    <result column="farming_id" jdbcType="INTEGER" property="farmingId" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, crop_batch_id, farming_item_id, start_time, end_time, min_person, material_name,
+    company, num, budget_costs, inplace_time,work_order_id,type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_prepare_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_prepare_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.PrepareItem" useGeneratedKeys="true">
+    insert into ddwb_prepare_item (crop_batch_id, farming_item_id, start_time, 
+      end_time, min_person, material_name, 
+      company, num, budget_costs, 
+      inplace_time,work_order_id,type)
+    values (#{cropBatchId,jdbcType=INTEGER}, #{farmingItemId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{minPerson,jdbcType=SMALLINT}, #{materialName,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, #{budgetCosts,jdbcType=DECIMAL},
+      #{inplaceTime,jdbcType=TIMESTAMP},#{workOrderId,jdbcType=INTEGER},#{type,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.PrepareItem" useGeneratedKeys="true">
+    insert into ddwb_prepare_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cropBatchId != null">
+        crop_batch_id,
+      </if>
+      <if test="farmingItemId != null">
+        farming_item_id,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="minPerson != null">
+        min_person,
+      </if>
+      <if test="materialName != null">
+        material_name,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="budgetCosts != null">
+        budget_costs,
+      </if>
+      <if test="inplaceTime != null">
+        inplace_time,
+      </if>
+      <if test="workOrderId != null">
+        work_order_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cropBatchId != null">
+        #{cropBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="farmingItemId != null">
+        #{farmingItemId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="minPerson != null">
+        #{minPerson,jdbcType=SMALLINT},
+      </if>
+      <if test="materialName != null">
+        #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="budgetCosts != null">
+        #{budgetCosts,jdbcType=DECIMAL},
+      </if>
+      <if test="inplaceTime != null">
+        #{inplaceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workOrderId != null">
+        #{workOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.plant.PrepareItem">
+    update ddwb_prepare_item
+    <set>
+      <if test="cropBatchId != null">
+        crop_batch_id = #{cropBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="farmingItemId != null">
+        farming_item_id = #{farmingItemId,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="minPerson != null">
+        min_person = #{minPerson,jdbcType=SMALLINT},
+      </if>
+      <if test="materialName != null">
+        material_name = #{materialName,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="budgetCosts != null">
+        budget_costs = #{budgetCosts,jdbcType=DECIMAL},
+      </if>
+      <if test="inplaceTime != null">
+        inplace_time = #{inplaceTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="workOrderId != null">
+        work_order_id = #{workOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.plant.PrepareItem">
+    update ddwb_prepare_item
+    set crop_batch_id = #{cropBatchId,jdbcType=INTEGER},
+      farming_item_id = #{farmingItemId,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      min_person = #{minPerson,jdbcType=SMALLINT},
+      material_name = #{materialName,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      budget_costs = #{budgetCosts,jdbcType=DECIMAL},
+      inplace_time = #{inplaceTime,jdbcType=TIMESTAMP},
+      work_order_id = #{workOrderId,jdbcType=INTEGER},
+      type = #{type,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getPrepareItem" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_prepare_item
+    where crop_batch_id = #{batchId,jdbcType=INTEGER}
+    <if test="year != null">
+      and YEAR(start_time) LIKE CONCAT(#{year,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+
+  <delete id="deleteByBatchId" parameterType="java.lang.Integer">
+    delete from ddwb_prepare_item
+    where crop_batch_id = #{batchId,jdbcType=INTEGER}
+  </delete>
+
+  <select id="getBudgetByBatchIds" resultMap="BaseResultMap3">
+    SELECT a.execution_time,d.farming_name,a.farming_id,SUM(b.budget_costs) AS cost_sum FROM `ddwb_work_order` a
+    LEFT JOIN ddwb_prepare_item b
+    ON a.id = b.work_order_id
+    INNER JOIN ddwb_crop_batch c
+    ON a.crop_batch_id = c.id
+    INNER JOIN ddwb_farming_item d
+    ON b.farming_item_id = d.id
+    WHERE c.id IN
+    <foreach collection="batchIds" open="(" separator="," close=")" item="batchId">
+      #{batchId}
+    </foreach>
+    GROUP BY a.farming_id
+  </select>
+
+</mapper>

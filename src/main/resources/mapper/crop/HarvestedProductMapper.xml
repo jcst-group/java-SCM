@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.crop.HarvestedProductMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.crop.HarvestedProduct">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="harvested_name" jdbcType="VARCHAR" property="harvestedName" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="describe" jdbcType="VARCHAR" property="describe" />
+    <collection property="cropProductList" column="id" select="com.nongxin.terminal.dao.crop.CropProductMapper.getCropProductByHarvestedId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="java.util.Map">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="harvested_name" jdbcType="VARCHAR" property="harvestedName" />
+    <result column="type" property="type" javaType="com.nongxin.terminal.util.enumUtil.crop.HarvestedTypeEnum"/>
+    <result column="total_yield" jdbcType="DECIMAL" property="totalYield" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, crop_id, harvested_name, type, `describe`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_harvested_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_harvested_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.crop.HarvestedProduct" useGeneratedKeys="true">
+    insert into ddwb_harvested_product (crop_id, harvested_name, type, 
+      `describe`)
+    values (#{cropId,jdbcType=INTEGER}, #{harvestedName,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT}, 
+      #{describe,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.crop.HarvestedProduct" useGeneratedKeys="true">
+    insert into ddwb_harvested_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="harvestedName != null">
+        harvested_name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="describe != null">
+        `describe`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="harvestedName != null">
+        #{harvestedName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.crop.HarvestedProduct">
+    update ddwb_harvested_product
+    <set>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="harvestedName != null">
+        harvested_name = #{harvestedName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="describe != null">
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.crop.HarvestedProduct">
+    update ddwb_harvested_product
+    set crop_id = #{cropId,jdbcType=INTEGER},
+      harvested_name = #{harvestedName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=SMALLINT},
+      `describe` = #{describe,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteByCropId" parameterType="java.lang.Integer">
+    delete from ddwb_harvested_product
+    where crop_id = #{cropId,jdbcType=INTEGER}
+  </delete>
+
+  <select id="getHarvestedByCropId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,harvested_name,type,`describe`
+    from ddwb_harvested_product
+    where crop_id = #{cropId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getIdAndName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, harvested_name,type
+    from ddwb_harvested_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getHarvestedByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    SELECT a.id,a.harvested_name,a.type,SUM(b.yield) total_yield FROM ddwb_harvested_product a
+    INNER JOIN ddwb_recovery_batch b
+    ON a.id = b.harvested_id
+    WHERE b.crop_batch_id = #{batchId,jdbcType=INTEGER}
+    GROUP BY harvested_name
+  </select>
+
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.illness.IllnessMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.illness.Illness">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="illness_name" jdbcType="VARCHAR" property="illnessName" />
+    <result column="symptom" jdbcType="VARCHAR" property="symptom" />
+    <result column="shape" jdbcType="VARCHAR" property="shape" />
+    <result column="habit" jdbcType="VARCHAR" property="habit" />
+    <result column="regular" jdbcType="VARCHAR" property="regular" />
+  </resultMap>
+
+  <!--<resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.illness.Illness">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="illness_name" jdbcType="VARCHAR" property="illnessName" />
+    <result column="symptom" jdbcType="VARCHAR" property="symptom" />
+    <result column="shape" jdbcType="VARCHAR" property="shape" />
+    <result column="habit" jdbcType="VARCHAR" property="habit" />
+    <result column="regular" jdbcType="VARCHAR" property="regular" />
+    <collection property="treatmentPlanList" column="id" select="com.nongxin.terminal.dao.illness.TreatmentPlanMapper.selectByIllId"/>
+  </resultMap>-->
+
+  <sql id="Base_Column_List">
+    id, illness_name, symptom, shape, habit, regular
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_illness
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_illness
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.illness.Illness" useGeneratedKeys="true">
+    insert into ddwb_illness (illness_name, symptom, shape, 
+      habit, regular)
+    values (#{illnessName,jdbcType=VARCHAR}, #{symptom,jdbcType=VARCHAR}, #{shape,jdbcType=VARCHAR}, 
+      #{habit,jdbcType=VARCHAR}, #{regular,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.illness.Illness" useGeneratedKeys="true">
+    insert into ddwb_illness
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="illnessName != null">
+        illness_name,
+      </if>
+      <if test="symptom != null">
+        symptom,
+      </if>
+      <if test="shape != null">
+        shape,
+      </if>
+      <if test="habit != null">
+        habit,
+      </if>
+      <if test="regular != null">
+        regular,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="illnessName != null">
+        #{illnessName,jdbcType=VARCHAR},
+      </if>
+      <if test="symptom != null">
+        #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="shape != null">
+        #{shape,jdbcType=VARCHAR},
+      </if>
+      <if test="habit != null">
+        #{habit,jdbcType=VARCHAR},
+      </if>
+      <if test="regular != null">
+        #{regular,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.illness.Illness">
+    update ddwb_illness
+    <set>
+      <if test="illnessName != null">
+        illness_name = #{illnessName,jdbcType=VARCHAR},
+      </if>
+      <if test="symptom != null">
+        symptom = #{symptom,jdbcType=VARCHAR},
+      </if>
+      <if test="shape != null">
+        shape = #{shape,jdbcType=VARCHAR},
+      </if>
+      <if test="habit != null">
+        habit = #{habit,jdbcType=VARCHAR},
+      </if>
+      <if test="regular != null">
+        regular = #{regular,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.illness.Illness">
+    update ddwb_illness
+    set illness_name = #{illnessName,jdbcType=VARCHAR},
+      symptom = #{symptom,jdbcType=VARCHAR},
+      shape = #{shape,jdbcType=VARCHAR},
+      habit = #{habit,jdbcType=VARCHAR},
+      regular = #{regular,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--<select id="selectByFeedbackId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    SELECT a.* FROM ddwb_illness a
+    INNER JOIN ddwb_ill_feedback_rel b
+    ON a.id = b.ill_id
+    WHERE b.feedback_id = #{feedbackId,jdbcType=INTEGER}
+  </select>-->
+
+  <select id="getAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, illness_name from ddwb_illness
+    <where>
+      <if test="illnessName != null">
+        and position(#{illnessName,jdbcType=VARCHAR} in illness_name)
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByIllnessName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, illness_name from ddwb_illness where illness_name = #{illnessName,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

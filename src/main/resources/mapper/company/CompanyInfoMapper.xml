@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.company.CompanyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.company.CompanyInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="plat_crop" jdbcType="VARCHAR" property="platCrop" />
+    <result column="manage_area" jdbcType="DOUBLE" property="manageArea" />
+    <result column="manage_cooperation" jdbcType="INTEGER" property="manageCooperation" />
+    <result column="company_profile" jdbcType="VARCHAR" property="companyProfile" />
+    <result column="shop_url" jdbcType="VARCHAR" property="shopUrl" />
+    <collection property="managePicture" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getManagerPic"></collection>
+    <collection property="honorPicture" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getHonorPic"></collection>
+    <collection property="companyPicture" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getCompanyPic"></collection>
+    <collection property="videoCompany" column="id" select="com.nongxin.terminal.dao.file.FileInfoMapper.getVideoCompany"></collection>
+    <collection property="videoProduct" column="id" select="com.nongxin.terminal.dao.file.FileInfoMapper.getVideoProduct"></collection>
+    <collection property="fertilizersList" column="id" select="com.nongxin.terminal.dao.company.FertilizersMapper.getFertilizersByCompanyId"></collection>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.company.CompanyInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, company_name, company_address, plat_crop, manage_area, manage_cooperation,company_profile,shop_url
+  </sql>
+
+  <sql id="sql_where">
+    <where>
+      <if test="companyName != null">
+        and position(#{companyName,jdbcType=VARCHAR} in company_name)
+      </if>
+      <if test="companyAddress != null">
+        and position(#{companyAddress,jdbcType=VARCHAR} in company_address)
+      </if>
+    </where>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_company_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_company_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.company.CompanyInfo" useGeneratedKeys="true">
+    insert into ddwb_company_info (company_name, company_address, plat_crop, 
+      manage_area, manage_cooperation, company_profile,shop_url
+      )
+    values (#{companyName,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR}, #{platCrop,jdbcType=VARCHAR},
+      #{manageArea,jdbcType=DOUBLE}, #{manageCooperation,jdbcType=INTEGER}, #{companyProfile,jdbcType=VARCHAR}, #{shopUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.company.CompanyInfo" useGeneratedKeys="true">
+    insert into ddwb_company_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="companyAddress != null">
+        company_address,
+      </if>
+      <if test="platCrop != null">
+        plat_crop,
+      </if>
+      <if test="manageArea != null">
+        manage_area,
+      </if>
+      <if test="manageCooperation != null">
+        manage_cooperation,
+      </if>
+      <if test="companyProfile != null">
+        company_profile,
+      </if>
+      <if test="shopUrl != null">
+        shop_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="platCrop != null">
+        #{platCrop,jdbcType=VARCHAR},
+      </if>
+      <if test="manageArea != null">
+        #{manageArea,jdbcType=DOUBLE},
+      </if>
+      <if test="manageCooperation != null">
+        #{manageCooperation,jdbcType=INTEGER},
+      </if>
+      <if test="companyProfile != null">
+        #{companyProfile,jdbcType=VARCHAR},
+      </if>
+      <if test="shopUrl != null">
+        #{shopUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.company.CompanyInfo">
+    update ddwb_company_info
+    <set>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="platCrop != null">
+        plat_crop = #{platCrop,jdbcType=VARCHAR},
+      </if>
+      <if test="manageArea != null">
+        manage_area = #{manageArea,jdbcType=DOUBLE},
+      </if>
+      <if test="manageCooperation != null">
+        manage_cooperation = #{manageCooperation,jdbcType=INTEGER},
+      </if>
+      <if test="companyProfile != null">
+        company_profile = #{companyProfile,jdbcType=VARCHAR},
+      </if>
+      <if test="shopUrl != null">
+        shop_url = #{shopUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.company.CompanyInfo">
+    update ddwb_company_info
+    set company_name = #{companyName,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      plat_crop = #{platCrop,jdbcType=VARCHAR},
+      manage_area = #{manageArea,jdbcType=DOUBLE},
+      manage_cooperation = #{manageCooperation,jdbcType=INTEGER},
+      company_profile = #{companyProfile,jdbcType=VARCHAR},
+      shop_url = #{shopUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getCompanyInfoList" parameterType="com.nongxin.terminal.entity.company.CompanyInfo" resultMap="BaseResultMap">
+    select * from ddwb_company_info
+    <include refid="sql_where" />
+    order by id desc
+  </select>
+
+  <select id="getCompanyInfo" resultMap="BaseResultMap2">
+    select id,company_name from ddwb_company_info
+  </select>
+
+  <select id="getShopUrl" resultType="java.lang.String">
+    select shop_url shopUrl from ddwb_company_info
+  </select>
+
+</mapper>

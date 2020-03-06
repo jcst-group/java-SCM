@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.file.PictureInfoMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.file.PictureInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="picture_label" jdbcType="VARCHAR" property="pictureLabel" />
+    <result column="picture_url" jdbcType="VARCHAR" property="pictureUrl" />
+    <result column="relation_id" jdbcType="INTEGER" property="relationId" />
+    <result column="relation_type" jdbcType="SMALLINT" property="relationType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_man_id" jdbcType="INTEGER" property="createManId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_man_id" jdbcType="INTEGER" property="updateManId" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, picture_label, picture_url, relation_id, relation_type, create_time, create_man_id, 
+    update_time, update_man_id, type
+  </sql>
+  <sql id="Base_Column_List2">
+    id, picture_url
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_picture_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_picture_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByRelation" parameterType="java.lang.Integer">
+    delete from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER}
+    and relation_type = #{relationType,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.file.PictureInfo" useGeneratedKeys="true">
+    insert into ddwb_picture_info (picture_label, picture_url, relation_id, 
+      relation_type, create_time, create_man_id, 
+      update_time, update_man_id, type
+      )
+    values (#{pictureLabel,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, #{relationId,jdbcType=INTEGER}, 
+      #{relationType,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, #{createManId,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateManId,jdbcType=INTEGER}, #{type,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.file.PictureInfo" useGeneratedKeys="true">
+    insert into ddwb_picture_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pictureLabel != null">
+        picture_label,
+      </if>
+      <if test="pictureUrl != null">
+        picture_url,
+      </if>
+      <if test="relationId != null">
+        relation_id,
+      </if>
+      <if test="relationType != null">
+        relation_type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createManId != null">
+        create_man_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateManId != null">
+        update_man_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pictureLabel != null">
+        #{pictureLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null">
+        #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null">
+        #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="relationType != null">
+        #{relationType,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManId != null">
+        #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null">
+        #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.file.PictureInfo">
+    update ddwb_picture_info
+    <set>
+      <if test="pictureLabel != null">
+        picture_label = #{pictureLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureUrl != null">
+        picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null">
+        relation_id = #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="relationType != null">
+        relation_type = #{relationType,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createManId != null">
+        create_man_id = #{createManId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateManId != null">
+        update_man_id = #{updateManId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.file.PictureInfo">
+    update ddwb_picture_info
+    set picture_label = #{pictureLabel,jdbcType=VARCHAR},
+      picture_url = #{pictureUrl,jdbcType=VARCHAR},
+      relation_id = #{relationId,jdbcType=INTEGER},
+      relation_type = #{relationType,jdbcType=SMALLINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_man_id = #{createManId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_man_id = #{updateManId,jdbcType=INTEGER},
+      type = #{type,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByRelation" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, picture_url
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER}
+    and relation_type = #{relationType,jdbcType=INTEGER}
+  </select>
+
+  <select id="getUserHeadPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 11
+  </select>
+
+  <select id="getUserHuKOuPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 12
+  </select>
+
+  <select id="getIdentifyCodePic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 13
+  </select>
+
+  <select id="getBasePic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 1
+  </select>
+
+  <select id="getSoilPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 4
+  </select>
+
+  <select id="getAirPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 3
+  </select>
+
+  <select id="getWaterPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 2
+  </select>
+
+  <select id="getCropPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 5
+  </select>
+
+  <select id="getEdiblePic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 6
+  </select>
+
+  <select id="getMedicinalPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 7
+  </select>
+
+  <select id="getFarmingItemPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 9
+  </select>
+
+  <select id="getMaterialInfoPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 14
+  </select>
+
+  <select id="getFeedBackPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 15
+  </select>
+
+  <select id="getOrderPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 16
+  </select>
+
+  <select id="getSeedDetectionPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 8
+  </select>
+
+  <select id="getSeedDetectionResultPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 17
+  </select>
+
+  <select id="getRecDetectionPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 10
+  </select>
+
+  <select id="getRecDetectionResultPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 18
+  </select>
+
+  <select id="getInitProDetectionPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 19
+  </select>
+
+  <select id="getManagerPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 20
+  </select>
+
+  <select id="getHonorPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 21
+  </select>
+
+  <select id="getCompanyPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 25
+  </select>
+
+  <select id="getProCropPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 22
+  </select>
+
+  <select id="getProEdiblePic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 23
+  </select>
+
+  <select id="getProMedicinalPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 24
+  </select>
+
+  <select id="getLotPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 26
+  </select>
+
+  <select id="getIllFeedbackPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 27
+  </select>
+
+  <select id="getIllPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 28
+  </select>
+
+  <select id="getTreatmentPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 29
+  </select>
+
+
+
+  <select id="getBasePurchasePic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 30
+  </select>
+
+  <select id="getStandardPlanPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 31
+  </select>
+
+  <select id="getFertilizerPurchasePic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 32
+  </select>
+
+  <select id="getLaborDispatchPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 33
+  </select>
+
+  <select id="getOrderContractPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 34
+  </select>
+
+  <select id="getInsuranceContractPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 35
+  </select>
+
+  <select id="getPledgeGoodsPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 36
+  </select>
+
+  <select id="getLoanContractPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 37
+  </select>
+
+  <select id="getFinanceBusinessPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 38
+  </select>
+
+  <select id="getLegalPersonPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 39
+  </select>
+
+  <!--获取入社身份证图片 -->
+  <select id="getJoinSocialPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 40
+  </select>
+
+  <!--获取社员身份证图片 -->
+  <select id="getMemberPersonPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 41
+  </select>
+
+  <!--获取保单图片 -->
+  <select id="getInsuranceOrderPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 42
+  </select>
+
+  <!--获取社员头像图片 -->
+  <select id="getMemberheadPic" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 43
+  </select>
+
+
+  <!--获取获取保单申请提交图片 -->
+  <select id="getLoanRelatePics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 44
+  </select>
+
+  <!--//获取拟担保图片 relateID = 45 -->
+  <select id="getWarrantApplyPics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 45
+  </select>
+
+  <!--//获取银行审核图片 relateID = 46-->
+  <select id="getBankApplyPics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 46
+  </select>
+
+  <!--  //获取担保审批图片 relateID = 47-->
+  <select id="getWarrantApprovePics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 47
+  </select>
+
+  <!--  //获取银行审批图片 relateID = 48-->
+  <select id="getBankApprovePics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 48
+  </select>
+
+  <!--  //获取检测相关图片 relateID = 49-->
+  <select id="getDetectRelatePics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 49
+  </select>
+
+  <!--  //获取检测结果图片 relateID = 50-->
+  <select id="getDetectResultPics" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List2" />
+    from ddwb_picture_info
+    where relation_id = #{relationId,jdbcType=INTEGER} and relation_type = 50
+  </select>
+</mapper>

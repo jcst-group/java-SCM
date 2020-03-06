@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.testing.DetectionRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.testing.DetectionRel">
+    <result column="relation_id" jdbcType="INTEGER" property="relationId" />
+    <result column="detection_id" jdbcType="INTEGER" property="detectionId" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.vo.detection.DetectionVo">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="min_value" jdbcType="DECIMAL" property="minValue" />
+    <result column="max_value" jdbcType="DECIMAL" property="maxValue" />
+    <result column="act_value" jdbcType="DECIMAL" property="actValue" />
+    <association property="unit" javaType="com.nongxin.terminal.entity.common.Unit">
+      <result column="value" property="value"/>
+      <result column="code" property="code"/>
+      <result column="display_name" property="displayName"/>
+    </association>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.vo.detection.DetectionRelVo">
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="min_value" jdbcType="DECIMAL" property="minValue" />
+    <result column="max_value" jdbcType="DECIMAL" property="maxValue" />
+    <result column="value" jdbcType="DECIMAL" property="value" />
+    <result column="detection_time" jdbcType="VARCHAR" property="detectionTime" />
+    <association property="unit" javaType="com.nongxin.terminal.entity.common.Unit">
+      <result column="value" property="value"/>
+      <result column="code" property="code"/>
+      <result column="display_name" property="displayName"/>
+    </association>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.testing.DetectionRel">
+    insert into ddwb_detection_rel (relation_id, detection_id, value, 
+      type)
+    values (#{relationId,jdbcType=INTEGER}, #{detectionId,jdbcType=INTEGER}, #{value,jdbcType=DECIMAL}, 
+      #{type,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.testing.DetectionRel">
+    insert into ddwb_detection_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="relationId != null">
+        relation_id,
+      </if>
+      <if test="detectionId != null">
+        detection_id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="relationId != null">
+        #{relationId,jdbcType=INTEGER},
+      </if>
+      <if test="detectionId != null">
+        #{detectionId,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteByRelation">
+    delete from ddwb_detection_rel where relation_id = #{relationId,jdbcType=INTEGER} and type = #{type,jdbcType=SMALLINT}
+  </delete>
+
+  <select id="getSeedDetectionVo" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    SELECT a.`value` AS act_value,b.item,b.min_value,b.max_value,c.`value`,c.code,c.display_name,b.id FROM `ddwb_detection_rel` a
+    INNER JOIN ddwb_detection_items b
+    ON a.detection_id = b.id
+	INNER JOIN ddwb_unit c
+	ON b.unit = c.`value`
+    WHERE a.type = 1 AND a.relation_id = #{relationId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRecoveryDetectionVo" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    SELECT a.`value` AS act_value,b.item,b.min_value,b.max_value,c.`value`,c.code,c.display_name,b.id FROM `ddwb_detection_rel` a
+    INNER JOIN ddwb_detection_items b
+    ON a.detection_id = b.id
+	INNER JOIN ddwb_unit c
+	ON b.unit = c.`value`
+    WHERE a.type = 2 AND a.relation_id = #{relationId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getInitProDetectionVo" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    SELECT a.`value` AS act_value,b.item,b.min_value,b.max_value,c.`value`,c.code,c.display_name,b.id FROM `ddwb_detection_rel` a
+    INNER JOIN ddwb_detection_items b
+    ON a.detection_id = b.id
+	INNER JOIN ddwb_unit c
+	ON b.unit = c.`value`
+    WHERE a.type = 3 AND a.relation_id = #{relationId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getDetectionByRelationId" resultMap="BaseResultMap3">
+    SELECT b.item,d.`value`,d.`code`,d.display_name,a.`value`,b.min_value,b.max_value,DATE_FORMAT(c.detection_time, '%Y-%m-%d') detection_time FROM ddwb_detection_rel a
+    INNER JOIN ddwb_detection_items b
+    ON a.detection_id = b.id
+    <choose>
+      <when test="type == @com.nongxin.terminal.util.enumUtil.test.DetectionStageEnum@SEED">
+        INNER JOIN ddwb_seed_detection c
+      </when >
+      <when test="type == @com.nongxin.terminal.util.enumUtil.test.DetectionStageEnum@RECOVERY">
+        INNER JOIN ddwb_recovery_detection c
+      </when >
+      <when test="type == @com.nongxin.terminal.util.enumUtil.test.DetectionStageEnum@INIPRO">
+        INNER JOIN ddwb_initpro_detection c
+      </when >
+    </choose>
+    ON a.relation_id = c.id
+    INNER JOIN ddwb_unit d
+    ON d.`value` = b.unit
+    WHERE a.type = #{type,jdbcType=SMALLINT} AND a.relation_id = #{relationId,jdbcType=INTEGER}
+    AND b.Item_category = #{category,jdbcType=SMALLINT}
+  </select>
+
+</mapper>

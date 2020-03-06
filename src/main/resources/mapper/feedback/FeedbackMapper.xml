@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.feedback.FeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.feedback.Feedback">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.feedback.Feedback">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="baseInfo" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getIdAndName"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getFeedBackPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, feedback_time, user_id, base_id, content,status,remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.feedback.Feedback" useGeneratedKeys="true">
+    insert into ddwb_feedback (feedback_time, user_id, base_id, 
+      content,status,remark)
+    values (#{feedbackTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, #{baseId,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR},#{status},#{remark})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.feedback.Feedback" useGeneratedKeys="true">
+    insert into ddwb_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        feedback_time,
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="baseId != null">
+        base_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      current_timestamp,
+
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="baseId != null">
+        #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.feedback.Feedback">
+    update ddwb_feedback
+    <set>
+      <if test="feedbackTime != null">
+        feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.feedback.Feedback">
+    update ddwb_feedback
+    set feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER},
+      base_id = #{baseId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getFeedBack" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_feedback
+    <where>
+      <if test="baseId != null">
+        and base_id = #{baseId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=SMALLINT}
+      </if>
+      <if test="uid != null">
+        and user_id = #{uid,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by feedback_time desc
+  </select>
+
+</mapper>

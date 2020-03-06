@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.crop.BatchEnvironmentMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.crop.BatchEnvironment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="batch_id" jdbcType="INTEGER" property="batchId" />
+    <result column="temperature_diff_avg" jdbcType="VARCHAR" property="temperatureDiffAvg" />
+    <result column="temperature_avg" jdbcType="DECIMAL" property="temperatureAvg" />
+    <result column="air_humidity_avg" jdbcType="DECIMAL" property="airHumidityAvg" />
+    <result column="air_pressure_avg" jdbcType="DECIMAL" property="airPressureAvg" />
+    <result column="wind_speed_avg" jdbcType="DECIMAL" property="windSpeedAvg" />
+    <result column="rainfall_total" jdbcType="DECIMAL" property="rainfallTotal" />
+    <result column="ill_time_avg" jdbcType="DECIMAL" property="illTimeAvg" />
+    <result column="ill_intensity_avg" jdbcType="DECIMAL" property="illIntensityAvg" />
+    <result column="CO2_value_avg" jdbcType="DECIMAL" property="co2ValueAvg" />
+    <result column="PM2_5_value_avg" jdbcType="DECIMAL" property="pm25ValueAvg" />
+    <result column="soil_temperature_avg" jdbcType="DECIMAL" property="soilTemperatureAvg" />
+    <result column="soil_humidity_avg" jdbcType="DECIMAL" property="soilHumidityAvg" />
+    <result column="soil_ph_avg" jdbcType="DECIMAL" property="soilPhAvg" />
+    <result column="ill_time_total" jdbcType="DECIMAL" property="illTimeTotal" />
+    <result column="soil_type" jdbcType="VARCHAR" property="soilType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, batch_id, temperature_diff_avg, temperature_avg, air_humidity_avg, air_pressure_avg, 
+    wind_speed_avg, rainfall_total, ill_time_avg, ill_intensity_avg, CO2_value_avg, PM2_5_value_avg, 
+    soil_temperature_avg, soil_humidity_avg, soil_ph_avg, ill_time_total, soil_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_batch_environment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_batch_environment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.crop.BatchEnvironment" useGeneratedKeys="true">
+    insert into ddwb_batch_environment (batch_id, temperature_diff_avg, temperature_avg, 
+      air_humidity_avg, air_pressure_avg, wind_speed_avg, 
+      rainfall_total, ill_time_avg, ill_intensity_avg, 
+      CO2_value_avg, PM2_5_value_avg, soil_temperature_avg, 
+      soil_humidity_avg, soil_ph_avg, ill_time_total, 
+      soil_type)
+    values (#{batchId,jdbcType=INTEGER}, #{temperatureDiffAvg,jdbcType=VARCHAR}, #{temperatureAvg,jdbcType=DECIMAL}, 
+      #{airHumidityAvg,jdbcType=DECIMAL}, #{airPressureAvg,jdbcType=DECIMAL}, #{windSpeedAvg,jdbcType=DECIMAL}, 
+      #{rainfallTotal,jdbcType=DECIMAL}, #{illTimeAvg,jdbcType=DECIMAL}, #{illIntensityAvg,jdbcType=DECIMAL}, 
+      #{co2ValueAvg,jdbcType=DECIMAL}, #{pm25ValueAvg,jdbcType=DECIMAL}, #{soilTemperatureAvg,jdbcType=DECIMAL}, 
+      #{soilHumidityAvg,jdbcType=DECIMAL}, #{soilPhAvg,jdbcType=DECIMAL}, #{illTimeTotal,jdbcType=DECIMAL}, 
+      #{soilType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.crop.BatchEnvironment" useGeneratedKeys="true">
+    insert into ddwb_batch_environment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="batchId != null">
+        batch_id,
+      </if>
+      <if test="temperatureDiffAvg != null">
+        temperature_diff_avg,
+      </if>
+      <if test="temperatureAvg != null">
+        temperature_avg,
+      </if>
+      <if test="airHumidityAvg != null">
+        air_humidity_avg,
+      </if>
+      <if test="airPressureAvg != null">
+        air_pressure_avg,
+      </if>
+      <if test="windSpeedAvg != null">
+        wind_speed_avg,
+      </if>
+      <if test="rainfallTotal != null">
+        rainfall_total,
+      </if>
+      <if test="illTimeAvg != null">
+        ill_time_avg,
+      </if>
+      <if test="illIntensityAvg != null">
+        ill_intensity_avg,
+      </if>
+      <if test="co2ValueAvg != null">
+        CO2_value_avg,
+      </if>
+      <if test="pm25ValueAvg != null">
+        PM2_5_value_avg,
+      </if>
+      <if test="soilTemperatureAvg != null">
+        soil_temperature_avg,
+      </if>
+      <if test="soilHumidityAvg != null">
+        soil_humidity_avg,
+      </if>
+      <if test="soilPhAvg != null">
+        soil_ph_avg,
+      </if>
+      <if test="illTimeTotal != null">
+        ill_time_total,
+      </if>
+      <if test="soilType != null">
+        soil_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="batchId != null">
+        #{batchId,jdbcType=INTEGER},
+      </if>
+      <if test="temperatureDiffAvg != null">
+        #{temperatureDiffAvg,jdbcType=VARCHAR},
+      </if>
+      <if test="temperatureAvg != null">
+        #{temperatureAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="airHumidityAvg != null">
+        #{airHumidityAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="airPressureAvg != null">
+        #{airPressureAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="windSpeedAvg != null">
+        #{windSpeedAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="rainfallTotal != null">
+        #{rainfallTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="illTimeAvg != null">
+        #{illTimeAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="illIntensityAvg != null">
+        #{illIntensityAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="co2ValueAvg != null">
+        #{co2ValueAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="pm25ValueAvg != null">
+        #{pm25ValueAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="soilTemperatureAvg != null">
+        #{soilTemperatureAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="soilHumidityAvg != null">
+        #{soilHumidityAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="soilPhAvg != null">
+        #{soilPhAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="illTimeTotal != null">
+        #{illTimeTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="soilType != null">
+        #{soilType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.crop.BatchEnvironment">
+    update ddwb_batch_environment
+    <set>
+      <if test="batchId != null">
+        batch_id = #{batchId,jdbcType=INTEGER},
+      </if>
+      <if test="temperatureDiffAvg != null">
+        temperature_diff_avg = #{temperatureDiffAvg,jdbcType=VARCHAR},
+      </if>
+      <if test="temperatureAvg != null">
+        temperature_avg = #{temperatureAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="airHumidityAvg != null">
+        air_humidity_avg = #{airHumidityAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="airPressureAvg != null">
+        air_pressure_avg = #{airPressureAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="windSpeedAvg != null">
+        wind_speed_avg = #{windSpeedAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="rainfallTotal != null">
+        rainfall_total = #{rainfallTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="illTimeAvg != null">
+        ill_time_avg = #{illTimeAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="illIntensityAvg != null">
+        ill_intensity_avg = #{illIntensityAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="co2ValueAvg != null">
+        CO2_value_avg = #{co2ValueAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="pm25ValueAvg != null">
+        PM2_5_value_avg = #{pm25ValueAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="soilTemperatureAvg != null">
+        soil_temperature_avg = #{soilTemperatureAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="soilHumidityAvg != null">
+        soil_humidity_avg = #{soilHumidityAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="soilPhAvg != null">
+        soil_ph_avg = #{soilPhAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="illTimeTotal != null">
+        ill_time_total = #{illTimeTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="soilType != null">
+        soil_type = #{soilType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.crop.BatchEnvironment">
+    update ddwb_batch_environment
+    set batch_id = #{batchId,jdbcType=INTEGER},
+      temperature_diff_avg = #{temperatureDiffAvg,jdbcType=VARCHAR},
+      temperature_avg = #{temperatureAvg,jdbcType=DECIMAL},
+      air_humidity_avg = #{airHumidityAvg,jdbcType=DECIMAL},
+      air_pressure_avg = #{airPressureAvg,jdbcType=DECIMAL},
+      wind_speed_avg = #{windSpeedAvg,jdbcType=DECIMAL},
+      rainfall_total = #{rainfallTotal,jdbcType=DECIMAL},
+      ill_time_avg = #{illTimeAvg,jdbcType=DECIMAL},
+      ill_intensity_avg = #{illIntensityAvg,jdbcType=DECIMAL},
+      CO2_value_avg = #{co2ValueAvg,jdbcType=DECIMAL},
+      PM2_5_value_avg = #{pm25ValueAvg,jdbcType=DECIMAL},
+      soil_temperature_avg = #{soilTemperatureAvg,jdbcType=DECIMAL},
+      soil_humidity_avg = #{soilHumidityAvg,jdbcType=DECIMAL},
+      soil_ph_avg = #{soilPhAvg,jdbcType=DECIMAL},
+      ill_time_total = #{illTimeTotal,jdbcType=DECIMAL},
+      soil_type = #{soilType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteByBatchId" parameterType="java.lang.Integer">
+    delete from ddwb_batch_environment where batch_id = #{batchId,jdbcType=INTEGER}
+  </delete>
+
+  <select id="selectByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_batch_environment
+    where batch_id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT d.*
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+	LEFT JOIN ddwb_batch_environment d
+	ON c.crop_batch_id = d.batch_id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

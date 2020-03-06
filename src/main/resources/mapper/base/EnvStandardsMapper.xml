@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.base.EnvStandardsMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.base.EnvStandards">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="item_name" jdbcType="SMALLINT" property="itemName" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="min_value" jdbcType="DECIMAL" property="minValue" />
+    <result column="max_value" jdbcType="DECIMAL" property="maxValue" />
+    <association property="unit" column="unit" select="com.nongxin.terminal.dao.common.UnitMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, item_name, item, unit, min_value, max_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_env_standards
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_env_standards
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.base.EnvStandards" useGeneratedKeys="true">
+    insert into ddwb_env_standards (item_name, item, unit, 
+      min_value, max_value)
+    values (#{itemName,jdbcType=SMALLINT}, #{item,jdbcType=VARCHAR}, #{unit.value,jdbcType=INTEGER},
+      #{minValue,jdbcType=DECIMAL}, #{maxValue,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.base.EnvStandards" useGeneratedKeys="true">
+    insert into ddwb_env_standards
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="item != null">
+        item,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="minValue != null">
+        min_value,
+      </if>
+      <if test="maxValue != null">
+        max_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="itemName != null">
+        #{itemName,jdbcType=SMALLINT},
+      </if>
+      <if test="item != null">
+        #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit.value,jdbcType=INTEGER},
+      </if>
+      <if test="minValue != null">
+        #{minValue,jdbcType=DECIMAL},
+      </if>
+      <if test="maxValue != null">
+        #{maxValue,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.base.EnvStandards">
+    update ddwb_env_standards
+    <set>
+      <if test="item != null">
+        item = #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit.value,jdbcType=INTEGER},
+      </if>
+      <if test="minValue != null">
+        min_value = #{minValue,jdbcType=DECIMAL},
+      </if>
+      <if test="maxValue != null">
+        max_value = #{maxValue,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.base.EnvStandards">
+    update ddwb_env_standards
+    set item = #{item,jdbcType=VARCHAR},
+      unit = #{unit.value,jdbcType=INTEGER},
+      min_value = #{minValue,jdbcType=DECIMAL},
+      max_value = #{maxValue,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getEnvStandards" parameterType="com.nongxin.terminal.entity.base.EnvStandards" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_env_standards
+    <where>
+      <if test="itemName != null">
+        and item_name = #{itemName,jdbcType=SMALLINT}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+</mapper>

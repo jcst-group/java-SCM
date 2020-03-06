@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.testing.DetectionItemsMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.testing.DetectionItems">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stage" jdbcType="SMALLINT" property="stage" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="min_value" jdbcType="DECIMAL" property="minValue" />
+    <result column="max_value" jdbcType="DECIMAL" property="maxValue" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="Item_category" jdbcType="SMALLINT" property="itemCategory" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <association property="unit" column="unit" select="com.nongxin.terminal.dao.common.UnitMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.testing.DetectionItems">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stage" jdbcType="SMALLINT" property="stage" />
+    <result column="item" jdbcType="VARCHAR" property="item" />
+    <result column="min_value" jdbcType="DECIMAL" property="minValue" />
+    <result column="max_value" jdbcType="DECIMAL" property="maxValue" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="Item_category" jdbcType="SMALLINT" property="itemCategory" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <association property="crop" javaType="com.nongxin.terminal.entity.crop.Crop">
+      <id column="crop_id" jdbcType="INTEGER" property="id" />
+      <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    </association>
+    <association property="unit" column="unit" select="com.nongxin.terminal.dao.common.UnitMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, stage, item, unit, min_value, max_value, crop_id, Item_category, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_detection_items
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_detection_items
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.testing.DetectionItems" useGeneratedKeys="true">
+    insert into ddwb_detection_items (stage, item, unit, 
+      min_value, max_value, crop_id, 
+      Item_category, create_time)
+    values (#{stage,jdbcType=SMALLINT}, #{item,jdbcType=VARCHAR}, #{unit.value,jdbcType=INTEGER},
+      #{minValue,jdbcType=DECIMAL}, #{maxValue,jdbcType=DECIMAL}, #{cropId,jdbcType=INTEGER}, 
+      #{itemCategory,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.testing.DetectionItems" useGeneratedKeys="true">
+    insert into ddwb_detection_items
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stage != null">
+        stage,
+      </if>
+      <if test="item != null">
+        item,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="minValue != null">
+        min_value,
+      </if>
+      <if test="maxValue != null">
+        max_value,
+      </if>
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="itemCategory != null">
+        Item_category,
+      </if>
+
+        create_time,
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stage != null">
+        #{stage,jdbcType=SMALLINT},
+      </if>
+      <if test="item != null">
+        #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        #{unit.value,jdbcType=INTEGER},
+      </if>
+      <if test="minValue != null">
+        #{minValue,jdbcType=DECIMAL},
+      </if>
+      <if test="maxValue != null">
+        #{maxValue,jdbcType=DECIMAL},
+      </if>
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategory != null">
+        #{itemCategory,jdbcType=SMALLINT},
+      </if>
+
+      current_timestamp,
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.testing.DetectionItems">
+    update ddwb_detection_items
+    <set>
+      <if test="stage != null">
+        stage = #{stage,jdbcType=SMALLINT},
+      </if>
+      <if test="item != null">
+        item = #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null">
+        unit = #{unit.value,jdbcType=INTEGER},
+      </if>
+      <if test="minValue != null">
+        min_value = #{minValue,jdbcType=DECIMAL},
+      </if>
+      <if test="maxValue != null">
+        max_value = #{maxValue,jdbcType=DECIMAL},
+      </if>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="itemCategory != null">
+        Item_category = #{itemCategory,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.testing.DetectionItems">
+    update ddwb_detection_items
+    set stage = #{stage,jdbcType=SMALLINT},
+      item = #{item,jdbcType=VARCHAR},
+      unit = #{unit.value,jdbcType=INTEGER},
+      min_value = #{minValue,jdbcType=DECIMAL},
+      max_value = #{maxValue,jdbcType=DECIMAL},
+      crop_id = #{cropId,jdbcType=INTEGER},
+      Item_category = #{itemCategory,jdbcType=SMALLINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getDetectionItemsList" resultMap="BaseResultMap2">
+    SELECT a.*,b.crop_name FROM ddwb_detection_items a
+    INNER JOIN ddwb_crop b
+    ON a.crop_id = b.id
+    <where>
+      <if test="stage != null">
+        and a.stage = #{stage,jdbcType=SMALLINT}
+      </if>
+      <if test="cropId != null">
+        and a.crop_id = #{cropId,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="selectByStage" resultMap="BaseResultMap">
+    select id,item,unit
+    from ddwb_detection_items
+    where stage = #{stage,jdbcType=SMALLINT} and crop_id = #{cropId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

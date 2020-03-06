@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.system.FamilyMemberMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.system.FamilyMenber">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+    <result column="relation" jdbcType="VARCHAR" property="relation" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <result column="identify_code" jdbcType="VARCHAR" property="identifyCode" />
+    <result column="occupation" jdbcType="VARCHAR" property="occupation" />
+    <result column="politic_countenance" jdbcType="VARCHAR" property="politicCountenance" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, member_name, relation, sex, identify_code, occupation, politic_countenance
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_family_member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_family_member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.system.FamilyMenber" useGeneratedKeys="true">
+    insert into ddwb_family_member (user_id, member_name, relation, 
+      sex, identify_code, occupation, 
+      politic_countenance)
+    values (#{userId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR},
+      #{sex,jdbcType=SMALLINT}, #{identifyCode,jdbcType=VARCHAR}, #{occupation,jdbcType=VARCHAR}, 
+      #{politicCountenance,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.system.FamilyMenber" useGeneratedKeys="true">
+    insert into ddwb_family_member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="memberName != null">
+        member_name,
+      </if>
+      <if test="relation != null">
+        relation,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="identifyCode != null">
+        identify_code,
+      </if>
+      <if test="occupation != null">
+        occupation,
+      </if>
+      <if test="politicCountenance != null">
+        politic_countenance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="identifyCode != null">
+        #{identifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null">
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="politicCountenance != null">
+        #{politicCountenance,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.system.FamilyMenber">
+    update ddwb_family_member
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null">
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        relation = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="identifyCode != null">
+        identify_code = #{identifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null">
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="politicCountenance != null">
+        politic_countenance = #{politicCountenance,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.system.FamilyMenber">
+    update ddwb_family_member
+    set user_id = #{userId,jdbcType=INTEGER},
+      member_name = #{memberName,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=SMALLINT},
+      identify_code = #{identifyCode,jdbcType=VARCHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      politic_countenance = #{politicCountenance,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getFamilyMenberByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_family_member
+    where user_id = #{uid,jdbcType=INTEGER}
+  </select>
+
+</mapper>

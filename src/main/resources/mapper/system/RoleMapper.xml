@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.system.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.system.Role">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="TYPE" jdbcType="SMALLINT" property="type" />
+    <result column="STATUS" jdbcType="SMALLINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.system.Role">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="TYPE" jdbcType="SMALLINT" property="type" />
+    <result column="STATUS" jdbcType="SMALLINT" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <association property="resourceList" column="{roleId=ID,roleType=TYPE}" select="com.nongxin.terminal.dao.system.ResourceMapper.getResourceByRoleId"/>
+    <association property="appResourceList" column="{roleId=ID,roleType=TYPE}" select="com.nongxin.terminal.dao.system.AppResourceMapper.getAppResourceByRoleId"/>
+    <association property="showResourceList" column="{roleId=ID,roleType=TYPE}" select="com.nongxin.terminal.dao.system.ShowResourceMapper.getShowResourceByRoleId"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, NAME, TYPE, STATUS, CREATE_TIME, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from auth_role
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from auth_role
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.nongxin.terminal.entity.system.Role" useGeneratedKeys="true">
+    insert into auth_role (NAME, TYPE, STATUS, 
+      CREATE_TIME, remark)
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.nongxin.terminal.entity.system.Role" useGeneratedKeys="true">
+    insert into auth_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+
+        CREATE_TIME,
+
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+
+      current_timestamp,
+
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.system.Role">
+    update auth_role
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.system.Role">
+    update auth_role
+    set NAME = #{name,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=SMALLINT},
+      STATUS = #{status,jdbcType=SMALLINT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <sql id="sql_where">
+    <where>
+      <if test="name != null">
+        and position(#{name,jdbcType=VARCHAR} in NAME)
+      </if>
+      <if test="type != null">
+        and TYPE = #{type,jdbcType=SMALLINT}
+      </if>
+    </where>
+  </sql>
+
+  <select id="getRoleList" parameterType="com.nongxin.terminal.entity.system.Role" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from auth_role
+    <include refid="sql_where" />
+    order by CREATE_TIME desc
+  </select>
+
+  <select id="getAllRoleList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from auth_role
+  </select>
+
+  <select id="getRoleByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.* FROM auth_role a
+    INNER JOIN auth_user_role b
+    ON a.ID = b.ROLE_ID
+    WHERE b.USER_ID = #{uid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRoleByFarmingId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.ID,a.NAME FROM auth_role a
+    INNER JOIN ddwb_farming_role_rel b
+    ON a.ID = b.role_id
+    WHERE b.farming_id = #{farmingId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRoleByOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.ID,a.NAME FROM auth_role a
+    INNER JOIN ddwb_order_role_rel b
+    ON a.ID = b.role_id
+    WHERE b.work_order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRoleNotAdmin" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.* FROM auth_role a
+    INNER JOIN auth_user_role b
+    ON a.ID = b.ROLE_ID
+    WHERE b.USER_ID = #{uid,jdbcType=INTEGER} and a.type !=1
+  </select>
+</mapper>

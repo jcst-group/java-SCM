@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.batch.InitialProBatchMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.batch.InitialProBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="initial_name" jdbcType="VARCHAR" property="initialName" />
+    <result column="initial_processing_code" jdbcType="VARCHAR" property="initialProcessingCode" />
+    <result column="initial_processing_time" jdbcType="TIMESTAMP" property="initialProcessingTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="plan_id" jdbcType="INTEGER" property="planId" />
+    <result column="harvested_product_id" jdbcType="INTEGER" property="harvestedProductId" />
+    <result column="processing_id" jdbcType="INTEGER" property="processingId" />
+    <result column="products_id" jdbcType="INTEGER" property="productsId" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="recovery_batch_id" jdbcType="INTEGER" property="recoveryBatchId" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.batch.InitialProBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="initial_name" jdbcType="VARCHAR" property="initialName" />
+    <result column="initial_processing_code" jdbcType="VARCHAR" property="initialProcessingCode" />
+    <result column="initial_processing_time" jdbcType="TIMESTAMP" property="initialProcessingTime" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="plan_id" jdbcType="INTEGER" property="planId" />
+    <result column="harvested_product_id" jdbcType="INTEGER" property="harvestedProductId" />
+    <result column="processing_id" jdbcType="INTEGER" property="processingId" />
+    <result column="products_id" jdbcType="INTEGER" property="productsId" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="recovery_batch_id" jdbcType="INTEGER" property="recoveryBatchId" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+    <association property="plantingPlan" column="plan_id" select="com.nongxin.terminal.dao.plant.PlantingPlanMapper.getPlanById"/>
+    <collection property="recoveryList" column="id" select="com.nongxin.terminal.dao.recovery.RecoveryBatchMapper.getRecoveryByInitialProId"/>
+    <collection property="proItemList" column="id" select="com.nongxin.terminal.dao.batch.ProItemMapper.selectByinitproBatchId"/>
+    <collection property="methodsList" column="id" select="com.nongxin.terminal.dao.processing.ProcessingMethodsMapper.selectByInitPro"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.vo.initPro.InitProVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="initial_processing_code" jdbcType="VARCHAR" property="initialProcessingCode" />
+    <result column="initial_name" jdbcType="VARCHAR" property="initialName" />
+    <collection property="proItemList" column="id" select="com.nongxin.terminal.dao.batch.ProItemMapper.selectByinitproBatchId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.entity.batch.InitialProBatch">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="yield" jdbcType="DECIMAL" property="yield" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <collection property="recoveryList" column="id" select="com.nongxin.terminal.dao.recovery.RecoveryBatchMapper.getRecoveryByInitialProId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap5" type="com.nongxin.terminal.vo.initPro.RetroInitPro">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="detection_id" jdbcType="INTEGER" property="detectionId" />
+    <result column="initial_processing_code" jdbcType="VARCHAR" property="initCode" />
+    <result column="initial_processing_time" jdbcType="TIMESTAMP" property="initTime" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <association property="detectionPic" column="detection_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getInitProDetectionPic"/>
+    <collection property="initMethod" column="id" select="com.nongxin.terminal.dao.processing.ProcessingMethodsMapper.selectByInitPro"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, initial_name, initial_processing_code, initial_processing_time, content, plan_id, 
+    harvested_product_id, processing_id, products_id, yield, recovery_batch_id, crop_id,unit,status
+  </sql>
+  <select id="selectProBatchs" resultMap="BaseResultMap2">
+    SELECT DISTINCT a.* FROM ddwb_initialpro_batch a
+    LEFT JOIN ddwb_initpro_batch_rel b
+    ON b.init_pro_id = a.id
+    <where>
+      <if test="planId != null">
+        and a.plan_id = #{planId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null">
+        and a.initial_processing_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and a.initial_processing_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="recoveryId != null">
+        and b.recove_batch_id = #{recoveryId,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_initialpro_batch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_initialpro_batch
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.batch.InitialProBatch" useGeneratedKeys="true">
+    insert into ddwb_initialpro_batch (initial_name, initial_processing_code, 
+      initial_processing_time, content, plan_id, 
+      harvested_product_id, processing_id, products_id, 
+      yield, recovery_batch_id, crop_id,unit,status
+      )
+    values (#{initialName,jdbcType=VARCHAR}, #{initialProcessingCode,jdbcType=VARCHAR}, 
+      #{initialProcessingTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{planId,jdbcType=INTEGER}, 
+      #{harvestedProductId,jdbcType=INTEGER}, #{processingId,jdbcType=INTEGER}, #{productsId,jdbcType=INTEGER}, 
+      #{yield,jdbcType=DECIMAL}, #{recoveryBatchId,jdbcType=INTEGER}, #{cropId,jdbcType=INTEGER},#{unit,jdbcType=SMALLINT},#{status,jdbcType=SMALLINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.batch.InitialProBatch" useGeneratedKeys="true">
+    insert into ddwb_initialpro_batch
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="initialName != null">
+        initial_name,
+      </if>
+      <if test="initialProcessingCode != null">
+        initial_processing_code,
+      </if>
+      <if test="initialProcessingTime != null">
+        initial_processing_time,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="planId != null">
+        plan_id,
+      </if>
+      <if test="harvestedProductId != null">
+        harvested_product_id,
+      </if>
+      <if test="processingId != null">
+        processing_id,
+      </if>
+      <if test="productsId != null">
+        products_id,
+      </if>
+      <if test="yield != null">
+        yield,
+      </if>
+      <if test="recoveryBatchId != null">
+        recovery_batch_id,
+      </if>
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="initialName != null">
+        #{initialName,jdbcType=VARCHAR},
+      </if>
+      <if test="initialProcessingCode != null">
+        #{initialProcessingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="initialProcessingTime != null">
+        #{initialProcessingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="planId != null">
+        #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="harvestedProductId != null">
+        #{harvestedProductId,jdbcType=INTEGER},
+      </if>
+      <if test="processingId != null">
+        #{processingId,jdbcType=INTEGER},
+      </if>
+      <if test="productsId != null">
+        #{productsId,jdbcType=INTEGER},
+      </if>
+      <if test="yield != null">
+        #{yield,jdbcType=DECIMAL},
+      </if>
+      <if test="recoveryBatchId != null">
+        #{recoveryBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.batch.InitialProBatch">
+    update ddwb_initialpro_batch
+    <set>
+      <if test="initialName != null">
+        initial_name = #{initialName,jdbcType=VARCHAR},
+      </if>
+      <if test="initialProcessingCode != null">
+        initial_processing_code = #{initialProcessingCode,jdbcType=VARCHAR},
+      </if>
+      <if test="initialProcessingTime != null">
+        initial_processing_time = #{initialProcessingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="planId != null">
+        plan_id = #{planId,jdbcType=INTEGER},
+      </if>
+      <if test="harvestedProductId != null">
+        harvested_product_id = #{harvestedProductId,jdbcType=INTEGER},
+      </if>
+      <if test="processingId != null">
+        processing_id = #{processingId,jdbcType=INTEGER},
+      </if>
+      <if test="productsId != null">
+        products_id = #{productsId,jdbcType=INTEGER},
+      </if>
+      <if test="yield != null">
+        yield = #{yield,jdbcType=DECIMAL},
+      </if>
+      <if test="recoveryBatchId != null">
+        recovery_batch_id = #{recoveryBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.batch.InitialProBatch">
+    update ddwb_initialpro_batch
+    set initial_name = #{initialName,jdbcType=VARCHAR},
+      initial_processing_code = #{initialProcessingCode,jdbcType=VARCHAR},
+      initial_processing_time = #{initialProcessingTime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      plan_id = #{planId,jdbcType=INTEGER},
+      harvested_product_id = #{harvestedProductId,jdbcType=INTEGER},
+      processing_id = #{processingId,jdbcType=INTEGER},
+      products_id = #{productsId,jdbcType=INTEGER},
+      yield = #{yield,jdbcType=DECIMAL},
+      recovery_batch_id = #{recoveryBatchId,jdbcType=INTEGER},
+      crop_id = #{cropId,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=SMALLINT},
+      status = #{status,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getInitProVoByDetectionId" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    SELECT a.id,a.initial_processing_code,a.initial_name FROM ddwb_initialpro_batch a
+    INNER JOIN ddwb_initpro_det_rel b
+    ON a.id = b.initpro_id
+    WHERE b.initpro_det_id = #{detectionId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getInitProVoByPlanId" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    SELECT id,initial_processing_code,initial_name FROM ddwb_initialpro_batch
+    WHERE plan_id = #{planId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getInitialProByOutput" resultType="java.util.HashMap">
+    SELECT a.id,a.initial_processing_code batchCode,a.initial_name relationName FROM ddwb_initialpro_batch a
+    LEFT JOIN (SELECT relation_id,residual_output FROM ddwb_retro_output_rel WHERE relation_type = 2) b
+    ON a.id = b.relation_id
+    WHERE (b.residual_output IS NULL OR b.residual_output != 0)
+    <if test="condition != null">
+      and (position(#{condition,jdbcType=VARCHAR} in a.initial_processing_code) OR position(#{condition,jdbcType=VARCHAR} in a.initial_name))
+    </if>
+  </select>
+
+  <select id="getResidualOutput" parameterType="java.lang.Integer" resultMap="BaseResultMap4">
+    select id,yield,unit
+    from ddwb_initialpro_batch
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap5">
+    SELECT c.id,c.initial_processing_time,c.initial_processing_code,f.real_name,e.id detection_id
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_initialpro_batch c
+    ON b.init_id = c.id
+	LEFT JOIN ddwb_initpro_det_rel d
+	ON c.id = d.initpro_id
+	LEFT JOIN ddwb_initpro_detection e
+	ON d.initpro_det_id = e.id
+	LEFT JOIN auth_user f
+	ON e.user_id = f.uid
+	WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+	ORDER BY e.detection_time DESC
+	LIMIT 1
+  </select>
+
+</mapper>

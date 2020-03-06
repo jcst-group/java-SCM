@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.envmonitor.WarnEnvMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.envmonitor.WarnEnv">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="minAirTemperature" jdbcType="DECIMAL" property="minairtemperature" />
+    <result column="maxAirTemperature" jdbcType="DECIMAL" property="maxairtemperature" />
+    <result column="minAirHumidity" jdbcType="DECIMAL" property="minairhumidity" />
+    <result column="maxAirHumidity" jdbcType="DECIMAL" property="maxairhumidity" />
+    <result column="minSoilTemperature" jdbcType="DECIMAL" property="minsoiltemperature" />
+    <result column="maxSoilTemperature" jdbcType="DECIMAL" property="maxsoiltemperature" />
+    <result column="minSoilHumidity" jdbcType="DECIMAL" property="minsoilhumidity" />
+    <result column="maxSoilHumidity" jdbcType="DECIMAL" property="maxsoilhumidity" />
+    <result column="minSoilPh" jdbcType="DECIMAL" property="minsoilph" />
+    <result column="maxSoilPh" jdbcType="DECIMAL" property="maxsoilph" />
+    <result column="minill_intensity" jdbcType="DECIMAL" property="minillIntensity" />
+    <result column="maxill_intensity" jdbcType="DECIMAL" property="maxillIntensity" />
+    <result column="maxRainfall" jdbcType="DECIMAL" property="maxrainfall" />
+    <result column="minCO2" jdbcType="DECIMAL" property="minco2" />
+    <result column="maxCO2" jdbcType="DECIMAL" property="maxco2" />
+    <result column="minPM25" jdbcType="DECIMAL" property="minpm25" />
+    <result column="maxPM25" jdbcType="DECIMAL" property="maxpm25" />
+    <result column="minPM10" jdbcType="DECIMAL" property="minpm10" />
+    <result column="maxPM10" jdbcType="DECIMAL" property="maxpm10" />
+    <result column="maxWindSpeed" jdbcType="DECIMAL" property="maxwindspeed" />
+    <result column="minSoilEc" jdbcType="DECIMAL" property="minsoilec" />
+    <result column="maxSoilEc" jdbcType="DECIMAL" property="maxsoilec" />
+    <result column="minSoilS" jdbcType="DECIMAL" property="minsoils" />
+    <result column="maxSoilS" jdbcType="DECIMAL" property="maxsoils" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="status" jdbcType="INTEGER" property="status"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.envmonitor.WarnEnv">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="minAirTemperature" jdbcType="DECIMAL" property="minairtemperature" />
+    <result column="maxAirTemperature" jdbcType="DECIMAL" property="maxairtemperature" />
+    <result column="minAirHumidity" jdbcType="DECIMAL" property="minairhumidity" />
+    <result column="maxAirHumidity" jdbcType="DECIMAL" property="maxairhumidity" />
+    <result column="minSoilTemperature" jdbcType="DECIMAL" property="minsoiltemperature" />
+    <result column="maxSoilTemperature" jdbcType="DECIMAL" property="maxsoiltemperature" />
+    <result column="minSoilHumidity" jdbcType="DECIMAL" property="minsoilhumidity" />
+    <result column="maxSoilHumidity" jdbcType="DECIMAL" property="maxsoilhumidity" />
+    <result column="minSoilPh" jdbcType="DECIMAL" property="minsoilph" />
+    <result column="maxSoilPh" jdbcType="DECIMAL" property="maxsoilph" />
+    <result column="minill_intensity" jdbcType="DECIMAL" property="minillIntensity" />
+    <result column="maxill_intensity" jdbcType="DECIMAL" property="maxillIntensity" />
+    <result column="maxRainfall" jdbcType="DECIMAL" property="maxrainfall" />
+    <result column="minCO2" jdbcType="DECIMAL" property="minco2" />
+    <result column="maxCO2" jdbcType="DECIMAL" property="maxco2" />
+    <result column="minPM25" jdbcType="DECIMAL" property="minpm25" />
+    <result column="maxPM25" jdbcType="DECIMAL" property="maxpm25" />
+    <result column="minPM10" jdbcType="DECIMAL" property="minpm10" />
+    <result column="maxPM10" jdbcType="DECIMAL" property="maxpm10" />
+    <result column="maxWindSpeed" jdbcType="DECIMAL" property="maxwindspeed" />
+    <result column="minSoilEc" jdbcType="DECIMAL" property="minsoilec" />
+    <result column="maxSoilEc" jdbcType="DECIMAL" property="maxsoilec" />
+    <result column="minSoilS" jdbcType="DECIMAL" property="minsoils" />
+    <result column="maxSoilS" jdbcType="DECIMAL" property="maxsoils" />
+    <result column="equipment_id" jdbcType="INTEGER" property="equipmentId" />
+    <result column="status" jdbcType="INTEGER" property="status"/>
+    <collection property="equipment" column="equipment_id" select="com.nongxin.terminal.dao.envmonitor.EquipmentMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <!--App对照范围阈值-->
+  <resultMap id="AppResultMap" type="com.nongxin.terminal.vo.app.ContrastVo">
+    <result column="lowValue" jdbcType="DECIMAL" property="lowValue"/>
+    <result column="highValue" jdbcType="DECIMAL" property="highValue"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, minAirTemperature, maxAirTemperature, minAirHumidity, maxAirHumidity, minSoilTemperature, 
+    maxSoilTemperature, minSoilHumidity, maxSoilHumidity, minSoilPh, maxSoilPh, minill_intensity, 
+    maxill_intensity, maxRainfall, minCO2, maxCO2, minPM25, maxPM25, minPM10, maxPM10, 
+    maxWindSpeed, minSoilEc, maxSoilEc, minSoilS, maxSoilS, equipment_id,status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_warn_env
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_warn_env
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.WarnEnv" useGeneratedKeys="true">
+    insert into ddwb_warn_env (minAirTemperature, maxAirTemperature, 
+      minAirHumidity, maxAirHumidity, minSoilTemperature, 
+      maxSoilTemperature, minSoilHumidity, maxSoilHumidity, 
+      minSoilPh, maxSoilPh, minill_intensity, 
+      maxill_intensity, maxRainfall, minCO2, 
+      maxCO2, minPM25, maxPM25, 
+      minPM10, maxPM10, maxWindSpeed, 
+      minSoilEc, maxSoilEc, minSoilS, 
+      maxSoilS, equipment_id,status)
+    values (#{minairtemperature,jdbcType=DECIMAL}, #{maxairtemperature,jdbcType=DECIMAL}, 
+      #{minairhumidity,jdbcType=DECIMAL}, #{maxairhumidity,jdbcType=DECIMAL}, #{minsoiltemperature,jdbcType=DECIMAL}, 
+      #{maxsoiltemperature,jdbcType=DECIMAL}, #{minsoilhumidity,jdbcType=DECIMAL}, #{maxsoilhumidity,jdbcType=DECIMAL}, 
+      #{minsoilph,jdbcType=DECIMAL}, #{maxsoilph,jdbcType=DECIMAL}, #{minillIntensity,jdbcType=DECIMAL}, 
+      #{maxillIntensity,jdbcType=DECIMAL}, #{maxrainfall,jdbcType=DECIMAL}, #{minco2,jdbcType=DECIMAL}, 
+      #{maxco2,jdbcType=DECIMAL}, #{minpm25,jdbcType=DECIMAL}, #{maxpm25,jdbcType=DECIMAL}, 
+      #{minpm10,jdbcType=DECIMAL}, #{maxpm10,jdbcType=DECIMAL}, #{maxwindspeed,jdbcType=DECIMAL}, 
+      #{minsoilec,jdbcType=DECIMAL}, #{maxsoilec,jdbcType=DECIMAL}, #{minsoils,jdbcType=DECIMAL}, 
+      #{maxsoils,jdbcType=DECIMAL}, #{equipmentId,jdbcType=INTEGER},#{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.envmonitor.WarnEnv" useGeneratedKeys="true">
+    insert into ddwb_warn_env
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="minairtemperature != null">
+        minAirTemperature,
+      </if>
+      <if test="maxairtemperature != null">
+        maxAirTemperature,
+      </if>
+      <if test="minairhumidity != null">
+        minAirHumidity,
+      </if>
+      <if test="maxairhumidity != null">
+        maxAirHumidity,
+      </if>
+      <if test="minsoiltemperature != null">
+        minSoilTemperature,
+      </if>
+      <if test="maxsoiltemperature != null">
+        maxSoilTemperature,
+      </if>
+      <if test="minsoilhumidity != null">
+        minSoilHumidity,
+      </if>
+      <if test="maxsoilhumidity != null">
+        maxSoilHumidity,
+      </if>
+      <if test="minsoilph != null">
+        minSoilPh,
+      </if>
+      <if test="maxsoilph != null">
+        maxSoilPh,
+      </if>
+      <if test="minillIntensity != null">
+        minill_intensity,
+      </if>
+      <if test="maxillIntensity != null">
+        maxill_intensity,
+      </if>
+      <if test="maxrainfall != null">
+        maxRainfall,
+      </if>
+      <if test="minco2 != null">
+        minCO2,
+      </if>
+      <if test="maxco2 != null">
+        maxCO2,
+      </if>
+      <if test="minpm25 != null">
+        minPM25,
+      </if>
+      <if test="maxpm25 != null">
+        maxPM25,
+      </if>
+      <if test="minpm10 != null">
+        minPM10,
+      </if>
+      <if test="maxpm10 != null">
+        maxPM10,
+      </if>
+      <if test="maxwindspeed != null">
+        maxWindSpeed,
+      </if>
+      <if test="minsoilec != null">
+        minSoilEc,
+      </if>
+      <if test="maxsoilec != null">
+        maxSoilEc,
+      </if>
+      <if test="minsoils != null">
+        minSoilS,
+      </if>
+      <if test="maxsoils != null">
+        maxSoilS,
+      </if>
+      <if test="equipmentId != null">
+        equipment_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="minairtemperature != null">
+        #{minairtemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="maxairtemperature != null">
+        #{maxairtemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="minairhumidity != null">
+        #{minairhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxairhumidity != null">
+        #{maxairhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoiltemperature != null">
+        #{minsoiltemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoiltemperature != null">
+        #{maxsoiltemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilhumidity != null">
+        #{minsoilhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilhumidity != null">
+        #{maxsoilhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilph != null">
+        #{minsoilph,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilph != null">
+        #{maxsoilph,jdbcType=DECIMAL},
+      </if>
+      <if test="minillIntensity != null">
+        #{minillIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxillIntensity != null">
+        #{maxillIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxrainfall != null">
+        #{maxrainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="minco2 != null">
+        #{minco2,jdbcType=DECIMAL},
+      </if>
+      <if test="maxco2 != null">
+        #{maxco2,jdbcType=DECIMAL},
+      </if>
+      <if test="minpm25 != null">
+        #{minpm25,jdbcType=DECIMAL},
+      </if>
+      <if test="maxpm25 != null">
+        #{maxpm25,jdbcType=DECIMAL},
+      </if>
+      <if test="minpm10 != null">
+        #{minpm10,jdbcType=DECIMAL},
+      </if>
+      <if test="maxpm10 != null">
+        #{maxpm10,jdbcType=DECIMAL},
+      </if>
+      <if test="maxwindspeed != null">
+        #{maxwindspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilec != null">
+        #{minsoilec,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilec != null">
+        #{maxsoilec,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoils != null">
+        #{minsoils,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoils != null">
+        #{maxsoils,jdbcType=DECIMAL},
+      </if>
+      <if test="equipmentId != null">
+        #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.envmonitor.WarnEnv">
+    update ddwb_warn_env
+    <set>
+      <if test="minairtemperature != null">
+        minAirTemperature = #{minairtemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="maxairtemperature != null">
+        maxAirTemperature = #{maxairtemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="minairhumidity != null">
+        minAirHumidity = #{minairhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxairhumidity != null">
+        maxAirHumidity = #{maxairhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoiltemperature != null">
+        minSoilTemperature = #{minsoiltemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoiltemperature != null">
+        maxSoilTemperature = #{maxsoiltemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilhumidity != null">
+        minSoilHumidity = #{minsoilhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilhumidity != null">
+        maxSoilHumidity = #{maxsoilhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilph != null">
+        minSoilPh = #{minsoilph,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilph != null">
+        maxSoilPh = #{maxsoilph,jdbcType=DECIMAL},
+      </if>
+      <if test="minillIntensity != null">
+        minill_intensity = #{minillIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxillIntensity != null">
+        maxill_intensity = #{maxillIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxrainfall != null">
+        maxRainfall = #{maxrainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="minco2 != null">
+        minCO2 = #{minco2,jdbcType=DECIMAL},
+      </if>
+      <if test="maxco2 != null">
+        maxCO2 = #{maxco2,jdbcType=DECIMAL},
+      </if>
+      <if test="minpm25 != null">
+        minPM25 = #{minpm25,jdbcType=DECIMAL},
+      </if>
+      <if test="maxpm25 != null">
+        maxPM25 = #{maxpm25,jdbcType=DECIMAL},
+      </if>
+      <if test="minpm10 != null">
+        minPM10 = #{minpm10,jdbcType=DECIMAL},
+      </if>
+      <if test="maxpm10 != null">
+        maxPM10 = #{maxpm10,jdbcType=DECIMAL},
+      </if>
+      <if test="maxwindspeed != null">
+        maxWindSpeed = #{maxwindspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilec != null">
+        minSoilEc = #{minsoilec,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilec != null">
+        maxSoilEc = #{maxsoilec,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoils != null">
+        minSoilS = #{minsoils,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoils != null">
+        maxSoilS = #{maxsoils,jdbcType=DECIMAL},
+      </if>
+      <if test="equipmentId != null">
+        equipment_id = #{equipmentId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.envmonitor.WarnEnv">
+    update ddwb_warn_env
+    set minAirTemperature = #{minairtemperature,jdbcType=DECIMAL},
+      maxAirTemperature = #{maxairtemperature,jdbcType=DECIMAL},
+      minAirHumidity = #{minairhumidity,jdbcType=DECIMAL},
+      maxAirHumidity = #{maxairhumidity,jdbcType=DECIMAL},
+      minSoilTemperature = #{minsoiltemperature,jdbcType=DECIMAL},
+      maxSoilTemperature = #{maxsoiltemperature,jdbcType=DECIMAL},
+      minSoilHumidity = #{minsoilhumidity,jdbcType=DECIMAL},
+      maxSoilHumidity = #{maxsoilhumidity,jdbcType=DECIMAL},
+      minSoilPh = #{minsoilph,jdbcType=DECIMAL},
+      maxSoilPh = #{maxsoilph,jdbcType=DECIMAL},
+      minill_intensity = #{minillIntensity,jdbcType=DECIMAL},
+      maxill_intensity = #{maxillIntensity,jdbcType=DECIMAL},
+      maxRainfall = #{maxrainfall,jdbcType=DECIMAL},
+      minCO2 = #{minco2,jdbcType=DECIMAL},
+      maxCO2 = #{maxco2,jdbcType=DECIMAL},
+      minPM25 = #{minpm25,jdbcType=DECIMAL},
+      maxPM25 = #{maxpm25,jdbcType=DECIMAL},
+      minPM10 = #{minpm10,jdbcType=DECIMAL},
+      maxPM10 = #{maxpm10,jdbcType=DECIMAL},
+      maxWindSpeed = #{maxwindspeed,jdbcType=DECIMAL},
+      minSoilEc = #{minsoilec,jdbcType=DECIMAL},
+      maxSoilEc = #{maxsoilec,jdbcType=DECIMAL},
+      minSoilS = #{minsoils,jdbcType=DECIMAL},
+      maxSoilS = #{maxsoils,jdbcType=DECIMAL},
+      equipment_id = #{equipmentId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getWarnEnvByEquipmentId" resultMap="BaseResultMap">
+    select * from ddwb_warn_env where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getWarnEnvList" resultMap="BaseResultMap2">
+    select * from ddwb_warn_env order by equipment_id
+  </select>
+
+  <!--根据item找出对应预警阈值  item:1:大气温度 2:大气湿度 3:土壤温度 4:土壤湿度 5:PH 6:光照 7:降雨 8:co2 9:PM2.5
+  10:PM10 11:风速 12:EC值 13:土壤盐分-->
+  <select id="getWarnEnvByItem" resultMap="AppResultMap">
+    select
+    <if test="item==null">
+      0
+    </if>
+    <if test="item==1">
+      minAirTemperature as lowValue,maxAirTemperature as highValue
+    </if>
+    <if test="item==2">
+      minAirHumidity as lowValue,maxAirHumidity as highValue
+    </if>
+    <if test="item==3">
+      minSoilTemperature as lowValue,maxSoilTemperature as highValue
+    </if>
+    <if test="item==4">
+      minSoilHumidity as lowValue,maxSoilHumidity as highValue
+    </if>
+    <if test="item==5">
+      minSoilPh as lowValue,maxSoilPh as highValue
+    </if>
+    <if test="item==6">
+      minill_intensity as lowValue,maxill_intensity as highValue
+    </if>
+    <if test="item==7">
+      0 as lowValue,maxRainfall as highValue
+    </if>
+    <if test="item==8">
+      minCO2 as lowValue,maxCO2 as highValue
+    </if>
+    <if test="item==9">
+      minPM25 as lowValue,maxPM25 as highValue
+    </if>
+    <if test="item==10">
+      minPM10 as lowValue,maxPM10 as highValue
+    </if>
+    <if test="item==11">
+      0 as lowValue,maxWindSpeed as highValue
+    </if>
+    <if test="item==12">
+      minSoilEc as lowValue,maxSoilEc as highValue
+    </if>
+    <if test="item==13">
+      minSoilS as lowValue,maxSoilS as highValue
+    </if>
+    from ddwb_warn_env
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </select>
+
+  <!--修改设备预警开启状态-->
+  <update id="updateStatus" parameterType="com.nongxin.terminal.entity.envmonitor.WarnEnv">
+    update ddwb_warn_env
+    set status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByEquipmentId" parameterType="com.nongxin.terminal.entity.envmonitor.WarnEnv">
+    update ddwb_warn_env
+    <set>
+      <if test="minairtemperature != null">
+        minAirTemperature = #{minairtemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="maxairtemperature != null">
+        maxAirTemperature = #{maxairtemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="minairhumidity != null">
+        minAirHumidity = #{minairhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxairhumidity != null">
+        maxAirHumidity = #{maxairhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoiltemperature != null">
+        minSoilTemperature = #{minsoiltemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoiltemperature != null">
+        maxSoilTemperature = #{maxsoiltemperature,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilhumidity != null">
+        minSoilHumidity = #{minsoilhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilhumidity != null">
+        maxSoilHumidity = #{maxsoilhumidity,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilph != null">
+        minSoilPh = #{minsoilph,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilph != null">
+        maxSoilPh = #{maxsoilph,jdbcType=DECIMAL},
+      </if>
+      <if test="minillIntensity != null">
+        minill_intensity = #{minillIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxillIntensity != null">
+        maxill_intensity = #{maxillIntensity,jdbcType=DECIMAL},
+      </if>
+      <if test="maxrainfall != null">
+        maxRainfall = #{maxrainfall,jdbcType=DECIMAL},
+      </if>
+      <if test="minco2 != null">
+        minCO2 = #{minco2,jdbcType=DECIMAL},
+      </if>
+      <if test="maxco2 != null">
+        maxCO2 = #{maxco2,jdbcType=DECIMAL},
+      </if>
+      <if test="minpm25 != null">
+        minPM25 = #{minpm25,jdbcType=DECIMAL},
+      </if>
+      <if test="maxpm25 != null">
+        maxPM25 = #{maxpm25,jdbcType=DECIMAL},
+      </if>
+      <if test="minpm10 != null">
+        minPM10 = #{minpm10,jdbcType=DECIMAL},
+      </if>
+      <if test="maxpm10 != null">
+        maxPM10 = #{maxpm10,jdbcType=DECIMAL},
+      </if>
+      <if test="maxwindspeed != null">
+        maxWindSpeed = #{maxwindspeed,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoilec != null">
+        minSoilEc = #{minsoilec,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoilec != null">
+        maxSoilEc = #{maxsoilec,jdbcType=DECIMAL},
+      </if>
+      <if test="minsoils != null">
+        minSoilS = #{minsoils,jdbcType=DECIMAL},
+      </if>
+      <if test="maxsoils != null">
+        maxSoilS = #{maxsoils,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where equipment_id = #{equipmentId,jdbcType=INTEGER}
+  </update>
+</mapper>

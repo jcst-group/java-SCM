@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.base.BaseUserRelMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.base.BaseUserRel">
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <association property="baseInfo" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.selectByPrimaryKey"/>
+    <association property="userList" column="base_id" select="com.nongxin.terminal.dao.system.UserMapper.getUserByBaseId"/>
+  </resultMap>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.base.BaseUserRel">
+    insert into ddwb_base_user_rel (base_id, user_id)
+    values (#{baseId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.base.BaseUserRel">
+    insert into ddwb_base_user_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="baseId != null">
+        base_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="baseId != null">
+        #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteByBaseId" parameterType="java.lang.Integer">
+    delete from ddwb_base_user_rel where base_id = #{baseId,jdbcType=INTEGER}
+  </delete>
+
+  <select id="getBaseUserRelList" resultMap="BaseResultMap">
+    SELECT DISTINCT base_id FROM ddwb_base_user_rel a
+    LEFT JOIN auth_user b
+    ON a.user_id = b.uid
+    LEFT JOIN ddwb_base_info c
+    ON c.id = a.base_id
+    <where>
+      <if test="baseName != null">
+        and position(#{baseName,jdbcType=VARCHAR} in c.base_name)
+      </if>
+      <if test="userName != null">
+        and position(#{userName,jdbcType=VARCHAR} in b.real_name)
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByBaseId" resultType="java.lang.Integer">
+    SELECT COUNT(base_id) FROM ddwb_base_user_rel WHERE base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

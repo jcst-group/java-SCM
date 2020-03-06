@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.plant.WorkOrderMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.plant.WorkOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="solar_term" jdbcType="SMALLINT" property="solarTerm" />
+    <result column="crop_batch_id" jdbcType="INTEGER" property="cropBatchId" />
+    <result column="farming_item_id" jdbcType="INTEGER" property="farmingItemId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="farming_id" jdbcType="INTEGER" property="farmingId"/>
+    <result column="sub_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="allowed_execute" jdbcType="TINYINT" property="allowedExecute" />
+    <result column="sequ_execute" jdbcType="TINYINT" property="sequExecute" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.plant.WorkOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="sub_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="solar_term" jdbcType="SMALLINT" property="solarTerm" />
+    <result column="crop_batch_id" jdbcType="INTEGER" property="cropBatchId" />
+    <result column="farming_item_id" jdbcType="INTEGER" property="farmingItemId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="farming_id" jdbcType="INTEGER" property="farmingId"/>
+    <result column="allowed_execute" jdbcType="TINYINT" property="allowedExecute" />
+    <association property="cropBatch" column="crop_batch_id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.getIdAndNameById"/>
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="farmingItem" column="farming_item_id" select="com.nongxin.terminal.dao.plant.FarmingItemMapper.getIdAndName"/>
+    <association property="orderContent" column="id" select="com.nongxin.terminal.dao.plant.OrderContentMapper.selectByOrderId"/>
+    <association property="fileInfo" column="id" select="com.nongxin.terminal.dao.file.FileInfoMapper.getOrderFile"/>
+    <collection property="roleList" column="id" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleByOrderId"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getOrderPic"/>
+    <collection property="deviceActList" column="id" select="com.nongxin.terminal.dao.plant.DeviceActMapper.selectByOrderId"/>
+    <collection property="materialActList" column="id" select="com.nongxin.terminal.dao.plant.MaterialActMapper.selectByOrderId"/>
+    <collection property="personnelActList" column="id" select="com.nongxin.terminal.dao.plant.PersonnelActMapper.selectByOrderId"/>
+    <collection property="orderExecutor" column="id" select="com.nongxin.terminal.dao.system.UserMapper.getOrderExecutor"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.plant.WorkOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="solar_term" jdbcType="SMALLINT" property="solarTerm" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <association property="cropBatch" column="crop_batch_id" select="com.nongxin.terminal.dao.crop.CropBatchMapper.getIdAndNameById"/>
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="farmingItem" column="farming_item_id" select="com.nongxin.terminal.dao.plant.FarmingItemMapper.getIdAndName"/>
+    <collection property="roleList" column="id" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleByOrderId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.vo.workorder.AppOrderVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="batch_name" jdbcType="VARCHAR" property="batchName" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="sub_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="allowed_execute" jdbcType="TINYINT" property="allowedExecute" />
+    <result column="sequ_execute" jdbcType="TINYINT" property="sequExecute" />
+    <association property="agree" column="id" select="com.nongxin.terminal.dao.plant.OrderApplyMapper.getLastOrderApply"/>
+    <association property="farmingItem" column="farming_item_id" select="com.nongxin.terminal.dao.plant.FarmingItemMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap5" type="com.nongxin.terminal.entity.plant.WorkOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="solar_term" jdbcType="SMALLINT" property="solarTerm" />
+    <result column="farming_item_id" jdbcType="INTEGER" property="farmingItemId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="farmingItem" column="farming_item_id" select="com.nongxin.terminal.dao.plant.FarmingItemMapper.getIdAndName"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getOrderPic"/>
+    <collection property="roleList" column="id" select="com.nongxin.terminal.dao.system.RoleMapper.getRoleByOrderId"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap8" type="com.nongxin.terminal.vo.lookboard.WorkOrderVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="solar_term" jdbcType="SMALLINT" property="solarTerm" />
+    <result column="farming_item_id" jdbcType="INTEGER" property="farmingItemId" />
+    <association property="farmingItem" column="farming_item_id" select="com.nongxin.terminal.dao.plant.FarmingItemMapper.getFarmingItemBoard"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap6" type="com.nongxin.terminal.entity.plant.WorkOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <association property="fileInfo" column="id" select="com.nongxin.terminal.dao.file.FileInfoMapper.getOrderFile"/>
+    <association property="orderContent" column="id" select="com.nongxin.terminal.dao.plant.OrderContentMapper.selectByOrderId"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getOrderPic"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap7" type="com.nongxin.terminal.vo.workorder.AppOrderVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="batch_name" jdbcType="VARCHAR" property="batchName" />
+    <result column="base_name" jdbcType="VARCHAR" property="baseName" />
+    <collection property="deviceActList" column="id" select="com.nongxin.terminal.dao.plant.DeviceActMapper.selectByOrderId"/>
+    <collection property="materialActList" column="id" select="com.nongxin.terminal.dao.plant.MaterialActMapper.selectByOrderId"/>
+    <collection property="personnelActList" column="id" select="com.nongxin.terminal.dao.plant.PersonnelActMapper.selectByOrderId"/>
+  </resultMap>
+
+  <resultMap id="IsLocalMap" type="java.util.HashMap">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="is_location" javaType="com.nongxin.terminal.util.enumUtil.plan.FarmingLocationEnum" property="isLocation"/>
+  </resultMap>
+
+  <resultMap id="LocalVoMap" type="com.nongxin.terminal.vo.workorder.LocalVo">
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="base_longitude" jdbcType="DECIMAL" property="baseLongitude" />
+    <result column="base_latitude" jdbcType="DECIMAL" property="baseLatitude" />
+    <collection property="lotList" column="id" select="com.nongxin.terminal.dao.base.LotMapper.selectByOrderId"/>
+  </resultMap>
+
+  <resultMap id="RealTimeOrderMap" type="com.nongxin.terminal.vo.workorder.RealTimeOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sub_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="content" jdbcType="VARCHAR" property="orderContent" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getUserAndHeadPic"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getOrderPic"/>
+  </resultMap>
+
+  <resultMap id="LookOrderMap" type="com.nongxin.terminal.vo.workorder.RealTimeOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sort_time" jdbcType="TIMESTAMP" property="subTime" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="status" jdbcType="SMALLINT" property="status"/>
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+  </resultMap>
+
+  <resultMap id="OrderApplyMap" type="map">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="batch_name" jdbcType="VARCHAR" property="batchName" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="execution_time" jdbcType="TIMESTAMP" property="executionTime"/>
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+    <result column="status" javaType="com.nongxin.terminal.util.enumUtil.plan.WorkOrderStatusEnum" property="status"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, execution_time, solar_term, crop_batch_id, farming_item_id,user_id,
+    status, type,remark,farming_id,allowed_execute,end_time,sequ_execute
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap6">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_work_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_work_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.WorkOrder" useGeneratedKeys="true">
+    insert into ddwb_work_order (execution_time, solar_term, crop_batch_id, 
+      farming_item_id, user_id,
+      status, type,remark,farming_id,sub_time,examine_time,allowed_execute,end_time,sequ_execute)
+    values (#{executionTime,jdbcType=TIMESTAMP}, #{solarTerm,jdbcType=SMALLINT}, #{cropBatchId,jdbcType=INTEGER},
+      #{farmingItemId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+      #{status,jdbcType=SMALLINT}, #{type,jdbcType=SMALLINT},#{remark,jdbcType=VARCHAR},#{farmingId,jdbcType=INTEGER},
+      #{subTime,jdbcType=TIMESTAMP},#{examineTime,jdbcType=TIMESTAMP},#{allowedExecute},#{endTime},#{sequExecute})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.WorkOrder" useGeneratedKeys="true">
+    insert into ddwb_work_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="executionTime != null">
+        execution_time,
+      </if>
+      <if test="solarTerm != null">
+        solar_term,
+      </if>
+      <if test="cropBatchId != null">
+        crop_batch_id,
+      </if>
+      <if test="farmingItemId != null">
+        farming_item_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="farmingId != null">
+        farming_id,
+      </if>
+
+      <if test="subTime != null">
+        sub_time,
+      </if>
+      <if test="examineTime != null">
+        examine_time,
+      </if>
+      <if test="allowedExecute != null">
+        allowed_execute,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="sequExecute != null">
+        sequ_execute,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="executionTime != null">
+        #{executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="solarTerm != null">
+        #{solarTerm,jdbcType=SMALLINT},
+      </if>
+      <if test="cropBatchId != null">
+        #{cropBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="farmingItemId != null">
+        #{farmingItemId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="farmingId != null">
+        #{farmingId,jdbcType=INTEGER},
+      </if>
+
+      <if test="subTime != null">
+        #{subTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineTime != null">
+        #{examineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowedExecute != null">
+        #{allowedExecute},
+      </if>
+      <if test="endTime != null">
+        #{endTime},
+      </if>
+      <if test="sequExecute != null">
+        #{sequExecute},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.plant.WorkOrder">
+    update ddwb_work_order
+    <set>
+      <if test="executionTime != null">
+        execution_time = #{executionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="solarTerm != null">
+        solar_term = #{solarTerm,jdbcType=SMALLINT},
+      </if>
+      <if test="cropBatchId != null">
+        crop_batch_id = #{cropBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="farmingItemId != null">
+        farming_item_id = #{farmingItemId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="farmingId != null">
+        farming_id = #{farmingId,jdbcType=INTEGER},
+      </if>
+
+      <if test="subTime != null">
+        sub_time = #{subTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineTime != null">
+        examine_time = #{examineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.plant.WorkOrder">
+    update ddwb_work_order
+    set execution_time = #{executionTime,jdbcType=TIMESTAMP},
+      solar_term = #{solarTerm,jdbcType=SMALLINT},
+      crop_batch_id = #{cropBatchId,jdbcType=INTEGER},
+      farming_item_id = #{farmingItemId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      status = #{status,jdbcType=SMALLINT},
+      type = #{type,jdbcType=SMALLINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      farming_id = #{farmingId,jdbcType=INTEGER},
+      sub_time = #{subTime,jdbcType=TIMESTAMP},
+      examine_time = #{examineTime,jdbcType=TIMESTAMP},
+      allowed_execute = #{allowedExecute},
+      end_time = #{endTime},
+      sequ_execute = #{sequExecute}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getWorkOrderByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,status
+    from ddwb_work_order
+    where crop_batch_id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByBatchId" parameterType="java.lang.Integer">
+    delete from ddwb_work_order
+    where crop_batch_id = #{batchId,jdbcType=INTEGER}
+    <if test="type != null">
+      and type = #{type,jdbcType=SMALLINT}
+    </if>
+  </delete>
+
+  <select id="getWorkOrder" parameterType="com.nongxin.terminal.vo.workorder.OrderConditionVo" resultMap="BaseResultMap2">
+    SELECT a.* FROM `ddwb_work_order` a
+    LEFT JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    <where>
+      <if test="batchId != null">
+        and b.id = #{batchId,jdbcType=INTEGER}
+      </if>
+      <if test="baseId != null">
+        and b.base_id = #{baseId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null">
+        and a.type = #{type,jdbcType=SMALLINT}
+      </if>
+      <if test="status != null">
+        and a.status = #{status,jdbcType=SMALLINT}
+      </if>
+      <if test="startTime != null">
+        and a.execution_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and a.execution_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="planId != null">
+        and b.plan_id = #{planId,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by a.id
+  </select>
+
+  <select id="exportWorkOrder" parameterType="com.nongxin.terminal.vo.workorder.OrderConditionVo" resultMap="BaseResultMap3">
+    SELECT a.* FROM `ddwb_work_order` a
+    LEFT JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    <where>
+      <if test="batchId != null">
+        and b.id = #{batchId,jdbcType=INTEGER}
+      </if>
+      <if test="baseId != null">
+        and b.base_id = #{baseId,jdbcType=INTEGER}
+      </if>
+      <if test="type != null">
+        and a.type = #{type,jdbcType=SMALLINT}
+      </if>
+      <if test="status != null">
+        and a.status = #{status,jdbcType=SMALLINT}
+      </if>
+      <if test="startTime != null">
+        and a.execution_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and a.execution_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    order by a.id
+  </select>
+
+  <update id="updateStatus">
+    update ddwb_work_order
+    set status = #{status,jdbcType=SMALLINT}, examine_time = #{examineTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateAllowedExecute">
+    update ddwb_work_order set allowed_execute = #{allowedExecute,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteTemporaryOrder" parameterType="java.lang.Integer">
+    delete from ddwb_work_order
+    where farming_id = #{farmingId,jdbcType=INTEGER}
+    and crop_batch_id = #{batchId,jdbcType=INTEGER}
+    <if test="type != null">
+      and type = #{type,jdbcType=SMALLINT}
+    </if>
+  </delete>
+
+  <select id="getOrderByBatchIdAndFarmingId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,status
+    from ddwb_work_order
+    where farming_id = #{farmingId,jdbcType=INTEGER}
+    and crop_batch_id = #{batchId,jdbcType=INTEGER}
+    <if test="type != null">
+      and type = #{type,jdbcType=SMALLINT}
+    </if>
+  </select>
+
+  <select id="getAppOrderVo" resultMap="BaseResultMap4">
+    SELECT DISTINCT a.id,a.execution_time,a.farming_item_id,a.remark,a.status,a.sub_time,a.examine_time,
+    b.batch_name,c.base_name,a.end_time,a.allowed_execute,a.sequ_execute
+    FROM `ddwb_work_order` a
+    INNER JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    INNER JOIN ddwb_base_info c
+    ON b.base_id = c.id
+    INNER JOIN ddwb_order_role_rel e
+    ON e.work_order_id = a.id
+      INNER JOIN(
+      SELECT a.ROLE_ID,b.base_id FROM auth_user_role a
+      INNER JOIN ddwb_base_user_rel b
+      ON a.USER_ID = b.user_id
+      WHERE a.USER_ID = #{uid}
+    ) f ON f.ROLE_ID = e.role_id
+    WHERE c.id = f.base_id
+
+    <if test="batchId != null">
+      and b.id = #{batchId,jdbcType=INTEGER}
+    </if>
+    <if test="status != null">
+      <choose>
+        <!-- 待处理 -->
+        <when test="status == @com.nongxin.terminal.util.enumUtil.plan.WorkOrderStatusEnum@AUDIT_FAILED">
+          AND a.`status` in (1,3) and (a.allowed_execute = 1 OR (now()&gt;=a.execution_time AND now()&lt;= a.end_time))
+          order by a.id
+        </when >
+        <!-- 未执行 -->
+        <when test="status == @com.nongxin.terminal.util.enumUtil.plan.WorkOrderStatusEnum@UNEXECUTED">
+          AND a.`status` in (1,3) and (a.allowed_execute = 0 AND (DATE_FORMAT(now(),'%Y-%m-%d') &lt; a.execution_time OR DATE_FORMAT(now(),'%Y-%m-%d') &gt; a.end_time))
+          order by a.id
+        </when >
+        <when test="status == @com.nongxin.terminal.util.enumUtil.plan.WorkOrderStatusEnum@AUDIT_APPROVAL">
+          AND a.`status` in (2,4)
+          order by a.sub_time desc
+        </when >
+      </choose>
+    </if>
+  </select>
+
+  <select id="getOrderByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap5">
+    select id,execution_time, solar_term, farming_item_id, user_id,`status`
+    from ddwb_work_order
+    where crop_batch_id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getOrderCosts" parameterType="java.lang.Integer" resultMap="BaseResultMap7">
+    select id,remark
+    from ddwb_work_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getOrderByCropId" parameterType="java.lang.Integer" resultMap="BaseResultMap8">
+    select id,execution_time,solar_term,farming_item_id from ddwb_work_order where crop_batch_id = #{cropBatchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getOrderByRetroCode" parameterType="java.lang.String" resultMap="BaseResultMap5">
+    SELECT d.id,d.execution_time, d.solar_term, d.farming_item_id, d.user_id,d.`status`
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+	LEFT JOIN ddwb_work_order d
+	ON c.crop_batch_id = d.crop_batch_id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getOrderIsLocal" parameterType="java.lang.Integer" resultMap="IsLocalMap">
+    SELECT a.id,b.is_location FROM ddwb_work_order a
+    LEFT JOIN ddwb_farming b
+    ON a.farming_id = b.id
+    WHERE a.id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getOrderLocal" resultMap="LocalVoMap">
+    SELECT a.id,e.longitude base_longitude,e.latitude base_latitude,c.longitude,c.latitude FROM ddwb_work_order a
+    LEFT JOIN ddwb_farming b
+    ON a.farming_id = b.id
+    LEFT JOIN ddwb_order_content c
+    ON a.id = c.order_id
+	LEFT JOIN ddwb_crop_batch d
+	ON a.crop_batch_id = d.id
+	LEFT JOIN ddwb_base_info e
+	ON d.base_id = e.id
+    WHERE b.is_location = #{isLocal,jdbcType=SMALLINT} and a.id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRealTimeOrder" resultMap="RealTimeOrderMap">
+    SELECT a.id,a.sub_time,a.user_id,b.farming_name,c.content,c.latitude,c.longitude FROM ddwb_work_order a
+    INNER JOIN ddwb_farming_item b
+    ON a.farming_item_id = b.id
+    LEFT JOIN ddwb_order_content c
+    ON a.id = c.order_id
+    WHERE a.`status` = 2 AND (latitude IS NOT NULL OR longitude IS NOT NULL)
+    ORDER BY sub_time DESC
+    LIMIT 20
+  </select>
+
+  <select id="getCompleteOrder" resultType="map">
+    select a.click_date examineTime,ifnull(b.count,0) as count
+    from (
+        SELECT curdate() as click_date
+        union all
+        SELECT date_sub(curdate(), interval 1 day) as click_date
+        union all
+        SELECT date_sub(curdate(), interval 2 day) as click_date
+    ) a left join (
+      SELECT DATE_FORMAT(examine_time,'%Y%m%d') AS dt,COUNT(id) count
+        FROM ddwb_work_order
+        WHERE `status` = 4
+        GROUP BY dt
+    ) b on a.click_date = b.dt
+    ORDER BY click_date ASC
+  </select>
+
+  <select id="getLookOrder" resultMap="LookOrderMap">
+    SELECT a.id,a.`status`,b.farming_name,a.user_id,
+    (CASE
+        WHEN a.examine_time IS NULL THEN a.sub_time
+        WHEN a.sub_time>a.examine_time THEN a.sub_time
+        ELSE a.examine_time
+        END
+    ) AS sort_time
+    FROM ddwb_work_order a
+    INNER JOIN ddwb_farming_item b
+    ON a.farming_item_id = b.id
+    WHERE a.`status` = 2 OR a.`status` = 4
+    ORDER BY sort_time IS NULL ASC,sort_time DESC
+    LIMIT 20
+  </select>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    SELECT id,execution_time,end_time,allowed_execute,sequ_execute,crop_batch_id
+    FROM ddwb_work_order
+    WHERE id = #{id}
+  </select>
+
+  <select id="getSequExecuteOrder" resultType="map">
+    SELECT b.batch_name batchName,DATE_FORMAT(a.execution_time,'%Y-%m-%d') executionTime,c.farming_name farmingName FROM ddwb_work_order a
+    INNER JOIN ddwb_crop_batch b
+    ON a.crop_batch_id = b.id
+    INNER JOIN ddwb_farming_item c
+    ON a.farming_item_id = c.id
+    WHERE a.crop_batch_id = #{batchId} AND a.sequ_execute = 1 AND a.id &lt; #{id} ORDER BY a.id DESC LIMIT 1
+  </select>
+
+  <select id="getOrderByApply" resultMap="OrderApplyMap">
+    SELECT DISTINCT a.id,c.batch_name,d.farming_name,DATE_FORMAT(a.execution_time,'%Y-%m-%d') execution_time,DATE_FORMAT(a.end_time,'%Y-%m-%d') end_time,a.`status` FROM ddwb_work_order a
+    INNER JOIN ddwb_order_apply b
+    ON a.id = b.order_id
+    INNER JOIN ddwb_crop_batch c
+    ON a.crop_batch_id = c.id
+    INNER JOIN ddwb_farming_item d
+    ON a.farming_item_id = d.id
+    <if test="status != null">
+      <choose>
+        <when test="status == 'undispose' ">
+          WHERE b.agree = 1
+        </when>
+        <when test= "status == 'dispose' ">
+          WHERE b.agree != 1
+        </when>
+      </choose>
+    </if>
+  </select>
+
+
+  <select id="selectworkerOrderByLoanItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select b.* from (loan_farm_item as a  INNER JOIN  ddwb_work_order as b on a.farming_id = b.farming_id)
+					INNER JOIN loan_batch_info as c on c.batch_id = b.crop_batch_id
+					where a.loan_batch_id = c.id and a.id = #{loanItemId,jdbcType=INTEGER};
+  </select>
+
+</mapper>

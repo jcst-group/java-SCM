@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.base.LotMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.base.Lot">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="lot_name" jdbcType="VARCHAR" property="lotName" />
+    <result column="lot_code" jdbcType="VARCHAR" property="lotCode" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="lot_acreage" jdbcType="DECIMAL" property="lotAcreage" />
+    <result column="lot_radius" jdbcType="DECIMAL" property="lotRadius" />
+    <result column="survey" jdbcType="VARCHAR" property="survey" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="altitude" jdbcType="DECIMAL" property="altitude" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.base.Lot">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="lot_name" jdbcType="VARCHAR" property="lotName" />
+    <result column="lot_code" jdbcType="VARCHAR" property="lotCode" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="lot_acreage" jdbcType="DECIMAL" property="lotAcreage" />
+    <result column="lot_radius" jdbcType="DECIMAL" property="lotRadius" />
+    <result column="survey" jdbcType="VARCHAR" property="survey" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="altitude" jdbcType="DECIMAL" property="altitude" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <association property="baseInfo" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getIdAndName"/>
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getLotPic"/>
+  </resultMap>
+
+  <!--看板基地的所属地块-->
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.vo.lookboard.LotVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="lot_name" jdbcType="VARCHAR" property="lotName" />
+    <result column="lot_acreage" jdbcType="DECIMAL" property="lotAcreage" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+  </resultMap>
+
+  <!--看板基地的地块详细信息-->
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.vo.lookboard.LotTwoVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="lot_name" jdbcType="VARCHAR" property="lotName" />
+    <result column="lot_acreage" jdbcType="DECIMAL" property="lotAcreage" />
+    <result column="longitude" jdbcType="DECIMAL" property="longitude" />
+    <result column="latitude" jdbcType="DECIMAL" property="latitude" />
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <association property="baseInfo" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getBaseLotInfoById"/>
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="lotPic" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getLotPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, base_id, lot_name, lot_code, area_code, lot_acreage, lot_radius, survey, longitude, 
+    latitude, altitude, status, user_id,remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_lot
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_lot
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.base.Lot" useGeneratedKeys="true">
+    insert into ddwb_lot (base_id, lot_name, lot_code, 
+      area_code, lot_acreage, lot_radius, 
+      survey, longitude, latitude, 
+      altitude, status, user_id,remark)
+    values (#{baseId,jdbcType=INTEGER}, #{lotName,jdbcType=VARCHAR}, #{lotCode,jdbcType=VARCHAR}, 
+      #{areaCode,jdbcType=VARCHAR}, #{lotAcreage,jdbcType=DECIMAL}, #{lotRadius,jdbcType=DECIMAL}, 
+      #{survey,jdbcType=VARCHAR}, #{longitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL}, 
+      #{altitude,jdbcType=DECIMAL}, #{status,jdbcType=SMALLINT}, #{userId,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.base.Lot" useGeneratedKeys="true">
+    insert into ddwb_lot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="baseId != null">
+        base_id,
+      </if>
+      <if test="lotName != null">
+        lot_name,
+      </if>
+      <if test="lotCode != null">
+        lot_code,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="lotAcreage != null">
+        lot_acreage,
+      </if>
+      <if test="lotRadius != null">
+        lot_radius,
+      </if>
+      <if test="survey != null">
+        survey,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="altitude != null">
+        altitude,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="baseId != null">
+        #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="lotName != null">
+        #{lotName,jdbcType=VARCHAR},
+      </if>
+      <if test="lotCode != null">
+        #{lotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAcreage != null">
+        #{lotAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="lotRadius != null">
+        #{lotRadius,jdbcType=DECIMAL},
+      </if>
+      <if test="survey != null">
+        #{survey,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="altitude != null">
+        #{altitude,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.base.Lot">
+    update ddwb_lot
+    <set>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="lotName != null">
+        lot_name = #{lotName,jdbcType=VARCHAR},
+      </if>
+      <if test="lotCode != null">
+        lot_code = #{lotCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAcreage != null">
+        lot_acreage = #{lotAcreage,jdbcType=DECIMAL},
+      </if>
+      <if test="lotRadius != null">
+        lot_radius = #{lotRadius,jdbcType=DECIMAL},
+      </if>
+      <if test="survey != null">
+        survey = #{survey,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=DECIMAL},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=DECIMAL},
+      </if>
+      <if test="altitude != null">
+        altitude = #{altitude,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.base.Lot">
+    update ddwb_lot
+    set base_id = #{baseId,jdbcType=INTEGER},
+      lot_name = #{lotName,jdbcType=VARCHAR},
+      lot_code = #{lotCode,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      lot_acreage = #{lotAcreage,jdbcType=DECIMAL},
+      lot_radius = #{lotRadius,jdbcType=DECIMAL},
+      survey = #{survey,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DECIMAL},
+      latitude = #{latitude,jdbcType=DECIMAL},
+      altitude = #{altitude,jdbcType=DECIMAL},
+      status = #{status,jdbcType=SMALLINT},
+      user_id = #{userId,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getLotList" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_lot
+    <where>
+      <if test="baseId != null">
+        and base_id = #{baseId,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="getIdAndNameByBaseId" resultMap="BaseResultMap">
+    select id, lot_name from ddwb_lot
+    where base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getAcreageSum" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+    SELECT SUM(a.lot_acreage) AS acreage FROM ddwb_lot a
+    INNER JOIN ddwb_batch_lot_rel b
+    ON a.id = b.lot_id
+    WHERE b.crop_batch_id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getLotByBatchId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.id,a.lot_name FROM ddwb_lot a
+    INNER JOIN ddwb_batch_lot_rel b
+    ON a.id = b.lot_id
+    WHERE b.crop_batch_id = #{batchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getIdAndNameById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id,lot_name from ddwb_lot
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getLotListInBoard" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_lot
+    where base_id = #{baseId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getLotInBoard" parameterType="java.lang.Integer" resultMap="BaseResultMap4">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_lot
+    where id = #{lotId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.id,a.lot_name,a.remark FROM ddwb_lot a
+    LEFT JOIN ddwb_batch_lot_rel b
+    ON a.id = b.lot_id
+    LEFT JOIN ddwb_work_order c
+    ON b.crop_batch_id = c.crop_batch_id
+    WHERE c.id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByBaseIdAndYear" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT a.id,a.lot_name FROM ddwb_lot a
+    INNER JOIN ddwb_batch_lot_rel b
+    ON a.id = b.lot_id
+    INNER JOIN ddwb_crop_batch c
+    ON b.crop_batch_id = c.id
+    WHERE c.start_year = #{year,jdbcType=INTEGER}
+    AND c.base_id = #{baseId,jdbcType=INTEGER}
+    <if test="batchId != null">
+      and c.id != #{batchId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getBaseId" resultType="java.lang.Integer">
+    select base_id from ddwb_lot where id = #{id}
+  </select>
+
+</mapper>

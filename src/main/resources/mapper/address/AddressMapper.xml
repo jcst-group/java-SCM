@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.address.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.address.Address">
+    <id column="relate_id" jdbcType="INTEGER" property="relateId" />
+    <result column="relate_type" jdbcType="VARCHAR" property="relateType" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
+    <result column="steet_code" jdbcType="VARCHAR" property="steetCode" />
+  </resultMap>
+
+  <resultMap id="StreetMap" type="java.lang.String">
+    <result column="street" jdbcType="VARCHAR" property="street" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    relate_id, relate_type, province, city, area, street, address, province_code,
+    city_code, area_code, steet_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nongxin.terminal.entity.address.Address">
+    insert into ddwb_address (relate_id, relate_type, province,
+      city, area, street, 
+      address, province_code, city_code, 
+      area_code, steet_code)
+    values (#{relateId,jdbcType=INTEGER}, #{relateType,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, 
+      #{areaCode,jdbcType=VARCHAR}, #{steetCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nongxin.terminal.entity.address.Address">
+    insert into ddwb_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="relateId != null">
+        relate_id,
+      </if>
+      <if test="relateType != null">
+        relate_type,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="street != null">
+        street,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="provinceCode != null">
+        province_code,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="areaCode != null">
+        area_code,
+      </if>
+      <if test="steetCode != null">
+        steet_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="relateId != null">
+        #{relateId,jdbcType=INTEGER},
+      </if>
+      <if test="relateType != null">
+        #{relateType,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null">
+        #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null">
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="steetCode != null">
+        #{steetCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.address.Address">
+    update ddwb_address
+    <set>
+      <if test="relateType != null">
+        relate_type = #{relateType,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null">
+        street = #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null">
+        province_code = #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="areaCode != null">
+        area_code = #{areaCode,jdbcType=VARCHAR},
+      </if>
+      <if test="steetCode != null">
+        steet_code = #{steetCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = #{relateType,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.address.Address">
+    update ddwb_address
+    set relate_type = #{relateType,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      street = #{street,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      province_code = #{provinceCode,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      area_code = #{areaCode,jdbcType=VARCHAR},
+      steet_code = #{steetCode,jdbcType=VARCHAR}
+    where relate_id = #{relateId,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteAddress">
+    delete from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = #{relateType,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="getBaseAddress" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '1'
+  </select>
+
+  <select id="getLotAddress" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '2'
+  </select>
+
+  <!--看板地块的地理位置-->
+  <select id="getStreetAddress" parameterType="java.lang.Integer" resultMap="StreetMap">
+    select
+    street
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '1'
+  </select>
+
+  <!--企业位置-->
+  <select id="getCompanyAddress" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '3'
+  </select>
+
+  <select id="getComanyRegistAddres" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '4'
+  </select>
+
+
+  <select id="getUserAddres" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '6'
+  </select>
+
+  <select id="getComanyBusinessAddres" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '7'
+  </select>
+
+  <select id="getMemberAddress" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_address
+    where relate_id = #{relateId,jdbcType=INTEGER} and relate_type = '8'
+  </select>
+
+
+</mapper>

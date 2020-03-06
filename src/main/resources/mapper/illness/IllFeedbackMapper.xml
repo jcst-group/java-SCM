@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.illness.IllFeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.illness.IllFeedback">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="answer_time" jdbcType="TIMESTAMP" property="answerTime" />
+    <result column="answer_content" jdbcType="VARCHAR" property="answerContent" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.illness.IllFeedback">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="base_id" jdbcType="INTEGER" property="baseId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="feedback_time" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="answer_time" jdbcType="TIMESTAMP" property="answerTime" />
+    <result column="answer_content" jdbcType="VARCHAR" property="answerContent" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <association property="user" column="user_id" select="com.nongxin.terminal.dao.system.UserMapper.getIdAndName"/>
+    <association property="baseInfo" column="base_id" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getIdAndName"/>
+    <association property="illFeedbackPlans" column="id" select="com.nongxin.terminal.dao.illness.IllFeedbackPlanMapper.selectByFeedbackId"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getIllFeedbackPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, user_id, base_id, content, feedback_time, answer_time, answer_content, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_ill_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_ill_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.illness.IllFeedback" useGeneratedKeys="true">
+    insert into ddwb_ill_feedback (user_id, base_id, content, 
+      feedback_time, answer_time, answer_content, 
+      status)
+    values (#{userId,jdbcType=INTEGER}, #{baseId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{feedbackTime,jdbcType=TIMESTAMP}, #{answerTime,jdbcType=TIMESTAMP}, #{answerContent,jdbcType=VARCHAR}, 
+      #{status,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.illness.IllFeedback" useGeneratedKeys="true">
+    insert into ddwb_ill_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="baseId != null">
+        base_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+
+        feedback_time,
+
+      <if test="answerTime != null">
+        answer_time,
+      </if>
+      <if test="answerContent != null">
+        answer_content,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="baseId != null">
+        #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+
+      current_timestamp,
+
+      <if test="answerTime != null">
+        #{answerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="answerContent != null">
+        #{answerContent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.illness.IllFeedback">
+    update ddwb_ill_feedback
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="baseId != null">
+        base_id = #{baseId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="feedbackTime != null">
+        feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="answerTime != null">
+        answer_time = #{answerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="answerContent != null">
+        answer_content = #{answerContent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.illness.IllFeedback">
+    update ddwb_ill_feedback
+    set user_id = #{userId,jdbcType=INTEGER},
+      base_id = #{baseId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      feedback_time = #{feedbackTime,jdbcType=TIMESTAMP},
+      answer_time = #{answerTime,jdbcType=TIMESTAMP},
+      answer_content = #{answerContent,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getIllFeedbackList" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_ill_feedback
+    <where>
+      <if test="baseId != null">
+        and base_id = #{baseId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=SMALLINT}
+      </if>
+    </where>
+    order by feedback_time desc
+  </select>
+
+  <select id="getUserIllFeedback" resultMap="BaseResultMap2">
+    SELECT a.* FROM ddwb_ill_feedback a
+    where user_id = #{userId,jdbcType=INTEGER}
+    <if test="baseId != null">
+      and a.base_id = #{baseId,jdbcType=INTEGER}
+    </if>
+    order by feedback_time desc
+  </select>
+
+</mapper>

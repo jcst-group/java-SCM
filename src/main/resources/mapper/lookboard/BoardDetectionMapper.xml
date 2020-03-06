@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.lookboard.BoardMapper">
+    <resultMap id="BaseResultMap" type="com.nongxin.terminal.vo.lookboard.DetectionValueVo">
+        <result column="value" jdbcType="DECIMAL" property="value"/>
+        <result column="item" jdbcType="VARCHAR" property="item"/>
+        <result column="min_value" jdbcType="DECIMAL" property="min_value"/>
+        <result column="max_value" jdbcType="DECIMAL" property="max_value"/>
+        <association property="unit" javaType="com.nongxin.terminal.entity.common.Unit">
+            <result column="unit" property="displayName"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="com.nongxin.terminal.vo.lookboard.RecoveryDataVo">
+        <result column="value" jdbcType="DECIMAL" property="value"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+    </resultMap>
+
+    <resultMap id="CropBatchMap" type="com.nongxin.terminal.vo.lookboard.CropBatchVo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="batchName" jdbcType="VARCHAR" property="batchName"/>
+    </resultMap>
+
+    <select id="getDetectionValue1" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <if test="typeId==1"><!--种子检测数据-->
+            select avg(e.`value`) as value,g.item as item,
+            g.unit AS unit,
+            g.max_value ,
+            g.min_value from
+            ddwb_batch_lot_rel a left join ddwb_crop_batch b on a.crop_batch_id = b.id
+            left join ddwb_seed_batch c on b.seed_batch_id = c.id
+            left join ddwb_seed_detection d on d.seed_batch_id = c.id
+            left join ddwb_detection_rel e on e.relation_id = d.id
+            left join ddwb_detection_items g on e.detection_id = g.id
+            where a.lot_id = #{lotId,jdbcType=INTEGER} and e.type = #{typeId,jdbcType=INTEGER}
+            group by g.item
+        </if>
+        <if test="typeId==2"><!--采收检测数据-->
+            select avg(e.`value`) as value,g.item as item,
+            g.unit AS unit,
+            g.max_value ,
+            g.min_value from ddwb_batch_lot_rel a
+            left join ddwb_crop_batch b on a.crop_batch_id = b.id
+            left join ddwb_recovery_detection d on d.plan_id = b.plan_id
+            left join ddwb_detection_rel e on e.relation_id = d.id
+            left join ddwb_detection_items g on e.detection_id = g.id
+            where a.lot_id = #{lotId,jdbcType=INTEGER} and e.type = #{typeId,jdbcType=INTEGER}
+            group by g.item
+        </if>
+        <if test="typeId==3"><!--初加工检测数据-->
+            select avg(e.`value`) as value,g.item as item ,
+            g.unit AS unit,
+            g.max_value ,
+            g.min_value from
+            ddwb_batch_lot_rel a left join ddwb_crop_batch b on a.crop_batch_id = b.id
+            left join ddwb_initialpro_batch c on b.plan_id = c.plan_id
+            left join ddwb_initpro_detection d on d.plan_id = c.plan_id
+            left join ddwb_detection_rel e on e.relation_id = d.id
+            left join ddwb_detection_items g on e.detection_id = g.id
+            where a.lot_id = #{lotId,jdbcType=INTEGER} and e.type = #{typeId,jdbcType=INTEGER}
+            group by g.item
+        </if>
+    </select>
+
+    <select id="getDetectionValue" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <if test="typeId==1"><!--种子检测数据-->
+            select avg(e.`value`) as value,g.item as item,
+            h.display_name AS unit,
+            g.max_value ,
+            g.min_value from
+            ddwb_crop_batch b
+            left join ddwb_seed_batch c on b.seed_batch_id = c.id
+            left join ddwb_seed_detection d on d.seed_batch_id = c.id
+            left join ddwb_detection_rel e on e.relation_id = d.id
+            left join ddwb_detection_items g on e.detection_id = g.id
+            LEFT JOIN ddwb_unit h ON g.unit = h.value
+            where b.id = #{batchId,jdbcType=INTEGER} and e.type = #{typeId,jdbcType=INTEGER}
+            group by g.item
+        </if>
+        <if test="typeId==2"><!--采收检测数据-->
+            select e.`value` as value,g.item as item,
+            h.display_name AS unit,
+            g.max_value ,
+            g.min_value
+            from ddwb_crop_batch b
+            left join ddwb_recovery_batch c on b.id = c.crop_batch_id
+            left join ddwb_rec_det_rel d on c.id = d.recovery_id
+            left join ddwb_detection_rel e on e.relation_id = d.rec_detection_id
+            left join ddwb_detection_items g on e.detection_id = g.id
+            LEFT JOIN ddwb_unit h ON g.unit = h.value
+            where b.id = #{batchId,jdbcType=INTEGER} and e.type = #{typeId,jdbcType=INTEGER}
+            group by g.item
+        </if>
+        <if test="typeId==3"><!--初加工检测数据-->
+            select h.`value` as value,g.item as item ,
+            i.display_name AS unit,
+            g.max_value ,
+            g.min_value from
+            ddwb_crop_batch a
+            left join ddwb_recovery_batch b on a.id = b.crop_batch_id
+            left join ddwb_initpro_batch_rel c on c.recove_batch_id = b.id
+            left join ddwb_initialpro_batch d on d.id = c.init_pro_id
+            left join ddwb_initpro_det_rel e on e.initpro_id = d.id
+            left join ddwb_initpro_detection f on f.id = e.initpro_det_id
+            left join ddwb_detection_rel h on h.relation_id = f.id
+            left join ddwb_detection_items g on g.id = h.detection_id
+            LEFT JOIN ddwb_unit i ON g.unit = i.value
+            where a.id = #{batchId,jdbcType=INTEGER} and h.type = #{typeId,jdbcType=INTEGER}
+            group by g.item
+        </if>
+    </select>
+
+    <select id="getRecoveryData" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+        SELECT DISTINCT
+            b.start_year AS level,
+            d.yield AS value
+        FROM
+            ddwb_batch_lot_rel a
+            LEFT JOIN ddwb_crop_batch b ON b.id = a.crop_batch_id
+            LEFT JOIN ddwb_recovery_batch c ON c.crop_batch_id = b.id
+			LEFT JOIN ddwb_recovery_lot d ON d.recovery_batch_id = c.id and a.lot_id = d.lot_id
+        WHERE
+            a.lot_id = #{lotId,jdbcType=VARCHAR} and d.yield is not null GROUP BY b.start_year
+        ORDER BY b.start_year asc
+    </select>
+
+    <select id="getCropBatch" parameterType="java.lang.Integer" resultMap="CropBatchMap">
+        select b.id,b.batch_name as batchName from ddwb_batch_lot_rel a
+        left join ddwb_crop_batch b on a.crop_batch_id = b.id
+        where a.lot_id =#{lotId,jdbcType=VARCHAR}
+    </select>
+</mapper>

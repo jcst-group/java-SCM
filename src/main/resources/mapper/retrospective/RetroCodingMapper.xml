@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.retrospective.RetroCodingMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.retrospective.RetroCoding">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="retro_code" jdbcType="VARCHAR" property="retroCode" />
+    <result column="coding_time" jdbcType="TIMESTAMP" property="codingTime" />
+    <result column="code_info_id" jdbcType="INTEGER" property="codeInfoId" />
+    <result column="serial_num" jdbcType="INTEGER" property="serialNum" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.retrospective.RetroCoding">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="retro_code" jdbcType="VARCHAR" property="retroCode" />
+    <result column="coding_time" jdbcType="TIMESTAMP" property="codingTime" />
+    <result column="code_info_id" jdbcType="INTEGER" property="codeInfoId" />
+    <result column="serial_num" jdbcType="INTEGER" property="serialNum" />
+    <association property="retroCodeInfo" javaType="com.nongxin.terminal.entity.retrospective.RetroCodeInfo" resultMap="CodeInfoMap"/>
+  </resultMap>
+
+  <resultMap id="CodeInfoMap" type="com.nongxin.terminal.entity.retrospective.RetroCodeInfo">
+    <id column="code_info_id" jdbcType="INTEGER" property="id" />
+    <result column="unit" jdbcType="SMALLINT" property="unit" />
+    <result column="specifications" jdbcType="VARCHAR" property="specifications" />
+    <result column="qc" jdbcType="VARCHAR" property="qc" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="provenance" jdbcType="VARCHAR" property="provenance" />
+    <result column="net_weight" jdbcType="DECIMAL" property="netWeight" />
+    <association property="recoveryBatch" javaType="com.nongxin.terminal.entity.recovery.RecoveryBatch">
+      <id column="reco_id" jdbcType="INTEGER" property="id" />
+      <result column="recovery_code" jdbcType="VARCHAR" property="recoveryCode" />
+    </association>
+    <association property="crop" javaType="com.nongxin.terminal.entity.crop.Crop">
+      <id column="crop_id" jdbcType="INTEGER" property="id" />
+      <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    </association>
+    <association property="initialProBatch" javaType="com.nongxin.terminal.entity.batch.InitialProBatch">
+      <id column="init_id" jdbcType="INTEGER" property="id" />
+      <result column="initial_processing_code" jdbcType="VARCHAR" property="initialProcessingCode" />
+    </association>
+  </resultMap>
+
+  <resultMap id="RetroPicMap" type="com.nongxin.terminal.vo.traceability.PictureVo">
+    <association property="soilPic" column="base_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSoilPic"/>
+    <association property="airPic" column="base_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getAirPic"/>
+    <association property="waterPic" column="base_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getWaterPic"/>
+    <association property="seedDetectionPic" column="seed_detection_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getSeedDetectionResultPic"/>
+    <association property="recDetectionPic" column="rec_detection_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getRecDetectionResultPic"/>
+    <association property="initDetectionPic" column="initpro_det_id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getInitProDetectionPic"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="java.util.HashMap">
+    <result column="retro_code" jdbcType="VARCHAR" property="retroCode" />
+    <result column="specifications" jdbcType="VARCHAR" property="specifications" />
+    <result column="provenance" jdbcType="VARCHAR" property="provenance" />
+    <result column="net_weight" jdbcType="DECIMAL" property="netWeight" />
+    <result column="unit" javaType="com.nongxin.terminal.util.enumUtil.retrospective.RetroUnitEnum" property="unit" />
+    <result column="execute_standard" jdbcType="VARCHAR" property="executeStandard" />
+    <result column="crop_name" jdbcType="VARCHAR" property="cropName" />
+    <result column="relation_code" jdbcType="VARCHAR" property="relationCode" />
+    <result column="relation_time" jdbcType="DATE" property="relationTime" />
+    <result column="traceability_url" jdbcType="VARCHAR" property="traceabilityUrl"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, retro_code, coding_time, code_info_id, serial_num
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_retro_coding
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_retro_coding
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.retrospective.RetroCoding" useGeneratedKeys="true">
+    insert into ddwb_retro_coding (retro_code, coding_time, code_info_id, 
+      serial_num)
+    values (#{retroCode,jdbcType=VARCHAR}, #{codingTime,jdbcType=TIMESTAMP}, #{codeInfoId,jdbcType=INTEGER}, 
+      #{serialNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.retrospective.RetroCoding" useGeneratedKeys="true">
+    insert into ddwb_retro_coding
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="retroCode != null">
+        retro_code,
+      </if>
+      <if test="codingTime != null">
+        coding_time,
+      </if>
+      <if test="codeInfoId != null">
+        code_info_id,
+      </if>
+      <if test="serialNum != null">
+        serial_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="retroCode != null">
+        #{retroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="codingTime != null">
+        #{codingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="codeInfoId != null">
+        #{codeInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="serialNum != null">
+        #{serialNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.retrospective.RetroCoding">
+    update ddwb_retro_coding
+    <set>
+      <if test="retroCode != null">
+        retro_code = #{retroCode,jdbcType=VARCHAR},
+      </if>
+      <if test="codingTime != null">
+        coding_time = #{codingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="codeInfoId != null">
+        code_info_id = #{codeInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="serialNum != null">
+        serial_num = #{serialNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.retrospective.RetroCoding">
+    update ddwb_retro_coding
+    set retro_code = #{retroCode,jdbcType=VARCHAR},
+      coding_time = #{codingTime,jdbcType=TIMESTAMP},
+      code_info_id = #{codeInfoId,jdbcType=INTEGER},
+      serial_num = #{serialNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getRetroCoding" resultMap="BaseResultMap2">
+    SELECT a.*,b.unit,b.specifications,b.qc,b.remarks,b.type,b.reco_id,b.init_id,b.provenance,b.net_weight,c.crop_id,
+    c.recovery_code,d.initial_processing_code,e.crop_name
+    FROM ddwb_retro_coding a
+    LEFT JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_recovery_batch c
+    ON b.reco_id = c.id
+    LEFT JOIN ddwb_initialpro_batch d
+    ON b.init_id = d.id
+    LEFT JOIN ddwb_crop e
+    ON c.crop_id = e.id
+    <where>
+      <if test="type != null">
+        and b.type = #{type,jdbcType=SMALLINT}
+      </if>
+      <if test="type == @com.nongxin.terminal.util.enumUtil.retrospective.RetroCodingTypeEnum@INIT_BATCH and relationCode != null">
+        and position(#{relationCode,jdbcType=VARCHAR} in d.initial_processing_code)
+      </if>
+      <if test="type == @com.nongxin.terminal.util.enumUtil.retrospective.RetroCodingTypeEnum@RECO_BATCH and relationCode != null">
+        and position(#{relationCode,jdbcType=VARCHAR} in c.recovery_code)
+      </if>
+      <if test="retroCode != null">
+        and position(#{retroCode,jdbcType=VARCHAR} in a.retro_code)
+      </if>
+    </where>
+    order by a.id desc
+  </select>
+
+  <select id="getRetroPic" parameterType="java.lang.String" resultMap="RetroPicMap">
+    SELECT c.rec_detection_id,d.initpro_det_id,f.base_id,g.id seed_detection_id FROM ddwb_retro_coding a
+    LEFT JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_rec_det_rel c
+    ON b.reco_id = c.recovery_id
+    LEFT JOIN ddwb_initpro_det_rel d
+    ON b.init_id = d.initpro_id
+    LEFT JOIN ddwb_recovery_batch e
+    ON b.reco_id = e.id
+    LEFT JOIN ddwb_crop_batch f
+    ON e.crop_batch_id = f.id
+    LEFT JOIN ddwb_seed_detection g
+    ON f.seed_batch_id = g.seed_batch_id
+    WHERE a.retro_code = #{retroCode,jdbcType=VARCHAR}
+    ORDER BY g.detection_time LIMIT 1
+  </select>
+
+
+  <select id="getRetroByRetroCode" resultMap="BaseResultMap3">
+    SELECT a.retro_code,b.specifications,b.provenance,b.net_weight,b.unit,IFNULL(b.execute_standard,'') as execute_standard,e.crop_name,
+    CONCAT((SELECT constant FROM ddwb_constant_storage where type = 1),'?retroCode=',a.retro_code) traceability_url,
+    CASE
+      WHEN b.init_id IS NOT NULL THEN
+      c.initial_processing_code
+      ELSE
+      d.recovery_code
+    END relation_code,
+    CASE
+      WHEN b.init_id IS NOT NULL THEN
+      c.initial_processing_time
+    ELSE
+    d.harvesting_time
+    END relation_time
+    FROM ddwb_retro_coding a
+    INNER JOIN ddwb_retro_code_info b
+    ON a.code_info_id = b.id
+    LEFT JOIN ddwb_initialpro_batch c
+    ON b.init_id = c.id
+    LEFT JOIN ddwb_recovery_batch d
+    ON d.id = b.reco_id
+    LEFT JOIN ddwb_crop e
+    ON d.crop_id = e.id
+    <where>
+      <if test="type == @com.nongxin.terminal.util.enumUtil.retrospective.RetroCodingTypeEnum@INIT_BATCH and relationCode != null">
+        and position(#{relationCode,jdbcType=VARCHAR} in c.initial_processing_code)
+      </if>
+      <if test="type == @com.nongxin.terminal.util.enumUtil.retrospective.RetroCodingTypeEnum@RECO_BATCH and relationCode != null">
+        and position(#{relationCode,jdbcType=VARCHAR} in d.recovery_code)
+      </if>
+    </where>
+  </select>
+
+</mapper>

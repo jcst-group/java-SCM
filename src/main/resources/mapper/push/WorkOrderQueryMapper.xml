@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.push.WorkOrderQueryMapper">
+    <resultMap id="BaseResultMap" type="com.nongxin.terminal.vo.push.CIDVo">
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="base_name" jdbcType="VARCHAR" property="baseName"/>
+        <result column="farming_item_id" jdbcType="INTEGER" property="farming_item_id"/>
+        <result column="execution_time" jdbcType="TIMESTAMP" property="execution_time"/>
+        <result column="batch_name" jdbcType="TIMESTAMP" property="batchName"/>
+        <collection property="farmingName" column="farming_item_id" select="com.nongxin.terminal.dao.push.WorkOrderQueryMapper.getFarmingName"/>
+        <collection property="cidList" column="user_id" select="com.nongxin.terminal.dao.push.WorkOrderQueryMapper.getCidListByUserId"/>
+    </resultMap>
+
+    <select id="getUserCid" resultMap="BaseResultMap">
+        SELECT
+        d.user_id,
+        c.id,
+        c.base_name,
+        a.farming_id,
+        a.farming_item_id,
+        a.execution_time,
+        b.batch_name
+        FROM
+        ddwb_work_order a
+        LEFT JOIN ddwb_crop_batch b ON a.crop_batch_id = b.id
+        LEFT JOIN ddwb_base_info c ON b.base_id = c.id
+        LEFT JOIN ddwb_base_user_rel d ON c.id = d.base_id
+        LEFT JOIN auth_user_role e ON e.USER_ID = d.user_id
+        LEFT JOIN auth_role f ON f.ID = e.ROLE_ID
+        WHERE
+        a.execution_time = CURRENT_DATE
+        AND e.ROLE_ID = 13
+        AND a.`status` =1
+    </select>
+
+    <select id="getCidListByUserId" resultType="java.lang.String">
+        select cid from ddwb_push_rel where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getFarmingName" resultType="java.lang.String">
+        select farming_name from ddwb_farming_item where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getCidByWorkOrderId" resultMap="BaseResultMap">
+        SELECT
+        c.base_name,
+        a.farming_id,
+        a.farming_item_id,
+        a.execution_time,
+        b.batch_name,
+        a.user_id
+        FROM
+        ddwb_work_order a
+        LEFT JOIN ddwb_crop_batch b ON a.crop_batch_id = b.id
+        LEFT JOIN ddwb_base_info c ON b.base_id = c.id
+		where a.id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>

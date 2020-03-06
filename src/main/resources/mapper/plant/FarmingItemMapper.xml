@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.plant.FarmingItemMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.plant.FarmingItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.plant.FarmingItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getFarmingItemPic"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap3" type="com.nongxin.terminal.entity.plant.FarmingItem">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName" />
+    <result column="crop_id" jdbcType="INTEGER" property="cropId" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <association property="crop" column="crop_id" select="com.nongxin.terminal.dao.crop.CropMapper.getIdAndNameById"/>
+    <collection property="pictureInfoList" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getFarmingItemPic"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap4" type="com.nongxin.terminal.vo.lookboard.FarmingItemVo">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="farming_name" jdbcType="VARCHAR" property="farmingName"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, farming_name, crop_id, method
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_farming_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_farming_item
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.FarmingItem" useGeneratedKeys="true">
+    insert into ddwb_farming_item (farming_name, crop_id, method
+      )
+    values (#{farmingName,jdbcType=VARCHAR}, #{cropId,jdbcType=INTEGER}, #{method,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.plant.FarmingItem" useGeneratedKeys="true">
+    insert into ddwb_farming_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="farmingName != null">
+        farming_name,
+      </if>
+      <if test="cropId != null">
+        crop_id,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="farmingName != null">
+        #{farmingName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.plant.FarmingItem">
+    update ddwb_farming_item
+    <set>
+      <if test="farmingName != null">
+        farming_name = #{farmingName,jdbcType=VARCHAR},
+      </if>
+      <if test="cropId != null">
+        crop_id = #{cropId,jdbcType=INTEGER},
+      </if>
+      <if test="method != null">
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.plant.FarmingItem">
+    update ddwb_farming_item
+    set farming_name = #{farmingName,jdbcType=VARCHAR},
+      crop_id = #{cropId,jdbcType=INTEGER},
+      method = #{method,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getFarmingItemList" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_farming_item
+    <where>
+      <if test="cropId != null">
+        and crop_id = #{cropId,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by id desc
+  </select>
+
+  <select id="getAllFarmingItem" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, farming_name from ddwb_farming_item
+  </select>
+
+  <select id="getIdAndName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, farming_name,method
+    from ddwb_farming_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getFarmingItemBoard" parameterType="java.lang.Integer" resultMap="BaseResultMap4">
+    select id,farming_name from ddwb_farming_item where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="getFarmingItemByCropId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, farming_name
+    from ddwb_farming_item
+    where crop_id = #{cropId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

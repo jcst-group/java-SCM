@@ -1,0 +1,73 @@
+spring:
+  profiles:
+    active: dev
+  #热部署
+  devtools:
+    restart:
+      enabled: true #热部署生效
+  #json 时间戳统一转换
+  jackson:
+    date-format:   yyyy-MM-dd HH:mm:ss
+    time-zone:   GMT+8
+  aop:
+    proxy-target-class: true
+  mvc:
+    static-path-pattern: /**
+  resource:
+    static-locations: classpath:/static/,classpath:/public/
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+
+#公共配置与profiles选择无关
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  type-enums-package: com.nongxin.terminal.util.enumUtil
+  type-aliases-package: com.nongxin.terminal.entity
+  configuration:
+    call-setters-on-nulls: true
+
+#公共配置与profiles选择无关
+#mybatis:
+  # 指向实体类包路径
+  #type-aliases-package: com.nongxin.terminal.entity
+  # mapper xml 文件地址
+  #mapper-locations: classpath:mapper/**/*Mapper.xml
+  # 检查 mybatis 配置是否存在，一般命名为 mybatis-config.xml
+  #check-config-location: true
+  # 执行模式。默认是 SIMPLE
+  #executor-type: simple
+  #type-handlers-package: com.nongxin.terminal.util.enumUtil.config
+  #configuration:
+    #call-setters-on-nulls: true
+
+#验证码过期时间
+server:
+  captcha:
+    timeout: 300
+
+#pagehelper分页插件
+pagehelper:
+
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level:
+    #root: DEBUG
+    com.nongxin.terminal.dao: debug
+
+#萤石
+ys:
+  appKey: c949347ff85947d39f0749143b0a76f6
+  appSecret: 83a5afbe9249c08698e53a92e97edc53
+
+#定义文件大小
+fileSize:
+  img: 10
+  file: 50
+
+

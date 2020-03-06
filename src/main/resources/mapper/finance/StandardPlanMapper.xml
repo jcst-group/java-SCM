@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nongxin.terminal.dao.finance.StandardPlanMapper">
+  <resultMap id="BaseResultMap" type="com.nongxin.terminal.entity.finance.StandardPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="INTEGER" property="partyB" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="invest_mu" jdbcType="DECIMAL" property="investMu" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.nongxin.terminal.entity.finance.StandardPlan">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="party_a" jdbcType="VARCHAR" property="partyA" />
+    <result column="party_b" jdbcType="INTEGER" property="partyB" />
+    <result column="sign_time" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="acreage" jdbcType="DECIMAL" property="acreage" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="invest_mu" jdbcType="DECIMAL" property="investMu" />
+    <result column="year_id" jdbcType="INTEGER" property="yearId" />
+    <association property="baseInfo" column="party_b" select="com.nongxin.terminal.dao.base.BaseInfoMapper.getIdAndName"/>
+    <collection property="pictureInfos" column="id" select="com.nongxin.terminal.dao.file.PictureInfoMapper.getStandardPlanPic"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, party_a, party_b, sign_time, acreage, start_time, end_time, invest_mu, year_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ddwb_standard_plan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ddwb_standard_plan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.StandardPlan" useGeneratedKeys="true">
+    insert into ddwb_standard_plan (party_a, party_b, sign_time, 
+      acreage, start_time, end_time, 
+      invest_mu, year_id)
+    values (#{partyA,jdbcType=VARCHAR}, #{partyB,jdbcType=INTEGER}, #{signTime,jdbcType=TIMESTAMP}, 
+      #{acreage,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{investMu,jdbcType=DECIMAL}, #{yearId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nongxin.terminal.entity.finance.StandardPlan" useGeneratedKeys="true">
+    insert into ddwb_standard_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        party_a,
+      </if>
+      <if test="partyB != null">
+        party_b,
+      </if>
+      <if test="signTime != null">
+        sign_time,
+      </if>
+      <if test="acreage != null">
+        acreage,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="investMu != null">
+        invest_mu,
+      </if>
+      <if test="yearId != null">
+        year_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="partyA != null">
+        #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        #{partyB,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null">
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acreage != null">
+        #{acreage,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="investMu != null">
+        #{investMu,jdbcType=DECIMAL},
+      </if>
+      <if test="yearId != null">
+        #{yearId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nongxin.terminal.entity.finance.StandardPlan">
+    update ddwb_standard_plan
+    <set>
+      <if test="partyA != null">
+        party_a = #{partyA,jdbcType=VARCHAR},
+      </if>
+      <if test="partyB != null">
+        party_b = #{partyB,jdbcType=INTEGER},
+      </if>
+      <if test="signTime != null">
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acreage != null">
+        acreage = #{acreage,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="investMu != null">
+        invest_mu = #{investMu,jdbcType=DECIMAL},
+      </if>
+      <if test="yearId != null">
+        year_id = #{yearId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nongxin.terminal.entity.finance.StandardPlan">
+    update ddwb_standard_plan
+    set party_a = #{partyA,jdbcType=VARCHAR},
+      party_b = #{partyB,jdbcType=INTEGER},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      acreage = #{acreage,jdbcType=DECIMAL},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      invest_mu = #{investMu,jdbcType=DECIMAL},
+      year_id = #{yearId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getStandardPlan" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from ddwb_standard_plan
+    <where>
+      <if test="yearId != null">
+        and year_id = #{yearId,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    SELECT COUNT(id) FROM ddwb_standard_plan
+    WHERE party_b = #{baseId,jdbcType=INTEGER} AND year_id = #{yearId,jdbcType=INTEGER}
+    <if test="id != null">
+      AND id != #{id,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="getBoardStandardPlan" resultType="java.util.HashMap">
+    SELECT COUNT(a.id) baseCount,SUM(a.acreage) acreage,CONVERT(SUM(a.acreage*a.invest_mu),DECIMAL(18,2)) investment
+    FROM ddwb_standard_plan a
+    INNER JOIN ddwb_contract_year b
+    ON a.year_id = b.id
+    WHERE substring(`year`,1,4) = YEAR(CURDATE())
+    <if test="baseId != null">
+      AND party_b = #{baseId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+</mapper>
